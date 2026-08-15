@@ -1,0 +1,27 @@
+---
+interface Props {
+  href: string;
+  variant?: 'primary' | 'secondary' | 'light';
+  external?: boolean;
+  class?: string;
+}
+
+const { href, variant = 'primary', external = false, class: className = '' } = Astro.props;
+---
+
+<a class:list={['button', `button--${variant}`, className]} href={href} target={external ? '_blank' : undefined} rel={external ? 'noreferrer' : undefined}>
+  <slot />
+  <span aria-hidden="true">↗</span>
+</a>
+
+<style>
+  .button { display: inline-flex; min-height: 3.25rem; align-items: center; justify-content: center; gap: 0.75rem; padding: 0.75rem 1.25rem; border: 1px solid transparent; border-radius: 99rem; font-size: 0.86rem; font-weight: 720; letter-spacing: 0.04em; line-height: 1.2; text-decoration: none; transition: transform 180ms ease, background 180ms ease, border-color 180ms ease; }
+  .button:hover { transform: translateY(-2px); }
+  .button span { font-size: 1rem; transition: transform 180ms ease; }
+  .button:hover span { transform: translate(2px, -2px); }
+  .button--primary { background: var(--color-clay); color: var(--color-white); }
+  .button--primary:hover { background: #a76847; }
+  .button--secondary { border-color: rgb(36 55 70 / 0.3); color: var(--color-ink); }
+  .button--secondary:hover { border-color: var(--color-ink); background: rgb(255 254 251 / 0.6); }
+  .button--light { background: var(--color-white); color: var(--color-ink); }
+</style>

@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getSettings } from '../lib/sanity';
+const settings = await getSettings();
+---
+<BaseLayout title="Kontakt – Klangfonie" description="Handpanunterricht, Yoga-Begleitung oder Live-Musik mit Daniela Schneider anfragen.">
+  <section class="page-hero"><div class="container page-hero__inner"><p class="eyebrow">KONTAKT</p><h1>Erzähl mir, was du vorhast.</h1><p class="lead">Ein paar Zeilen genügen für den Anfang. Ich melde mich persönlich bei dir zurück.</p></div></section>
+  <section class="section"><div class="container contact-grid">
+    <aside>
+      <p class="eyebrow">DIREKTER KONTAKT</p>
+      <h2>Lieber per E-Mail?</h2>
+      {settings.email ? <a class="email" href={`mailto:${settings.email}`}>{settings.email}</a> : <p class="email">[E-MAIL-ADRESSE ERGÄNZEN]</p>}
+      {settings.phone && <a class="contact-line" href={`tel:${settings.phone.replace(/\s/g, '')}`}>{settings.phone}</a>}
+      {settings.location && <p class="contact-line">{settings.location}</p>}
+      <p class="note">Das Formular ist technisch vorbereitet, aber noch nicht mit einem Versanddienst verbunden. Bis dahin erreichst du Daniela direkt per E-Mail.</p>
+    </aside>
+    <form class="contact-form" data-contact-form novalidate>
+      <div class="field-row">
+        <label><span>Name</span><input type="text" name="name" autocomplete="name" required /></label>
+        <label><span>E-Mail</span><input type="email" name="email" autocomplete="email" required /></label>
+      </div>
+      <label><span>Wofür interessierst du dich?</span>
+        <select name="interest" required data-interest>
+          <option value="">Bitte auswählen</option><option value="unterricht">Handpanunterricht</option><option value="yoga">Yoga-Begleitung</option><option value="live">Live-Musik</option><option value="band">Band / Konzert</option><option value="sonstiges">Sonstiges</option>
+        </select>
+      </label>
+      <label><span>Nachricht</span><textarea name="message" rows="7" required placeholder="Was möchtest du gerne anfragen?"></textarea></label>
+      <button type="submit">Nachricht vorbereiten <span aria-hidden="true">↗</span></button>
+      <p class="form-status" role="status" data-form-status hidden>Der Formularversand ist noch nicht aktiviert. {settings.email ? <>Bitte sende deine Anfrage direkt an <a href={`mailto:${settings.email}`}>{settings.email}</a>.</> : <>Bitte ergänze zuerst die Kontaktadresse im Sanity Studio.</>}</p>
+    </form>
+  </div></section>
+</BaseLayout>
+<script>
+  const select = document.querySelector<HTMLSelectElement>('[data-interest]');
+  const interest = new URLSearchParams(window.location.search).get('interesse');
+  if (select && interest && [...select.options].some((option) => option.value === interest)) select.value = interest;
+  document.querySelector<HTMLFormElement>('[data-contact-form]')?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const form = event.currentTarget as HTMLFormElement;
+    if (!form.reportValidity()) return;
+    const status = document.querySelector<HTMLElement>('[data-form-status]');
+    if (status) { status.hidden = false; status.focus(); }
+  });
+</script>
+<style>
+  .contact-grid { display: grid; gap: clamp(3rem, 9vw, 8rem); align-items: start; }
+  aside { position: sticky; top: 7rem; } aside h2 { max-width: 8ch; font-size: clamp(2.2rem, 5vw, 3.8rem); }
+  .email { display: inline-block; margin-top: 1.5rem; color: var(--color-clay); font-weight: 700; }.contact-line { display: block; margin-top: 0.65rem; color: var(--color-steel); }
+  .note { max-width: 30rem; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--color-sand); color: var(--color-steel); font-size: 0.9rem; }
+  .contact-form { display: grid; gap: 1.3rem; padding: clamp(1.5rem, 4vw, 3rem); border-radius: var(--radius-lg); background: var(--color-linen); }
+  .field-row { display: grid; gap: 1.3rem; }
+  label { display: grid; gap: 0.45rem; color: var(--color-ink); font-size: 0.83rem; font-weight: 700; }
+  input, select, textarea { width: 100%; border: 1px solid rgb(36 55 70 / 0.22); border-radius: var(--radius-sm); background: var(--color-white); color: var(--color-charcoal); }
+  input, select { min-height: 3.25rem; padding: 0 0.9rem; } textarea { min-height: 10rem; padding: 0.8rem 0.9rem; resize: vertical; }
+  input:focus, select:focus, textarea:focus { border-color: var(--color-clay); outline: 2px solid rgb(184 121 85 / 0.18); }
+  button { display: inline-flex; width: fit-content; min-height: 3.25rem; align-items: center; gap: 0.75rem; padding: 0.75rem 1.25rem; border: 0; border-radius: 99rem; background: var(--color-clay); color: white; font-size: 0.86rem; font-weight: 720; cursor: pointer; }
+  .form-status { padding: 1rem; border-left: 3px solid var(--color-clay); background: var(--color-white); color: var(--color-steel); }.form-status a { color: var(--color-ink); font-weight: 700; }
+  @media (min-width: 42rem) { .field-row { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 52rem) { .contact-grid { grid-template-columns: 0.75fr 1.25fr; } }
+  @media (max-width: 51.99rem) { aside { position: static; } }
+</style>

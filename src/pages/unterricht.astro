@@ -1,0 +1,16 @@
+---
+import ServicePage from '../components/ServicePage.astro';
+import { getService } from '../lib/sanity';
+const service = await getService('Unterricht');
+---
+<ServicePage
+  service={service}
+  eyebrow="HANDPANUNTERRICHT"
+  intro="Ein persönlicher, klarer Weg ins Instrument – in deinem Tempo und mit Raum für den Klang, der zu dir passt."
+  fallbackBody={[
+    'Vielleicht hast du noch nie ein Instrument gespielt. Vielleicht steht deine erste Handpan bereits zuhause und du fragst dich: Und jetzt?',
+    'Im Unterricht verbinden wir eine verständliche Struktur mit neugierigem Ausprobieren. Es geht nicht darum, möglichst schnell möglichst viel zu können, sondern einen sicheren, musikalischen Zugang aufzubauen.',
+  ]}
+  bullets={['Rhythmus und Timing', 'Anschlagtechnik und Klang', 'Grooves und Patterns', 'Melodie und Dynamik', 'Koordination', 'Übergänge und Variationen', 'Freies Spiel und Improvisation']}
+  note="Du musst keine musikalische Vorerfahrung mitbringen."
+ />

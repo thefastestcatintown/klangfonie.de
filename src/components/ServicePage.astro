@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from './Button.astro';
+import ContactCTA from './ContactCTA.astro';
+import RichText from './RichText.astro';
+import type { Service } from '../lib/types';
+import { imageUrl } from '../lib/sanity';
+
+interface Props {
+  service: Service;
+  eyebrow: string;
+  intro: string;
+  bullets: string[];
+  fallbackBody: string[];
+  note?: string;
+}
+const { service, eyebrow, intro, bullets, fallbackBody, note } = Astro.props;
+const image = imageUrl(service.image, 1200, 1000);
+---
+<BaseLayout title={`${service.title} – Klangfonie`} description={service.shortDescription} image={image}>
+  <section class="page-hero">
+    <div class="container page-hero__inner"><p class="eyebrow">{eyebrow}</p><h1>{service.headline}</h1><p class="lead">{intro}</p></div>
+  </section>
+  <section class="section">
+    <div class="container rich-layout">
+      <aside>
+        {image ? <div class="feature-image"><img src={image} alt={service.image?.alt || service.title} width="600" height="500" /></div> : (
+          <div class="image-placeholder"><span>Bild kann im Sanity Studio ergänzt werden.</span></div>
+        )}
+        {(service.duration || service.priceInfo) && <div class="meta-row">{service.duration && <span class="meta-chip">Dauer: {service.duration}</span>}{service.priceInfo && <span class="meta-chip">{service.priceInfo}</span>}</div>}
+      </aside>
+      <div>
+        <RichText value={service.body} fallback={fallbackBody} />
+        <ul class="service-list">{bullets.map((bullet) => <li>{bullet}</li>)}</ul>
+        {note && <p class="highlight">{note}</p>}
+        <div class="action"><Button href={service.ctaUrl}>{service.ctaLabel}</Button></div>
+      </div>
+    </div>
+  </section>
+  <ContactCTA />
+</BaseLayout>
+<style>
+  .service-list { display: grid; gap: 0; margin: 2.5rem 0 0; padding: 0; border-top: 1px solid var(--color-sand); list-style: none; }
+  .service-list li { position: relative; padding: 0.85rem 0 0.85rem 1.4rem; border-bottom: 1px solid var(--color-sand); color: var(--color-ink); }
+  .service-list li::before { content: '↗'; position: absolute; left: 0; color: var(--color-clay); }
+  .action { margin-top: 2rem; }
+</style>

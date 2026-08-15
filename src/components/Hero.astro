@@ -1,0 +1,51 @@
+---
+import { Image } from 'astro:assets';
+import heroPlaceholder from '../../public/images/handpan-hero-placeholder.png';
+import Button from './Button.astro';
+import type { HomePage } from '../lib/types';
+import { imageUrl } from '../lib/sanity';
+
+interface Props { content: HomePage; }
+const { content } = Astro.props;
+const cmsImage = imageUrl(content.heroImage, 1600, 1300);
+---
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy reveal">
+      <p class="eyebrow">{content.heroEyebrow}</p>
+      <h1>{content.heroHeadline}</h1>
+      <p class="lead">{content.heroText}</p>
+      <div class="hero-actions">
+        <Button href={content.primaryCtaUrl}>{content.primaryCtaLabel}</Button>
+        <Button href={content.secondaryCtaUrl} variant="secondary">{content.secondaryCtaLabel}</Button>
+      </div>
+    </div>
+    <div class="hero-visual reveal">
+      {cmsImage ? (
+        <img src={cmsImage} alt={content.heroImage?.alt || 'Daniela spielt Handpan'} width="800" height="900" fetchpriority="high" />
+      ) : (
+        <Image src={heroPlaceholder} alt="Atmosphärisches Demo-Motiv: Hände beim Spielen einer Handpan" width={1000} height={1120} loading="eager" />
+      )}
+      <div class="sound-mark" aria-hidden="true"><i></i><i></i><i></i></div>
+      <p>Rhythmus <span>·</span> Melodie <span>·</span> Raum</p>
+    </div>
+  </div>
+</section>
+<style>
+  .hero { overflow: hidden; padding: clamp(2.25rem, 6vw, 5rem) 0 clamp(4.5rem, 9vw, 8.5rem); background: var(--color-linen); }
+  .hero-grid { display: grid; gap: 3.25rem; align-items: center; }
+  .hero-copy { position: relative; z-index: 2; }
+  h1 { max-width: 8ch; }
+  .lead { max-width: 40rem; margin-top: 1.5rem; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.2rem; }
+  .hero-visual { position: relative; min-height: 30rem; }
+  .hero-visual::before { content: ''; position: absolute; inset: -3rem -6rem auto auto; width: 18rem; height: 18rem; border: 1px solid rgb(184 121 85 / 0.26); border-radius: 50%; }
+  .hero-visual :global(img) { width: 100%; height: clamp(30rem, 67vw, 46rem); border-radius: 12rem 12rem 1.5rem 1.5rem; object-fit: cover; object-position: 66% center; box-shadow: var(--shadow-soft); }
+  .hero-visual > p { position: absolute; right: 1rem; bottom: 1rem; margin: 0; padding: 0.45rem 0.8rem; border-radius: 99rem; background: rgb(255 254 251 / 0.9); color: var(--color-ink); font-size: 0.67rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .hero-visual p span { color: var(--color-clay); }
+  .sound-mark { position: absolute; bottom: 3rem; left: -1.4rem; display: flex; width: 5.2rem; height: 5.2rem; align-items: center; justify-content: center; gap: 0.3rem; border-radius: 50%; background: var(--color-ink); box-shadow: var(--shadow-soft); }
+  .sound-mark i { width: 2px; border-radius: 2px; background: var(--color-sand); }
+  .sound-mark i:nth-child(1) { height: 1rem; }.sound-mark i:nth-child(2) { height: 2rem; }.sound-mark i:nth-child(3) { height: 1.4rem; }
+  @media (min-width: 56rem) { .hero-grid { grid-template-columns: minmax(0, 1fr) minmax(24rem, 0.78fr); } .hero-copy { padding-bottom: 2rem; } }
+  @media (max-width: 34rem) { .hero-actions { align-items: stretch; flex-direction: column; } .hero-visual :global(img) { border-radius: 8rem 8rem 1rem 1rem; } }
+</style>

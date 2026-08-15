@@ -1,0 +1,14 @@
+---
+interface Props { eyebrow?: string; title: string; text?: string; align?: 'left' | 'center'; }
+const { eyebrow, title, text, align = 'left' } = Astro.props;
+---
+<header class:list={['heading', `heading--${align}`]}>
+  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+  <h2>{title}</h2>
+  {text && <p class="lead">{text}</p>}
+</header>
+<style>
+  .heading { max-width: 47rem; }
+  .heading--center { margin-inline: auto; text-align: center; }
+  .lead { margin-top: 1.4rem; }
+</style>

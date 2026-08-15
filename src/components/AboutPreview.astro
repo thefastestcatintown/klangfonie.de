@@ -1,0 +1,33 @@
+---
+import { Image } from 'astro:assets';
+import heroPlaceholder from '../../public/images/handpan-hero-placeholder.png';
+import Button from './Button.astro';
+---
+<section class="section about-preview">
+  <div class="container about-grid">
+    <div class="about-image">
+      <Image src={heroPlaceholder} alt="Atmosphärisches Demo-Motiv eines Handpan-Spielers" width={900} height={900} />
+      <span aria-hidden="true">K</span>
+    </div>
+    <div>
+      <p class="eyebrow">ÜBER DANIELA</p>
+      <h2>Musik entsteht für mich im Zuhören.</h2>
+      <div class="copy">
+        <p>Ich bin Daniela Schneider, Handpan-Spielerin und Musikerin. Mich fasziniert an der Handpan, dass Rhythmus und Melodie auf einem einzigen Instrument zusammenkommen – und dass daraus mit sehr wenig unglaublich viel entstehen kann.</p>
+        <p>Beim Spielen interessiert mich weniger Perfektion als Präsenz. Zuhören. Reagieren. Einen Rhythmus entstehen lassen und ihm Raum geben.</p>
+      </div>
+      <Button href="/ueber-daniel" variant="secondary">Mehr über Daniela</Button>
+    </div>
+  </div>
+</section>
+<style>
+  .about-preview { overflow: hidden; }
+  .about-grid { display: grid; gap: clamp(3rem, 8vw, 7rem); align-items: center; }
+  .about-image { position: relative; }
+  .about-image::before { content: ''; position: absolute; inset: -2rem auto auto -3rem; width: 14rem; height: 14rem; border: 1px solid var(--color-sand); border-radius: 50%; }
+  .about-image :global(img) { position: relative; width: 100%; aspect-ratio: 0.92; border-radius: 1.5rem 10rem 1.5rem 1.5rem; object-fit: cover; object-position: 72% center; }
+  .about-image span { position: absolute; right: -1.3rem; bottom: 2rem; display: grid; width: 5.5rem; height: 5.5rem; place-items: center; border-radius: 50%; background: var(--color-clay); color: white; font-family: var(--font-display); font-size: 2rem; }
+  h2 { max-width: 11ch; }
+  .copy { display: grid; gap: 1rem; max-width: 39rem; margin: 1.75rem 0 2rem; color: var(--color-steel); }
+  @media (min-width: 50rem) { .about-grid { grid-template-columns: minmax(18rem, 0.8fr) minmax(0, 1fr); } }
+</style>

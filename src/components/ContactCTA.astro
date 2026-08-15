@@ -1,0 +1,18 @@
+---
+import Button from './Button.astro';
+---
+<section class="section contact-cta">
+  <div class="container contact-inner">
+    <div><p class="eyebrow">KONTAKT</p><h2>Lust auf Klang?</h2></div>
+    <div><p>Egal ob du selbst Handpan lernen möchtest, Musik für deine Yogaklasse suchst oder Daniela für einen besonderen Anlass anfragen möchtest – schreib kurz, was du vorhast.</p><Button href="/kontakt" variant="light">Kontakt aufnehmen</Button></div>
+  </div>
+</section>
+<style>
+  .contact-cta { position: relative; overflow: hidden; background: var(--color-clay); color: white; }
+  .contact-cta::after { content: ''; position: absolute; top: 50%; right: -9rem; width: 28rem; height: 28rem; transform: translateY(-50%); border: 1px solid rgb(255 255 255 / 0.25); border-radius: 50%; }
+  .contact-inner { position: relative; z-index: 1; display: grid; gap: 2.5rem; align-items: end; }
+  .eyebrow, h2 { color: white; }
+  .contact-inner > div:last-child { max-width: 37rem; }
+  .contact-inner p:not(.eyebrow) { margin-bottom: 1.75rem; font-size: 1.08rem; }
+  @media (min-width: 48rem) { .contact-inner { grid-template-columns: 1fr 1fr; } }
+</style>

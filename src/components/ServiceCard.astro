@@ -1,0 +1,21 @@
+---
+import type { Service } from '../lib/types';
+interface Props { service: Service; index?: number; }
+const { service, index = 0 } = Astro.props;
+const numerals = ['I', 'II', 'III', 'IV'];
+---
+<article class="service-card">
+  <div class="service-meta"><span>{numerals[index] || index + 1}</span><span>{service.category}</span></div>
+  <h3>{service.headline}</h3>
+  <p>{service.shortDescription}</p>
+  <a href={service.ctaUrl}>{service.ctaLabel} <span aria-hidden="true">→</span></a>
+</article>
+<style>
+  .service-card { display: flex; min-height: 27rem; flex-direction: column; padding: clamp(1.5rem, 3vw, 2.4rem); border: 1px solid rgb(36 55 70 / 0.13); border-radius: var(--radius-md); background: var(--color-white); transition: transform 220ms ease, box-shadow 220ms ease; }
+  .service-card:hover { transform: translateY(-0.35rem); box-shadow: var(--shadow-soft); }
+  .service-meta { display: flex; margin-bottom: auto; align-items: center; justify-content: space-between; color: var(--color-clay); font-size: 0.72rem; font-weight: 750; letter-spacing: 0.12em; text-transform: uppercase; }
+  h3 { max-width: 11ch; margin-top: 3rem; }
+  p { margin-top: 1.25rem; color: var(--color-steel); }
+  a { display: inline-flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid rgb(36 55 70 / 0.13); color: var(--color-ink); font-size: 0.84rem; font-weight: 720; text-decoration: none; }
+  a span { transition: transform 180ms ease; } a:hover span { transform: translateX(0.25rem); }
+</style>

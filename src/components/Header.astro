@@ -1,0 +1,61 @@
+---
+const pathname = Astro.url.pathname;
+const navigation = [
+  { href: '/unterricht', label: 'Unterricht' },
+  { href: '/yoga', label: 'Yoga' },
+  { href: '/live', label: 'Live' },
+  { href: '/ueber-daniel', label: 'Über Daniela' },
+  { href: '/kontakt', label: 'Kontakt' },
+];
+---
+<header class="site-header" data-header>
+  <div class="header-inner container">
+    <a class="brand" href="/" aria-label="Klangfonie – Startseite">
+      <span class="brand-mark" aria-hidden="true"><i></i></span>
+      <span>Klangfonie</span>
+    </a>
+    <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-navigation" data-menu-button>
+      <span class="sr-only">Menü öffnen</span><i></i><i></i>
+    </button>
+    <nav class="navigation" id="main-navigation" aria-label="Hauptnavigation" data-navigation>
+      {navigation.map((item) => <a href={item.href} aria-current={pathname === item.href ? 'page' : undefined}>{item.label}</a>)}
+      <a class="header-cta" href="/kontakt?interesse=unterricht">Unterricht anfragen <span aria-hidden="true">↗</span></a>
+    </nav>
+  </div>
+</header>
+<script>
+  const button = document.querySelector<HTMLElement>('[data-menu-button]');
+  const navigation = document.querySelector<HTMLElement>('[data-navigation]');
+  const closeMenu = () => { button?.setAttribute('aria-expanded', 'false'); document.body.classList.remove('menu-open'); };
+  button?.addEventListener('click', () => {
+    const open = button.getAttribute('aria-expanded') === 'true';
+    button.setAttribute('aria-expanded', String(!open));
+    document.body.classList.toggle('menu-open', !open);
+  });
+  navigation?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+  window.addEventListener('resize', () => { if (window.innerWidth >= 960) closeMenu(); });
+</script>
+<style>
+  .site-header { position: sticky; top: 0; z-index: 50; border-bottom: 1px solid rgb(36 55 70 / 0.1); background: rgb(255 254 251 / 0.95); backdrop-filter: blur(12px); }
+  .header-inner { display: flex; min-height: 5rem; align-items: center; justify-content: space-between; }
+  .brand { display: inline-flex; align-items: center; gap: 0.65rem; color: var(--color-ink); font-family: var(--font-display); font-size: 1.5rem; text-decoration: none; }
+  .brand-mark { display: grid; width: 2.1rem; height: 2.1rem; place-items: center; border: 1px solid var(--color-clay); border-radius: 50%; }
+  .brand-mark i { width: 0.68rem; height: 0.68rem; border: 1px solid var(--color-clay); border-radius: 50%; }
+  .navigation { display: flex; align-items: center; gap: clamp(1rem, 2.2vw, 2rem); }
+  .navigation > a { position: relative; color: var(--color-ink); font-size: 0.84rem; font-weight: 650; text-decoration: none; }
+  .navigation > a:not(.header-cta)::after { content: ''; position: absolute; right: 0; bottom: -0.5rem; left: 0; height: 1px; transform: scaleX(0); background: var(--color-clay); transition: transform 180ms ease; }
+  .navigation > a:hover::after, .navigation > a[aria-current='page']::after { transform: scaleX(1); }
+  .navigation .header-cta { padding: 0.68rem 1rem; border-radius: 99rem; background: var(--color-ink); color: white; }
+  .menu-button { display: none; width: 2.8rem; height: 2.8rem; border: 0; background: transparent; }
+  .menu-button i { display: block; width: 1.5rem; height: 1px; margin: 0.4rem auto; background: var(--color-ink); transition: transform 180ms ease; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+  @media (max-width: 59.99rem) {
+    .menu-button { display: block; }
+    .menu-button[aria-expanded='true'] i:first-of-type { transform: translateY(0.2rem) rotate(45deg); }
+    .menu-button[aria-expanded='true'] i:last-of-type { transform: translateY(-0.2rem) rotate(-45deg); }
+    .navigation { position: fixed; inset: 5rem 0 auto; display: none; min-height: calc(100vh - 5rem); align-items: stretch; flex-direction: column; gap: 0; padding: 2rem 1rem; background: var(--color-linen); }
+    .menu-button[aria-expanded='true'] + .navigation { display: flex; }
+    .navigation > a { padding: 1rem; border-bottom: 1px solid rgb(36 55 70 / 0.14); font-family: var(--font-display); font-size: 1.65rem; font-weight: 400; }
+    .navigation .header-cta { margin-top: 1.25rem; border: 0; border-radius: 99rem; font-family: var(--font-body); font-size: 0.9rem; font-weight: 700; text-align: center; }
+  }
+</style>
