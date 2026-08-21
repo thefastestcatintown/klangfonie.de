@@ -74,6 +74,7 @@ export interface Event {
   title: string;
   date: string;
   location: string;
+  image?: SanityImage;
   description: string;
   externalUrl?: string;
 }

@@ -56,7 +56,7 @@ export async function getFeaturedVideo(): Promise<Video | null> {
 }
 
 export async function getEvents(): Promise<Event[]> {
-  return safeFetch(`*[_type == "event" && date >= now()] | order(date asc){_id, title, date, location, description, externalUrl}`, {}, []);
+  return safeFetch(`*[_type == "event" && date >= now()] | order(date asc){_id, title, date, location, image, description, externalUrl}`, {}, []);
 }
 
 export function youtubeEmbedUrl(url?: string): string | undefined {
