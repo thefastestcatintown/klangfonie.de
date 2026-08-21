@@ -23,7 +23,7 @@ export default defineConfig({
     }),
     react(),
     sitemap({
-      filter: (page) => !['/studio/', '/impressum/', '/datenschutz/'].some((path) => page.endsWith(path)),
+      filter: (page) => !['/studio/', '/impressum/', '/datenschutz/', '/ueber-daniel/'].some((path) => page.endsWith(path)),
     }),
   ],
 });

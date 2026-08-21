@@ -1,12 +1,12 @@
 ---
 import { Image } from 'astro:assets';
-import heroPlaceholder from '../../public/images/handpan-hero-placeholder.png';
+import danielaPlaying from '../assets/images/daniela-handpan-playing.png';
 import Button from './Button.astro';
 ---
 <section class="section about-preview">
   <div class="container about-grid">
     <div class="about-image">
-      <Image src={heroPlaceholder} alt="Atmosphärisches Demo-Motiv eines Handpan-Spielers" width={900} height={900} />
+      <Image src={danielaPlaying} alt="Daniela Schneider spielt draußen im Grünen auf ihrer Handpan" width={1200} height={675} />
       <span aria-hidden="true">K</span>
     </div>
     <div>
@@ -14,9 +14,9 @@ import Button from './Button.astro';
       <h2>Musik entsteht für mich im Zuhören.</h2>
       <div class="copy">
         <p>Ich bin Daniela Schneider, Handpan-Spielerin und Musikerin. Mich fasziniert an der Handpan, dass Rhythmus und Melodie auf einem einzigen Instrument zusammenkommen – und dass daraus mit sehr wenig unglaublich viel entstehen kann.</p>
-        <p>Beim Spielen interessiert mich weniger Perfektion als Präsenz. Zuhören. Reagieren. Einen Rhythmus entstehen lassen und ihm Raum geben.</p>
+        <p>Beim Spielen zählt für mich nicht Perfektion, sondern Präsenz: zuhören, reagieren und dem Rhythmus Raum geben. So entstehen Begegnungen – im Unterricht, beim Yoga und live.</p>
       </div>
-      <Button href="/ueber-daniel" variant="secondary">Mehr über Daniela</Button>
+      <Button href="/ueber-daniela" variant="secondary">Mehr über Daniela</Button>
     </div>
   </div>
 </section>

@@ -76,7 +76,7 @@ src/styles/           globale Gestaltung
 public/               statische Assets
 ```
 
-Das generierte Handpan-Motiv in `public/images/` ist ein klar austauschbares Demo-Motiv und stellt nicht Daniela dar. Sobald echte Fotos vorliegen, können sie über Sanity ersetzt werden.
+Die lokal eingebundenen Originalaufnahmen von Daniela dienen als hochwertiger Fallback. Über Sanity gepflegte Hero- und Porträtbilder ersetzen sie automatisch, sobald entsprechende CMS-Inhalte veröffentlicht sind.
 
 ## Kontaktformular
 

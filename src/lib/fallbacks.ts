@@ -9,9 +9,9 @@ export const fallbackSettings: SiteSettings = {
 };
 
 export const fallbackHome: HomePage = {
-  heroEyebrow: 'HANDPAN · MUSIK · BEGEGNUNG',
+  heroEyebrow: 'DANIELA SCHNEIDER · HANDPAN · MUSIK',
   heroHeadline: 'Klang, der verbindet.',
-  heroText: 'Handpanunterricht, Live-Musik und feinfühlige Klangbegleitung für Yoga, besondere Momente und Menschen, die selbst ins Spielen eintauchen möchten.',
+  heroText: 'Ich verbinde Handpanunterricht, Live-Musik und feinfühlige Klangbegleitung für Yoga, besondere Momente und Menschen, die selbst ins Spielen eintauchen möchten.',
   primaryCtaLabel: 'Handpanunterricht entdecken',
   primaryCtaUrl: '/unterricht',
   secondaryCtaLabel: 'Musik hören',
@@ -40,6 +40,6 @@ export const fallbackServices: Service[] = [
 
 export const fallbackAbout: AboutPage = {
   headline: 'Musik entsteht für mich im Zuhören.',
-  intro: 'Ich bin Daniela Schneider, Handpan-Spielerin und Musikerin. Mich fasziniert an der Handpan, dass Rhythmus und Melodie auf einem einzigen Instrument zusammenkommen – und dass daraus mit sehr wenig unglaublich viel entstehen kann.',
+  intro: 'Ich bin Daniela Schneider, Handpan-Spielerin und Musikerin. An der Handpan fasziniert mich, wie Rhythmus und Melodie unmittelbar zusammenfinden – und aus wenigen Tönen ein ganzer Klangraum entsteht.',
   milestones: [],
 };

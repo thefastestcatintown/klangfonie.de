@@ -1,26 +1,4 @@
 ---
-import { Image } from 'astro:assets';
-import heroPlaceholder from '../../public/images/handpan-hero-placeholder.png';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import ContactCTA from '../components/ContactCTA.astro';
-import RichText from '../components/RichText.astro';
-import { getAbout, imageUrl } from '../lib/sanity';
-const about = await getAbout();
-const portrait = imageUrl(about.portrait, 1000, 1200);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+return Astro.redirect(`${base}/ueber-daniela`, 301);
 ---
-<BaseLayout title="Über Daniela Schneider – Klangfonie" description={about.intro} image={portrait}>
-  <section class="page-hero"><div class="container page-hero__inner"><p class="eyebrow">ÜBER DANIELA</p><h1>{about.headline}</h1><p class="lead">{about.intro}</p></div></section>
-  <section class="section"><div class="container rich-layout">
-    <div class="portrait">{portrait ? <img src={portrait} alt={about.portrait?.alt || 'Daniela Schneider'} width="600" height="720" /> : <Image src={heroPlaceholder} alt="Atmosphärisches Demo-Motiv einer Person an der Handpan" width={700} height={840} />}</div>
-    <div><RichText value={about.body} fallback={['Beim Spielen interessiert mich weniger Perfektion als Präsenz. Zuhören. Reagieren. Einen Rhythmus entstehen lassen und ihm Raum geben.', 'Die Handpan verbindet für mich Rhythmus und Melodie auf unmittelbare Weise. Im Unterricht, in einer Yogaklasse oder auf der Bühne entsteht daraus jedes Mal ein anderer Dialog.']} />
-      {about.milestones && about.milestones.length > 0 && <div class="milestones"><h2>Musikalische Stationen</h2>{about.milestones.map((item) => <div><span>{item.year}</span><p>{item.text}</p></div>)}</div>}
-    </div>
-  </div></section>
-  <ContactCTA />
-</BaseLayout>
-<style>
-  .portrait { position: sticky; top: 7rem; overflow: hidden; border-radius: var(--radius-lg); background: var(--color-sand); }
-  .portrait :global(img) { width: 100%; aspect-ratio: 5 / 6; object-fit: cover; object-position: 72% center; }
-  .milestones { margin-top: 4rem; }.milestones h2 { margin-bottom: 2rem; font-size: 2.5rem; }.milestones > div { display: grid; grid-template-columns: 6rem 1fr; gap: 1rem; padding: 1rem 0; border-top: 1px solid var(--color-sand); }.milestones span { color: var(--color-clay); font-weight: 700; }.milestones p { color: var(--color-steel); }
-  @media (max-width: 47.99rem) { .portrait { position: static; } }
-</style>

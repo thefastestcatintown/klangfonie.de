@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import heroPlaceholder from '../../public/images/handpan-hero-placeholder.png';
+import danielaPortrait from '../assets/images/daniela-handpan-portrait.png';
 import Button from './Button.astro';
 import type { HomePage } from '../lib/types';
 import { imageUrl } from '../lib/sanity';
@@ -24,10 +24,10 @@ const cmsImage = imageUrl(content.heroImage, 1600, 1300);
       {cmsImage ? (
         <img src={cmsImage} alt={content.heroImage?.alt || 'Daniela spielt Handpan'} width="800" height="900" fetchpriority="high" />
       ) : (
-        <Image src={heroPlaceholder} alt="Atmosphärisches Demo-Motiv: Hände beim Spielen einer Handpan" width={1000} height={1120} loading="eager" />
+        <Image src={danielaPortrait} alt="Daniela Schneider mit geschlossenen Augen und ihrer Handpan in einem sonnigen Garten" width={941} height={1672} loading="eager" />
       )}
       <div class="sound-mark" aria-hidden="true"><i></i><i></i><i></i></div>
-      <p>Rhythmus <span>·</span> Melodie <span>·</span> Raum</p>
+      <p>Daniela <span>·</span> Handpan <span>·</span> Natur</p>
     </div>
   </div>
 </section>
@@ -40,7 +40,7 @@ const cmsImage = imageUrl(content.heroImage, 1600, 1300);
   .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.2rem; }
   .hero-visual { position: relative; min-height: 30rem; }
   .hero-visual::before { content: ''; position: absolute; inset: -3rem -6rem auto auto; width: 18rem; height: 18rem; border: 1px solid rgb(184 121 85 / 0.26); border-radius: 50%; }
-  .hero-visual :global(img) { width: 100%; height: clamp(30rem, 67vw, 46rem); border-radius: 12rem 12rem 1.5rem 1.5rem; object-fit: cover; object-position: 66% center; box-shadow: var(--shadow-soft); }
+  .hero-visual :global(img) { width: 100%; height: clamp(30rem, 67vw, 46rem); border-radius: 12rem 12rem 1.5rem 1.5rem; object-fit: cover; object-position: 66% 32%; box-shadow: var(--shadow-soft); }
   .hero-visual > p { position: absolute; right: 1rem; bottom: 1rem; margin: 0; padding: 0.45rem 0.8rem; border-radius: 99rem; background: rgb(255 254 251 / 0.9); color: var(--color-ink); font-size: 0.67rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
   .hero-visual p span { color: var(--color-clay); }
   .sound-mark { position: absolute; bottom: 3rem; left: -1.4rem; display: flex; width: 5.2rem; height: 5.2rem; align-items: center; justify-content: center; gap: 0.3rem; border-radius: 50%; background: var(--color-ink); box-shadow: var(--shadow-soft); }
