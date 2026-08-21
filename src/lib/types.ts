@@ -73,6 +73,7 @@ export interface Event {
   _id?: string;
   title: string;
   date: string;
+  endDate?: string;
   location: string;
   image?: SanityImage;
   description: string;

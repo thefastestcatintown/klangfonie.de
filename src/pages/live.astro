@@ -8,6 +8,22 @@ const [service, events] = await Promise.all([getService('Live'), getEvents()]);
 const image = imageUrl(service.image, 1200, 900);
 const sanityProjectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID;
 const sanityDataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
+const eventDateFormatter = new Intl.DateTimeFormat('de-DE', { dateStyle: 'long', timeZone: 'Europe/Berlin' });
+const eventTimeFormatter = new Intl.DateTimeFormat('de-DE', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Berlin' });
+const eventDateTimeFormatter = new Intl.DateTimeFormat('de-DE', { dateStyle: 'long', timeStyle: 'short', timeZone: 'Europe/Berlin' });
+const eventDayFormatter = new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'Europe/Berlin' });
+
+function formatEventDate(startValue: string, endValue?: string): string {
+  const start = new Date(startValue);
+  if (!endValue) return `${eventDateFormatter.format(start)} · ${eventTimeFormatter.format(start)} Uhr`;
+
+  const end = new Date(endValue);
+  if (eventDayFormatter.format(start) === eventDayFormatter.format(end)) {
+    return `${eventDateFormatter.format(start)} · ${eventTimeFormatter.format(start)}–${eventTimeFormatter.format(end)} Uhr`;
+  }
+
+  return `${eventDateTimeFormatter.format(start)} – ${eventDateTimeFormatter.format(end)}`;
+}
 ---
 <BaseLayout title="Live-Musik & Band – Klangfonie" description={service.shortDescription} image={image}>
   <section class="page-hero">
@@ -54,7 +70,7 @@ const sanityDataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
           const eventImage = imageUrl(event.image, 640, 426);
           return (
             <article>
-              <time datetime={event.date}>{new Intl.DateTimeFormat('de-DE', { dateStyle: 'long', timeStyle: 'short' }).format(new Date(event.date))}</time>
+              <time datetime={event.date}>{formatEventDate(event.date, event.endDate)}</time>
               <div class:list={['event-details', { 'has-image': eventImage }]}>
                 {eventImage && <img class="event-image" src={eventImage} alt={event.image?.alt || event.title} width="640" height="426" loading="lazy" />}
                 <div>
@@ -80,6 +96,7 @@ const sanityDataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
     _id: string;
     title: string;
     date: string;
+    endDate?: string;
     location: string;
     imageUrl?: string;
     imageAlt?: string;
@@ -93,7 +110,7 @@ const sanityDataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
   const dataset = section?.dataset.dataset || '';
 
   if (section && list && /^[a-z0-9-]+$/.test(projectId) && /^[a-z0-9_-]+$/.test(dataset)) {
-    const query = '*[_type == "event" && date >= now()] | order(date asc){_id,title,date,location,description,externalUrl,"imageUrl":image.asset->url,"imageAlt":coalesce(image.alt,title)}';
+    const query = '*[_type == "event" && date >= now()] | order(date asc){_id,title,date,endDate,location,description,externalUrl,"imageUrl":image.asset->url,"imageAlt":coalesce(image.alt,title)}';
     const endpoint = `https://${projectId}.apicdn.sanity.io/v2026-03-01/data/query/${dataset}?query=${encodeURIComponent(query)}`;
 
     fetch(endpoint)
@@ -119,7 +136,7 @@ const sanityDataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
     const location = document.createElement('p');
 
     time.dateTime = event.date;
-    time.textContent = new Intl.DateTimeFormat('de-DE', { dateStyle: 'long', timeStyle: 'short' }).format(new Date(event.date));
+    time.textContent = formatEventDate(event.date, event.endDate);
     title.textContent = event.title;
     location.className = 'event-location';
     location.textContent = event.location;
@@ -182,6 +199,24 @@ const sanityDataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
     empty.className = 'events-empty';
     empty.textContent = 'Neue Konzerttermine werden hier veröffentlicht.';
     return empty;
+  }
+
+  function formatEventDate(startValue: string, endValue?: string): string {
+    const timeZone = 'Europe/Berlin';
+    const start = new Date(startValue);
+    const dateFormatter = new Intl.DateTimeFormat('de-DE', { dateStyle: 'long', timeZone });
+    const timeFormatter = new Intl.DateTimeFormat('de-DE', { hour: '2-digit', minute: '2-digit', timeZone });
+
+    if (!endValue) return `${dateFormatter.format(start)} · ${timeFormatter.format(start)} Uhr`;
+
+    const end = new Date(endValue);
+    const dayFormatter = new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone });
+    if (dayFormatter.format(start) === dayFormatter.format(end)) {
+      return `${dateFormatter.format(start)} · ${timeFormatter.format(start)}–${timeFormatter.format(end)} Uhr`;
+    }
+
+    const dateTimeFormatter = new Intl.DateTimeFormat('de-DE', { dateStyle: 'long', timeStyle: 'short', timeZone });
+    return `${dateTimeFormatter.format(start)} – ${dateTimeFormatter.format(end)}`;
   }
 </script>
 

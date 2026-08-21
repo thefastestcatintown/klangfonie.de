@@ -6,7 +6,18 @@ export const event = defineType({
   type: 'document',
   fields: [
     defineField({ name: 'title', title: 'Titel', type: 'string', validation: (rule) => rule.required() }),
-    defineField({ name: 'date', title: 'Datum und Uhrzeit', type: 'datetime', validation: (rule) => rule.required() }),
+    defineField({ name: 'date', title: 'Beginn (Datum und Uhrzeit)', type: 'datetime', validation: (rule) => rule.required() }),
+    defineField({
+      name: 'endDate',
+      title: 'Ende (Datum und Uhrzeit, optional)',
+      type: 'datetime',
+      validation: (rule) =>
+        rule.custom((endDate, context) => {
+          const startDate = context.document?.date;
+          if (!endDate || typeof endDate !== 'string' || typeof startDate !== 'string') return true;
+          return new Date(endDate) > new Date(startDate) || 'Das Ende muss nach dem Beginn liegen.';
+        }),
+    }),
     defineField({ name: 'location', title: 'Ort', type: 'string', validation: (rule) => rule.required() }),
     defineField({
       name: 'image',
