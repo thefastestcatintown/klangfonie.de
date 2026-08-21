@@ -1,4 +1,4 @@
-import type { AboutPage, HomePage, Service, SiteSettings } from './types';
+import type { AboutPage, HomePage, Service, SiteSettings, Video } from './types';
 
 export const fallbackSettings: SiteSettings = {
   siteTitle: 'Klangfonie',
@@ -42,4 +42,11 @@ export const fallbackAbout: AboutPage = {
   headline: 'Musik entsteht für mich im Zuhören.',
   intro: 'Ich bin Daniela Schneider, Handpan-Spielerin und Musikerin. An der Handpan fasziniert mich, wie Rhythmus und Melodie unmittelbar zusammenfinden – und aus wenigen Tönen ein ganzer Klangraum entsteht.',
   milestones: [],
+};
+
+export const fallbackVideo: Video = {
+  title: 'Klangfonie – Handpan',
+  youtubeUrl: 'https://www.youtube.com/watch?v=eSMxRz38M5s',
+  description: 'Daniela Schneider an der Handpan.',
+  featured: true,
 };

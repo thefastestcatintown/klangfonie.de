@@ -1,6 +1,6 @@
 import { sanityClient } from 'sanity:client';
 import { createImageUrlBuilder } from '@sanity/image-url';
-import { fallbackAbout, fallbackHome, fallbackServices, fallbackSettings } from './fallbacks';
+import { fallbackAbout, fallbackHome, fallbackServices, fallbackSettings, fallbackVideo } from './fallbacks';
 import type { AboutPage, Event, HomePage, SanityImage, Service, SiteSettings, Testimonial, Video } from './types';
 
 export const isSanityConfigured = Boolean(import.meta.env.PUBLIC_SANITY_PROJECT_ID);
@@ -51,7 +51,8 @@ export async function getTestimonials(): Promise<Testimonial[]> {
 }
 
 export async function getFeaturedVideo(): Promise<Video | null> {
-  return safeFetch(`*[_type == "video" && featured == true] | order(sortOrder asc)[0]{_id, title, youtubeUrl, description, featured}`, {}, null);
+  const video = await safeFetch(`*[_type == "video" && featured == true] | order(sortOrder asc)[0]{_id, title, youtubeUrl, description, featured}`, {}, fallbackVideo);
+  return video.youtubeUrl ? video : fallbackVideo;
 }
 
 export async function getEvents(): Promise<Event[]> {
@@ -65,7 +66,7 @@ export function youtubeEmbedUrl(url?: string): string | undefined {
     const id = parsed.hostname.includes('youtu.be')
       ? parsed.pathname.slice(1)
       : parsed.searchParams.get('v') || parsed.pathname.split('/').filter(Boolean).pop();
-    return id ? `https://www.youtube-nocookie.com/embed/${id}` : undefined;
+    return id ? `https://www.youtube-nocookie.com/embed/${id}?rel=0` : undefined;
   } catch {
     return undefined;
   }
