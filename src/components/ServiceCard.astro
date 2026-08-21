@@ -1,5 +1,6 @@
 ---
 import type { Service } from '../lib/types';
+import { withBase } from '../lib/urls';
 interface Props { service: Service; index?: number; }
 const { service, index = 0 } = Astro.props;
 const numerals = ['I', 'II', 'III', 'IV'];
@@ -8,7 +9,7 @@ const numerals = ['I', 'II', 'III', 'IV'];
   <div class="service-meta"><span>{numerals[index] || index + 1}</span><span>{service.category}</span></div>
   <h3>{service.headline}</h3>
   <p>{service.shortDescription}</p>
-  <a href={service.ctaUrl}>{service.ctaLabel} <span aria-hidden="true">→</span></a>
+  <a href={withBase(service.ctaUrl)}>{service.ctaLabel} <span aria-hidden="true">→</span></a>
 </article>
 <style>
   .service-card { display: flex; min-height: 27rem; flex-direction: column; padding: clamp(1.5rem, 3vw, 2.4rem); border: 1px solid rgb(36 55 70 / 0.13); border-radius: var(--radius-md); background: var(--color-white); transition: transform 220ms ease, box-shadow 220ms ease; }

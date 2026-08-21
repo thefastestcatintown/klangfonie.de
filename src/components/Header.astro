@@ -1,16 +1,18 @@
 ---
+import { withBase } from '../lib/urls';
+
 const pathname = Astro.url.pathname;
 const navigation = [
-  { href: '/unterricht', label: 'Unterricht' },
-  { href: '/yoga', label: 'Yoga' },
-  { href: '/live', label: 'Live' },
-  { href: '/ueber-daniel', label: 'Über Daniela' },
-  { href: '/kontakt', label: 'Kontakt' },
+  { href: withBase('/unterricht'), label: 'Unterricht' },
+  { href: withBase('/yoga'), label: 'Yoga' },
+  { href: withBase('/live'), label: 'Live' },
+  { href: withBase('/ueber-daniel'), label: 'Über Daniela' },
+  { href: withBase('/kontakt'), label: 'Kontakt' },
 ];
 ---
 <header class="site-header" data-header>
   <div class="header-inner container">
-    <a class="brand" href="/" aria-label="Klangfonie – Startseite">
+    <a class="brand" href={withBase('/')} aria-label="Klangfonie – Startseite">
       <span class="brand-mark" aria-hidden="true"><i></i></span>
       <span>Klangfonie</span>
     </a>
@@ -19,7 +21,7 @@ const navigation = [
     </button>
     <nav class="navigation" id="main-navigation" aria-label="Hauptnavigation" data-navigation>
       {navigation.map((item) => <a href={item.href} aria-current={pathname === item.href ? 'page' : undefined}>{item.label}</a>)}
-      <a class="header-cta" href="/kontakt?interesse=unterricht">Unterricht anfragen <span aria-hidden="true">↗</span></a>
+      <a class="header-cta" href={withBase('/kontakt?interesse=unterricht')}>Unterricht anfragen <span aria-hidden="true">↗</span></a>
     </nav>
   </div>
 </header>

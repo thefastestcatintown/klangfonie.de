@@ -1,4 +1,6 @@
 ---
+import { withBase } from '../lib/urls';
+
 interface Props {
   href: string;
   variant?: 'primary' | 'secondary' | 'light';
@@ -7,9 +9,10 @@ interface Props {
 }
 
 const { href, variant = 'primary', external = false, class: className = '' } = Astro.props;
+const resolvedHref = external ? href : withBase(href);
 ---
 
-<a class:list={['button', `button--${variant}`, className]} href={href} target={external ? '_blank' : undefined} rel={external ? 'noreferrer' : undefined}>
+<a class:list={['button', `button--${variant}`, className]} href={resolvedHref} target={external ? '_blank' : undefined} rel={external ? 'noreferrer' : undefined}>
   <slot />
   <span aria-hidden="true">↗</span>
 </a>

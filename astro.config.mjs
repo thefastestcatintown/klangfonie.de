@@ -10,6 +10,7 @@ const dataset = env.PUBLIC_SANITY_DATASET || 'production';
 
 export default defineConfig({
   site: env.PUBLIC_SITE_URL || 'https://klangfonie.de',
+  base: env.PUBLIC_BASE_PATH || '/',
   output: 'static',
   integrations: [
     sanity({

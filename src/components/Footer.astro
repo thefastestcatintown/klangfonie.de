@@ -1,5 +1,6 @@
 ---
 import type { SiteSettings } from '../lib/types';
+import { withBase } from '../lib/urls';
 interface Props { settings: SiteSettings; }
 const { settings } = Astro.props;
 const year = new Date().getFullYear();
@@ -7,7 +8,7 @@ const year = new Date().getFullYear();
 <footer class="footer">
   <div class="container footer-grid">
     <div>
-      <a class="footer-brand" href="/">Klangfonie</a>
+      <a class="footer-brand" href={withBase('/')}>Klangfonie</a>
       <p>Handpan · Musik · Begegnung</p>
     </div>
     <div>
@@ -17,7 +18,7 @@ const year = new Date().getFullYear();
     </div>
     <div>
       <p class="footer-label">Entdecken</p>
-      <a href="/unterricht">Unterricht</a><a href="/yoga">Yoga</a><a href="/live">Live</a>
+      <a href={withBase('/unterricht')}>Unterricht</a><a href={withBase('/yoga')}>Yoga</a><a href={withBase('/live')}>Live</a>
     </div>
     <div>
       <p class="footer-label">Folgen</p>
@@ -27,7 +28,7 @@ const year = new Date().getFullYear();
   </div>
   <div class="container footer-bottom">
     <span>© {year} Klangfonie</span>
-    <div><a href="/impressum">Impressum</a><a href="/datenschutz">Datenschutz</a></div>
+    <div><a href={withBase('/impressum')}>Impressum</a><a href={withBase('/datenschutz')}>Datenschutz</a></div>
   </div>
 </footer>
 <style>
