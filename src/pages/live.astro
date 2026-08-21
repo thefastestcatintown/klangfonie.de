@@ -6,20 +6,160 @@ import RichText from '../components/RichText.astro';
 import { getEvents, getService, imageUrl } from '../lib/sanity';
 const [service, events] = await Promise.all([getService('Live'), getEvents()]);
 const image = imageUrl(service.image, 1200, 900);
+const sanityProjectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID;
+const sanityDataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
 ---
 <BaseLayout title="Live-Musik & Band – Klangfonie" description={service.shortDescription} image={image}>
-  <section class="page-hero"><div class="container page-hero__inner"><p class="eyebrow">LIVE · BAND · EVENTS</p><h1>{service.headline}</h1><p class="lead">Musik, die einem Anlass eine eigene Farbe gibt – solo, gemeinsam mit anderen Musiker:innen oder als fein abgestimmte Begleitung.</p></div></section>
-  <section class="section"><div class="container grid-2">
-    <div>{image ? <div class="feature-image"><img src={image} alt={service.image?.alt || service.title} width="700" height="600" /></div> : <div class="image-placeholder">Live-Foto kann im Sanity Studio ergänzt werden.</div>}</div>
-    <div><RichText value={service.body} fallback={['Ob intimes Konzert, Retreat, Empfang oder besonderer Moment: Die musikalische Form entsteht passend zum Raum und zu den Menschen darin.', 'Je nach Anlass spielt Daniela solo oder entwickelt gemeinsam mit weiteren Musiker:innen ein passendes Set.']} /><ul class="live-list"><li>Konzerte & kleine Bühnen</li><li>Retreats & Kulturveranstaltungen</li><li>Feiern & besondere Momente</li><li>Solo oder im Ensemble</li></ul><Button href={service.ctaUrl}>Live-Musik anfragen</Button></div>
-  </div></section>
-  {events.length > 0 && <section class="section section--linen"><div class="container"><p class="eyebrow">TERMINE</p><h2>Demnächst live</h2><div class="events">{events.map((event) => <article><time datetime={event.date}>{new Intl.DateTimeFormat('de-DE', { dateStyle: 'long', timeStyle: 'short' }).format(new Date(event.date))}</time><div><h3>{event.title}</h3><p>{event.location}</p><p>{event.description}</p></div>{event.externalUrl && <a href={event.externalUrl} target="_blank" rel="noreferrer">Mehr erfahren ↗</a>}</article>)}</div></div></section>}
+  <section class="page-hero">
+    <div class="container page-hero__inner">
+      <p class="eyebrow">LIVE · BAND · EVENTS</p>
+      <h1>{service.headline}</h1>
+      <p class="lead">Musik, die einem Anlass eine eigene Farbe gibt – solo, gemeinsam mit anderen Musiker:innen oder als fein abgestimmte Begleitung.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid-2">
+      <div>
+        {image ? (
+          <div class="feature-image"><img src={image} alt={service.image?.alt || service.title} width="700" height="600" /></div>
+        ) : (
+          <div class="image-placeholder">Live-Foto kann im Sanity Studio ergänzt werden.</div>
+        )}
+      </div>
+      <div>
+        <RichText value={service.body} fallback={['Ob intimes Konzert, Retreat, Empfang oder besonderer Moment: Die musikalische Form entsteht passend zum Raum und zu den Menschen darin.', 'Je nach Anlass spielt Daniela solo oder entwickelt gemeinsam mit weiteren Musiker:innen ein passendes Set.']} />
+        <ul class="live-list">
+          <li>Konzerte & kleine Bühnen</li>
+          <li>Retreats & Kulturveranstaltungen</li>
+          <li>Feiern & besondere Momente</li>
+          <li>Solo oder im Ensemble</li>
+        </ul>
+        <Button href={service.ctaUrl}>Live-Musik anfragen</Button>
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="section section--linen"
+    data-events-section
+    data-project-id={sanityProjectId}
+    data-dataset={sanityDataset}
+  >
+    <div class="container">
+      <p class="eyebrow">LIVE ERLEBEN</p>
+      <h2>Konzerte & Termine</h2>
+      <div class="events" data-events-list aria-live="polite">
+        {events.length > 0 ? events.map((event) => (
+          <article>
+            <time datetime={event.date}>{new Intl.DateTimeFormat('de-DE', { dateStyle: 'long', timeStyle: 'short' }).format(new Date(event.date))}</time>
+            <div>
+              <h3>{event.title}</h3>
+              <p class="event-location">{event.location}</p>
+              <p>{event.description}</p>
+            </div>
+            {event.externalUrl && <a href={event.externalUrl} target="_blank" rel="noreferrer">Mehr erfahren ↗</a>}
+          </article>
+        )) : (
+          <p class="events-empty">Neue Konzerttermine werden hier veröffentlicht.</p>
+        )}
+      </div>
+    </div>
+  </section>
   <ContactCTA />
 </BaseLayout>
+
+<script>
+  type PublicEvent = {
+    _id: string;
+    title: string;
+    date: string;
+    location: string;
+    description?: string;
+    externalUrl?: string;
+  };
+
+  const section = document.querySelector<HTMLElement>('[data-events-section]');
+  const list = section?.querySelector<HTMLElement>('[data-events-list]');
+  const projectId = section?.dataset.projectId || '';
+  const dataset = section?.dataset.dataset || '';
+
+  if (section && list && /^[a-z0-9-]+$/.test(projectId) && /^[a-z0-9_-]+$/.test(dataset)) {
+    const query = '*[_type == "event" && date >= now()] | order(date asc){_id,title,date,location,description,externalUrl}';
+    const endpoint = `https://${projectId}.apicdn.sanity.io/v2026-03-01/data/query/${dataset}?query=${encodeURIComponent(query)}`;
+
+    fetch(endpoint)
+      .then((response) => {
+        if (!response.ok) throw new Error(`Sanity request failed: ${response.status}`);
+        return response.json() as Promise<{ result?: PublicEvent[] }>;
+      })
+      .then(({ result }) => {
+        if (!Array.isArray(result)) return;
+        list.replaceChildren(...(result.length > 0 ? result.map(createEvent) : [createEmptyState()]));
+      })
+      .catch(() => {
+        // Die beim Build erzeugte Terminliste bleibt als verlässlicher Fallback stehen.
+      });
+  }
+
+  function createEvent(event: PublicEvent): HTMLElement {
+    const article = document.createElement('article');
+    const time = document.createElement('time');
+    const content = document.createElement('div');
+    const title = document.createElement('h3');
+    const location = document.createElement('p');
+
+    time.dateTime = event.date;
+    time.textContent = new Intl.DateTimeFormat('de-DE', { dateStyle: 'long', timeStyle: 'short' }).format(new Date(event.date));
+    title.textContent = event.title;
+    location.className = 'event-location';
+    location.textContent = event.location;
+    content.append(title, location);
+
+    if (event.description) {
+      const description = document.createElement('p');
+      description.textContent = event.description;
+      content.append(description);
+    }
+
+    article.append(time, content);
+
+    if (event.externalUrl) {
+      try {
+        const externalUrl = new URL(event.externalUrl);
+        if (externalUrl.protocol === 'http:' || externalUrl.protocol === 'https:') {
+          const link = document.createElement('a');
+          link.href = externalUrl.href;
+          link.target = '_blank';
+          link.rel = 'noreferrer';
+          link.textContent = 'Mehr erfahren ↗';
+          article.append(link);
+        }
+      } catch {
+        // Ungültige optionale Links werden nicht ausgegeben.
+      }
+    }
+
+    return article;
+  }
+
+  function createEmptyState(): HTMLElement {
+    const empty = document.createElement('p');
+    empty.className = 'events-empty';
+    empty.textContent = 'Neue Konzerttermine werden hier veröffentlicht.';
+    return empty;
+  }
+</script>
+
 <style>
   .live-list { margin: 2rem 0; padding-left: 1.2rem; color: var(--color-ink); }
   .events { display: grid; margin-top: 3rem; border-top: 1px solid var(--color-sand); }
-  .events article { display: grid; gap: 1rem; padding: 2rem 0; border-bottom: 1px solid var(--color-sand); }
-  .events time { color: var(--color-clay); font-size: 0.82rem; font-weight: 700; }.events h3 { font-size: 1.8rem; }.events p { color: var(--color-steel); }.events a { align-self: start; color: var(--color-ink); font-weight: 700; }
-  @media (min-width: 48rem) { .events article { grid-template-columns: 12rem 1fr auto; } }
+  .events :global(article) { display: grid; gap: 1rem; padding: 2rem 0; border-bottom: 1px solid var(--color-sand); }
+  .events :global(time) { color: var(--color-clay); font-size: 0.82rem; font-weight: 700; }
+  .events :global(h3) { font-size: 1.8rem; }
+  .events :global(p) { color: var(--color-steel); }
+  .events :global(.event-location) { margin-top: 0.4rem; color: var(--color-ink); font-weight: 700; }
+  .events :global(a) { align-self: start; color: var(--color-ink); font-weight: 700; }
+  .events :global(.events-empty) { padding: 2rem 0; border-bottom: 1px solid var(--color-sand); font-size: 1.05rem; }
+  @media (min-width: 48rem) { .events :global(article) { grid-template-columns: 12rem 1fr auto; } }
 </style>

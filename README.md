@@ -48,7 +48,7 @@ npm run build
 npm run preview
 ```
 
-Astro erzeugt die Website statisch in `dist/`. Veröffentlichte CMS-Änderungen werden beim nächsten Build übernommen. Beim späteren Hosting empfiehlt sich dafür ein Sanity-Webhook auf den Build-Hook des Hosting-Anbieters.
+Astro erzeugt die Website statisch in `dist/`. Veröffentlichte CMS-Änderungen werden beim nächsten Build übernommen. Konzerttermine sind die Ausnahme: Die Live-Seite lädt sie zusätzlich direkt aus dem öffentlichen Sanity-Dataset, damit neue oder geänderte Termine ohne Git-Push sichtbar werden.
 
 ## CMS
 
