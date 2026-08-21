@@ -45,7 +45,7 @@ export const fallbackAbout: AboutPage = {
 };
 
 export const fallbackVideo: Video = {
-  title: 'Klangfonie – Handpan',
+  title: 'Die Farben des Lichtes – The Colors of Light',
   youtubeUrl: 'https://www.youtube.com/watch?v=eSMxRz38M5s',
   description: 'Daniela Schneider an der Handpan.',
   featured: true,
