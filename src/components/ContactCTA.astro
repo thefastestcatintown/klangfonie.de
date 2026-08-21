@@ -8,10 +8,13 @@ import Button from './Button.astro';
   </div>
 </section>
 <style>
-  .contact-cta { position: relative; overflow: hidden; background: var(--color-clay); color: white; }
-  .contact-cta::after { content: ''; position: absolute; top: 50%; right: -9rem; width: 28rem; height: 28rem; transform: translateY(-50%); border: 1px solid rgb(255 255 255 / 0.25); border-radius: 50%; }
-  .contact-inner { position: relative; z-index: 1; display: grid; gap: 2.5rem; align-items: end; }
-  .eyebrow, h2 { color: white; }
+  .contact-cta { position: relative; overflow: hidden; background: var(--color-ink); color: white; }
+  .contact-cta::before, .contact-cta::after { content: ''; position: absolute; border: 1px solid rgb(255 253 247 / 0.15); border-radius: 50%; }
+  .contact-cta::before { top: -12rem; left: -7rem; width: 25rem; height: 25rem; }
+  .contact-cta::after { top: 50%; right: -9rem; width: 28rem; height: 28rem; transform: translateY(-50%); }
+  .contact-inner { position: relative; z-index: 1; display: grid; gap: 2.5rem; padding: clamp(2rem, 4vw, 3.5rem); border: 1px solid rgb(255 253 247 / 0.12); border-radius: 2rem; align-items: end; background: rgb(255 255 255 / 0.025); }
+  .eyebrow { color: #d89a72; }
+  h2 { color: white; }
   .contact-inner > div:last-child { max-width: 37rem; }
   .contact-inner p:not(.eyebrow) { margin-bottom: 1.75rem; font-size: 1.08rem; }
   @media (min-width: 48rem) { .contact-inner { grid-template-columns: 1fr 1fr; } }

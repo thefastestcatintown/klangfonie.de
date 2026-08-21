@@ -23,14 +23,14 @@ const embedUrl = youtubeEmbedUrl(video?.youtubeUrl);
   </div>
 </section>
 <style>
-  .video-section { background: var(--color-ink); color: var(--color-white); }
+  .video-section { background: var(--color-charcoal); color: var(--color-white); }
   .video-intro { max-width: 47rem; }
   h2, .lead { color: var(--color-white); }
   .lead { margin-top: 1.3rem; opacity: 0.75; }
-  .video-frame { position: relative; overflow: hidden; aspect-ratio: 16 / 9; margin-top: 3.5rem; border-radius: var(--radius-lg); background: #18252e; box-shadow: 0 2rem 5rem rgb(0 0 0 / 0.2); }
+  .video-frame { position: relative; overflow: hidden; aspect-ratio: 16 / 8.5; margin-top: 3.5rem; border: 1px solid rgb(255 253 247 / 0.1); border-radius: 2.5rem; background: #18221e; box-shadow: 0 2rem 5rem rgb(0 0 0 / 0.2); }
   iframe { width: 100%; height: 100%; border: 0; }
-  .video-placeholder { display: flex; height: 100%; align-items: center; justify-content: center; gap: 1.25rem; padding: 1.5rem; background: radial-gradient(circle at 60% 40%, rgb(146 160 146 / 0.32), transparent 35%), linear-gradient(135deg, #1d2f3c, #263f4c); text-align: left; }
+  .video-placeholder { display: flex; height: 100%; align-items: center; justify-content: center; gap: 1.25rem; padding: 1.5rem; background: radial-gradient(circle at 62% 38%, rgb(142 155 127 / 0.3), transparent 35%), linear-gradient(135deg, #1f2b27, #314039); text-align: left; }
   .video-placeholder::before { content: ''; position: absolute; width: 21rem; height: 21rem; border: 1px solid rgb(222 209 191 / 0.15); border-radius: 50%; }
-  .play { display: grid; z-index: 1; width: 4.5rem; height: 4.5rem; flex: 0 0 auto; place-items: center; border-radius: 50%; background: var(--color-clay); color: white; }
+  .play { display: grid; z-index: 1; width: 4.5rem; height: 4.5rem; flex: 0 0 auto; place-items: center; border-radius: 50%; background: var(--color-clay); color: white; box-shadow: 0 1rem 2rem rgb(0 0 0 / 0.16); }
   .video-placeholder div { z-index: 1; display: flex; flex-direction: column; }.video-placeholder strong { font-family: var(--font-display); font-size: clamp(1.25rem, 3vw, 2rem); font-weight: 400; }.video-placeholder small { opacity: 0.7; }
 </style>

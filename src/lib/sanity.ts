@@ -33,7 +33,8 @@ export async function getHome(): Promise<HomePage> {
 }
 
 export async function getServices(): Promise<Service[]> {
-  return safeFetch(`*[_type == "service"] | order(sortOrder asc){_id, title, "slug": slug.current, category, shortDescription, headline, body, image, priceInfo, duration, ctaLabel, ctaUrl, sortOrder}`, {}, fallbackServices);
+  const services = await safeFetch(`*[_type == "service"] | order(sortOrder asc){_id, title, "slug": slug.current, category, shortDescription, headline, body, image, priceInfo, duration, ctaLabel, ctaUrl, sortOrder}`, {}, fallbackServices);
+  return services.length > 0 ? services : fallbackServices;
 }
 
 export async function getService(category: Service['category']): Promise<Service> {
