@@ -47,7 +47,7 @@ export async function getAbout(): Promise<AboutPage> {
 }
 
 export async function getTestimonials(): Promise<Testimonial[]> {
-  return safeFetch(`*[_type == "testimonial"] | order(sortOrder asc){_id, quote, name, context}`, {}, []);
+  return safeFetch(`*[_type == "testimonial"] | order(sortOrder asc){_id, quote, name, sourceType, context}`, {}, []);
 }
 
 export async function getFeaturedVideo(): Promise<Video | null> {

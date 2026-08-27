@@ -68,8 +68,17 @@ const [home, services, testimonials, video] = await Promise.all([
   </section>
 
   {testimonials.length > 0 && (
-    <section class="section section--linen">
-      <div class="container"><SectionHeading eyebrow="ERFAHRUNGEN" title="Stimmen" /><div class="testimonials-grid">{testimonials.slice(0, 3).map((item) => <TestimonialCard testimonial={item} />)}</div></div>
+    <section class="section reviews-section" aria-labelledby="reviews-heading">
+      <div class="container reviews-layout">
+        <div class="reviews-intro">
+          <p class="eyebrow">ERFAHRUNGEN</p>
+          <h2 id="reviews-heading">Was andere über Klangfonie sagen</h2>
+          <p class="lead">Persönliche Erfahrungen aus Unterricht, Yoga und gemeinsamen Veranstaltungen.</p>
+        </div>
+        <div class:list={['testimonials-grid', { 'testimonials-grid--single': testimonials.length === 1 }]}>
+          {testimonials.slice(0, 4).map((item) => <TestimonialCard testimonial={item} />)}
+        </div>
+      </div>
     </section>
   )}
   <ContactCTA />
@@ -89,7 +98,15 @@ const [home, services, testimonials, video] = await Promise.all([
   .yoga-teaser { background: radial-gradient(circle at 15% 30%, rgb(255 253 247 / 0.75), transparent 18rem), linear-gradient(120deg, var(--color-sage-soft) 0%, var(--color-linen) 68%); }
   .yoga-tags { display: flex; flex-wrap: wrap; gap: 0.55rem; margin: 2rem 0; }
   .yoga-tags span { padding: 0.45rem 0.85rem; border: 1px solid rgb(36 55 70 / 0.2); border-radius: 99rem; color: var(--color-ink); font-size: 0.82rem; }
-  .testimonials-grid { display: grid; gap: 1rem; margin-top: 3rem; }
-  @media (min-width: 43rem) { .services-grid, .philosophy-grid, .testimonials-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .reviews-section { background: radial-gradient(circle at 8% 85%, rgb(165 93 58 / 0.1), transparent 22rem), var(--color-linen); }
+  .reviews-layout { display: grid; gap: clamp(2.5rem, 7vw, 6rem); align-items: start; }
+  .reviews-intro { max-width: 34rem; }
+  .reviews-intro .lead { max-width: 29rem; margin-top: 1.5rem; }
+  .testimonials-grid { display: grid; gap: 1rem; }
+  @media (min-width: 43rem) { .services-grid, .philosophy-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   @media (min-width: 50rem) { .lesson-grid, .yoga-inner { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); } }
+  @media (min-width: 60rem) {
+    .reviews-layout { grid-template-columns: minmax(15rem, 0.7fr) minmax(0, 1.3fr); }
+    .testimonials-grid:not(.testimonials-grid--single) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
 </style>

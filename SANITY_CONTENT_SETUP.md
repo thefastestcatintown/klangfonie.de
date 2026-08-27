@@ -65,7 +65,9 @@ Ein Video mit Titel und vollständiger YouTube-URL anlegen, **Auf der Startseite
 
 ## 6. Stimmen
 
-Nur echte, freigegebene Zitate eintragen. Solange keine Dokumente vom Typ **Stimmen** existieren, blendet die Website den gesamten Bereich automatisch aus. Es gibt keine erfundenen Demo-Zitate.
+Unter **Bewertungen & Stimmen** lassen sich freigegebene Rückmeldungen von Schüler:innen, Veranstalter:innen und Yogalehrer:innen eintragen. Neben dem Zitat werden die Art der Stimme, ein Name oder eine anonyme Bezeichnung und optional das betreffende Angebot gepflegt. `Reihenfolge` steuert die Darstellung auf der Startseite; maximal vier Einträge werden gezeigt.
+
+Solange keine Dokumente dieses Typs existieren, blendet die Website den gesamten Bereich automatisch aus. Es gibt keine erfundenen Demo-Zitate.
 
 ## 7. Termine
 

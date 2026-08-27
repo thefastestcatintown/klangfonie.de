@@ -50,6 +50,7 @@ export interface Testimonial {
   _id?: string;
   quote: string;
   name: string;
+  sourceType?: 'Schüler:in' | 'Veranstalter:in' | 'Yogalehrer:in' | 'Sonstige Person';
   context?: string;
 }
 
