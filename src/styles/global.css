@@ -1,3 +1,19 @@
+@font-face {
+  font-family: 'DejaVu Sans';
+  src: url('../assets/fonts/dejavu-sans.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DejaVu Sans';
+  src: url('../assets/fonts/dejavu-sans-bold.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
 :root {
   --color-ink: #26352f;
   --color-steel: #5d6b63;
@@ -9,8 +25,9 @@
   --color-sand: #d9c7ad;
   --color-charcoal: #202b27;
   --color-white: #fffdf7;
-  --font-display: 'Iowan Old Style', Baskerville, 'Times New Roman', serif;
-  --font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'DejaVu Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'DejaVu Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-accent: 'Great Vibes', cursive;
   --container: 80rem;
   --container-small: 52rem;
   --radius-sm: 0.65rem;
@@ -21,7 +38,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
+html { scroll-behavior: smooth; scroll-padding-top: 8rem; }
 body {
   margin: 0;
   background: var(--color-white);
@@ -54,6 +71,13 @@ a { color: inherit; text-decoration-thickness: 0.08em; text-underline-offset: 0.
   text-transform: uppercase;
 }
 h1, h2, h3 { margin: 0; color: var(--color-ink); font-family: var(--font-display); font-weight: 400; letter-spacing: -0.035em; line-height: 1.02; }
+h1::first-letter, h2::first-letter {
+  color: var(--color-clay);
+  font-family: var(--font-accent);
+  font-size: 1.24em;
+  letter-spacing: 0;
+  line-height: 0.75;
+}
 h1 { font-size: clamp(3.25rem, 8vw, 7.1rem); }
 h2 { font-size: clamp(2.55rem, 5.5vw, 4.8rem); }
 h3 { font-size: clamp(1.65rem, 3vw, 2.25rem); line-height: 1.14; }
@@ -73,8 +97,8 @@ p { margin: 0; }
 .page-hero .lead { max-width: 43rem; margin-top: 1.75rem; }
 .grid-2 { display: grid; gap: clamp(2.5rem, 7vw, 6rem); align-items: center; }
 .rich-layout { display: grid; gap: clamp(2.5rem, 7vw, 6rem); align-items: start; }
-.feature-image { overflow: hidden; min-height: 25rem; border-radius: 7rem var(--radius-lg) var(--radius-lg); background: var(--color-sand); box-shadow: var(--shadow-soft); }
-.feature-image img { width: 100%; height: 100%; min-height: 25rem; object-fit: cover; }
+.feature-image { overflow: hidden; border-radius: 7rem var(--radius-lg) var(--radius-lg); background: var(--color-sand); box-shadow: var(--shadow-soft); }
+.feature-image img { width: 100%; height: auto; }
 .image-placeholder { display: grid; min-height: 25rem; place-items: center; padding: 2rem; border-radius: 7rem var(--radius-lg) var(--radius-lg); background: radial-gradient(circle at 68% 30%, rgb(255 253 247 / 0.55), transparent 9rem), linear-gradient(145deg, var(--color-sand), var(--color-sage-soft)); color: var(--color-ink); text-align: center; }
 .meta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
 .meta-chip { padding: 0.45rem 0.85rem; border: 1px solid rgb(83 107 115 / 0.28); border-radius: 99rem; color: var(--color-steel); font-size: 0.9rem; }
@@ -82,7 +106,8 @@ p { margin: 0; }
 .simple-list li { position: relative; padding-left: 1.35rem; }
 .simple-list li::before { content: ''; position: absolute; top: 0.72em; left: 0; width: 0.4rem; height: 0.4rem; border-radius: 50%; background: var(--color-clay); }
 .highlight { margin-top: 2.25rem; padding: 1.4rem 1.5rem; border-left: 3px solid var(--color-clay); background: var(--color-linen); color: var(--color-ink); font-family: var(--font-display); font-size: 1.35rem; }
-.legal-placeholder { margin-top: 2rem; padding: 2rem; border: 1px dashed var(--color-clay); border-radius: var(--radius-md); background: #fff9f4; color: var(--color-ink); font-weight: 700; }
+.legal-note { display: grid; gap: 0.45rem; margin-top: 2rem; padding: 1.5rem 1.75rem; border-left: 3px solid var(--color-clay); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; background: var(--color-linen); }
+.legal-note strong { color: var(--color-ink); }
 
 @media (min-width: 48rem) {
   .container, .container--small { width: min(calc(100% - 4rem), var(--container)); }

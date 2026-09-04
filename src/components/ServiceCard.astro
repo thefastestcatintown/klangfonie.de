@@ -1,24 +1,54 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import learningImage from '../assets/images/sample-learning-guidance.png';
+import yogaImage from '../assets/images/sample-yoga-handpan.png';
+import liveImage from '../assets/images/sample-live-handpan.png';
 import type { Service } from '../lib/types';
+import { imageUrl } from '../lib/sanity';
 import { withBase } from '../lib/urls';
 interface Props { service: Service; index?: number; }
 const { service, index = 0 } = Astro.props;
 const numerals = ['I', 'II', 'III', 'IV'];
+const categoryLabel = service.category === 'Unterricht' ? 'Lernbegleitung' : service.category;
+const ctaLabel = service.category === 'Unterricht' ? 'Lernbegleitung entdecken' : service.ctaLabel;
+const cmsImage = imageUrl(service.image, 960);
+const fallbackImages: Partial<Record<Service['category'], ImageMetadata>> = {
+  Unterricht: learningImage,
+  Yoga: yogaImage,
+  Live: liveImage,
+};
+const fallbackImage = fallbackImages[service.category];
+const imageAlt = service.image?.alt || `${categoryLabel} mit Handpan`;
 ---
 <article class="service-card">
-  <div class="service-meta"><span>{numerals[index] || index + 1}</span><span>{service.category}</span></div>
-  <h3>{service.headline}</h3>
-  <p>{service.shortDescription}</p>
-  <a href={withBase(service.ctaUrl)}>{service.ctaLabel} <span aria-hidden="true">→</span></a>
+  {(cmsImage || fallbackImage) && (
+    <div class="service-image">
+      {cmsImage
+        ? <img src={cmsImage} alt={imageAlt} width="960" loading="lazy" />
+        : fallbackImage && <Image src={fallbackImage} alt={imageAlt} width={960} height={640} loading="lazy" />}
+    </div>
+  )}
+  <div class="service-content">
+    <div class="service-meta"><span>{numerals[index] || index + 1}</span><span>{categoryLabel}</span></div>
+    <h3>{service.headline}</h3>
+    <p>{service.shortDescription}</p>
+    <a href={withBase(service.ctaUrl)} aria-label={`${ctaLabel}: ${service.headline}`}>{ctaLabel} <span aria-hidden="true">→</span></a>
+  </div>
 </article>
 <style>
-  .service-card { display: flex; min-height: 23rem; flex-direction: column; padding: clamp(1.5rem, 3vw, 2.4rem); border: 1px solid rgb(38 53 47 / 0.1); border-radius: 2rem; background: var(--color-white); transition: transform 220ms ease, box-shadow 220ms ease; }
+  .service-card { position: relative; display: flex; overflow: hidden; min-height: 33rem; flex-direction: column; border: 1px solid rgb(38 53 47 / 0.1); border-radius: 2rem; background: var(--color-white); transition: transform 220ms ease, box-shadow 220ms ease; }
   .service-card:nth-child(2) { background: var(--color-linen); }
   .service-card:nth-child(3) { background: var(--color-sage-soft); }
   .service-card:hover { transform: translateY(-0.35rem); box-shadow: var(--shadow-soft); }
-  .service-meta { display: flex; margin-bottom: auto; align-items: center; justify-content: space-between; color: var(--color-clay); font-size: 0.72rem; font-weight: 750; letter-spacing: 0.12em; text-transform: uppercase; }
-  h3 { max-width: 12ch; margin-top: 2.5rem; }
+  .service-image { position: relative; display: grid; overflow: hidden; aspect-ratio: 3 / 2; place-items: center; background: var(--color-sand); }
+  .service-image::after { position: absolute; inset: 0; background: linear-gradient(to top, rgb(32 43 39 / 0.12), transparent 45%); content: ''; pointer-events: none; }
+  .service-image :global(img) { width: 100%; height: 100%; object-fit: contain; }
+  .service-content { display: flex; flex: 1; flex-direction: column; padding: clamp(1.5rem, 3vw, 2.4rem); }
+  .service-meta { display: flex; align-items: center; justify-content: space-between; color: var(--color-clay); font-size: 0.72rem; font-weight: 750; letter-spacing: 0.12em; text-transform: uppercase; }
+  h3 { max-width: 12ch; margin-top: 1.75rem; }
   p { margin-top: 1.25rem; color: var(--color-steel); }
-  a { display: inline-flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid rgb(38 53 47 / 0.13); color: var(--color-ink); font-size: 0.84rem; font-weight: 740; text-decoration: none; }
+  a { display: inline-flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: auto; padding-top: 1.5rem; border-top: 1px solid rgb(38 53 47 / 0.13); color: var(--color-ink); font-size: 0.84rem; font-weight: 740; text-decoration: none; }
+  a::after { position: absolute; inset: 0; content: ''; }
   a span { transition: transform 180ms ease; } a:hover span { transform: translateX(0.25rem); }
 </style>

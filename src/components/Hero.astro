@@ -8,15 +8,15 @@ import { imageUrl } from '../lib/sanity';
 interface Props { content: HomePage; }
 const { content } = Astro.props;
 const cmsImage = imageUrl(content.heroImage, 1600, 1300);
+const primaryCtaLabel = content.primaryCtaUrl.includes('/unterricht') ? 'Lernbegleitung entdecken' : content.primaryCtaLabel;
 ---
 <section class="hero">
   <div class="container hero-grid">
     <div class="hero-copy reveal">
-      <p class="eyebrow">{content.heroEyebrow}</p>
       <h1>{content.heroHeadline}</h1>
       <p class="lead">{content.heroText}</p>
       <div class="hero-actions">
-        <Button href={content.primaryCtaUrl}>{content.primaryCtaLabel}</Button>
+        <Button href={content.primaryCtaUrl}>{primaryCtaLabel}</Button>
         <Button href={content.secondaryCtaUrl} variant="secondary">{content.secondaryCtaLabel}</Button>
       </div>
     </div>
@@ -27,7 +27,7 @@ const cmsImage = imageUrl(content.heroImage, 1600, 1300);
         <Image src={danielaPlaying} alt="Daniela Schneider spielt im Grünen auf ihrer Handpan" width={1400} height={788} loading="eager" />
       )}
       <div class="sound-mark" aria-hidden="true"><i></i><i></i><i></i></div>
-      <figcaption><strong>Daniela Schneider</strong><span>Handpan · Live · Unterricht</span></figcaption>
+      <figcaption><strong>Daniela Schneider</strong><span>Handpan · Live · Lernbegleitung</span></figcaption>
     </figure>
   </div>
 </section>

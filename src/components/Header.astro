@@ -1,9 +1,11 @@
 ---
+import { Image } from 'astro:assets';
+import handpanLogo from '../assets/images/klangfonia-handpan-logo.png';
 import { withBase } from '../lib/urls';
 
 const pathname = Astro.url.pathname;
 const navigation = [
-  { href: withBase('/unterricht'), label: 'Unterricht' },
+  { href: withBase('/unterricht'), label: 'Lernbegleitung' },
   { href: withBase('/yoga'), label: 'Yoga' },
   { href: withBase('/live'), label: 'Live' },
   { href: withBase('/ueber-daniela'), label: 'Über Daniela' },
@@ -12,16 +14,16 @@ const navigation = [
 ---
 <header class="site-header" data-header>
   <div class="header-inner container">
-    <a class="brand" href="https://thefastestcatintown.github.io/klangfonie.de" aria-label="Klangfonie – Startseite">
-      <span class="brand-mark" aria-hidden="true"><i></i></span>
-      <span>Klangfonie</span>
+    <a class="brand" href={withBase('/')} aria-label="Klangfonia – Startseite">
+      <Image class="brand-logo" src={handpanLogo} alt="" width={72} height={72} aria-hidden="true" />
+      <span class="brand-name" aria-hidden="true"><span class="brand-initial">K</span><span>langfonia</span></span>
     </a>
     <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-navigation" data-menu-button>
       <span class="sr-only">Menü öffnen</span><i></i><i></i>
     </button>
     <nav class="navigation" id="main-navigation" aria-label="Hauptnavigation" data-navigation>
       {navigation.map((item) => <a href={item.href} aria-current={pathname === item.href ? 'page' : undefined}>{item.label}</a>)}
-      <a class="header-cta" href={withBase('/kontakt?interesse=unterricht')}>Unterricht anfragen <span aria-hidden="true">↗</span></a>
+      <a class="header-cta" href={withBase('/kontakt?interesse=unterricht')}>Lernbegleitung anfragen <span aria-hidden="true">↗</span></a>
     </nav>
   </div>
 </header>
@@ -38,12 +40,12 @@ const navigation = [
   window.addEventListener('resize', () => { if (window.innerWidth >= 960) closeMenu(); });
 </script>
 <style>
-  .site-header { position: sticky; top: 0; z-index: 50; border-bottom: 1px solid rgb(38 53 47 / 0.08); background: rgb(255 253 247 / 0.9); backdrop-filter: blur(16px); }
-  .header-inner { display: flex; min-height: 4.8rem; align-items: center; justify-content: space-between; }
-  .brand { display: inline-flex; align-items: center; gap: 0.72rem; color: var(--color-ink); font-family: var(--font-display); font-size: 1.6rem; letter-spacing: -0.025em; text-decoration: none; }
-  .brand-mark { position: relative; display: grid; width: 2.15rem; height: 2.15rem; place-items: center; border: 1px solid var(--color-clay); border-radius: 50%; }
-  .brand-mark::after { content: ''; position: absolute; inset: 0.34rem; border: 1px solid rgb(165 93 58 / 0.45); border-radius: 50%; }
-  .brand-mark i { width: 0.36rem; height: 0.36rem; border-radius: 50%; background: var(--color-clay); }
+  .site-header { --header-height: 6.4rem; position: sticky; top: 0; z-index: 50; border-bottom: 1px solid rgb(38 53 47 / 0.08); background: rgb(255 253 247 / 0.9); backdrop-filter: blur(16px); }
+  .header-inner { display: flex; min-height: var(--header-height); align-items: center; justify-content: space-between; padding-block: 1.1rem 0.75rem; }
+  .brand { display: inline-flex; align-items: center; gap: 0.6rem; color: var(--color-ink); font-family: var(--font-display); font-size: 1.7rem; letter-spacing: -0.025em; text-decoration: none; }
+  .brand-logo { width: 5.25rem; height: 5.25rem; object-fit: contain; }
+  .brand-name { display: inline-flex; align-items: baseline; }
+  .brand-initial { margin-right: 0.03em; color: var(--color-clay); font-family: var(--font-accent); font-size: 2.15em; line-height: 0; }
   .navigation { display: flex; align-items: center; gap: clamp(1rem, 2.2vw, 2rem); }
   .navigation > a { position: relative; color: var(--color-ink); font-size: 0.8rem; font-weight: 700; text-decoration: none; }
   .navigation > a:not(.header-cta)::after { content: ''; position: absolute; right: 0; bottom: -0.5rem; left: 0; height: 1px; transform: scaleX(0); background: var(--color-clay); transition: transform 180ms ease; }
@@ -53,12 +55,22 @@ const navigation = [
   .menu-button i { display: block; width: 1.5rem; height: 1px; margin: 0.4rem auto; background: var(--color-ink); transition: transform 180ms ease; }
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
   @media (max-width: 59.99rem) {
+    .site-header { --header-height: 5.6rem; }
+    .header-inner { padding-block: 0.8rem 0.55rem; }
+    .brand { font-size: 1.5rem; }
+    .brand-logo { width: 4.55rem; height: 4.55rem; }
     .menu-button { display: block; }
     .menu-button[aria-expanded='true'] i:first-of-type { transform: translateY(0.2rem) rotate(45deg); }
     .menu-button[aria-expanded='true'] i:last-of-type { transform: translateY(-0.2rem) rotate(-45deg); }
-    .navigation { position: fixed; inset: 4.8rem 0 auto; display: none; min-height: calc(100vh - 4.8rem); align-items: stretch; flex-direction: column; gap: 0; padding: 2rem 1rem; background: var(--color-linen); }
+    .navigation { position: fixed; inset: var(--header-height) 0 auto; display: none; min-height: calc(100vh - var(--header-height)); align-items: stretch; flex-direction: column; gap: 0; padding: 2rem 1rem; background: var(--color-linen); }
     .menu-button[aria-expanded='true'] + .navigation { display: flex; }
     .navigation > a { padding: 1rem; border-bottom: 1px solid rgb(36 55 70 / 0.14); font-family: var(--font-display); font-size: 1.65rem; font-weight: 400; }
     .navigation .header-cta { margin-top: 1.25rem; border: 0; border-radius: 99rem; font-family: var(--font-body); font-size: 0.9rem; font-weight: 700; text-align: center; }
+  }
+  @media (max-width: 24rem) {
+    .site-header { --header-height: 5.1rem; }
+    .header-inner { padding-block: 0.65rem 0.45rem; }
+    .brand { gap: 0.3rem; font-size: 1.3rem; }
+    .brand-logo { width: 4rem; height: 4rem; }
   }
 </style>

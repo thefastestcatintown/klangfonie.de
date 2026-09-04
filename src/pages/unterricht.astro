@@ -1,16 +1,319 @@
 ---
-import ServicePage from '../components/ServicePage.astro';
-import { getService } from '../lib/sanity';
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import ContactCTA from '../components/ContactCTA.astro';
+import advancedWorkshopImage from '../assets/images/sample-advanced-workshop.png';
+import beginnerWorkshopImage from '../assets/images/sample-beginner-workshop.png';
+import ensembleImage from '../assets/images/sample-handpan-ensemble.png';
+import learningImage from '../assets/images/sample-learning-guidance.png';
+import { getService, imageUrl } from '../lib/sanity';
+
 const service = await getService('Unterricht');
+const image = imageUrl(service.image, 1200);
 ---
-<ServicePage
-  service={service}
-  eyebrow="HANDPANUNTERRICHT"
-  intro="Ein persönlicher, klarer Weg ins Instrument – in deinem Tempo und mit Raum für den Klang, der zu dir passt."
-  fallbackBody={[
-    'Vielleicht hast du noch nie ein Instrument gespielt. Vielleicht steht deine erste Handpan bereits zuhause und du fragst dich: Und jetzt?',
-    'Im Unterricht verbinden wir eine verständliche Struktur mit neugierigem Ausprobieren. Es geht nicht darum, möglichst schnell möglichst viel zu können, sondern einen sicheren, musikalischen Zugang aufzubauen.',
-  ]}
-  bullets={['Rhythmus und Timing', 'Anschlagtechnik und Klang', 'Grooves und Patterns', 'Melodie und Dynamik', 'Koordination', 'Übergänge und Variationen', 'Freies Spiel und Improvisation']}
-  note="Du musst keine musikalische Vorerfahrung mitbringen."
- />
+
+<BaseLayout title="Lernbegleitung für Handpan – Klangfonia" description={service.shortDescription} image={image}>
+  <section class="page-hero">
+    <div class="container page-hero__inner">
+      <h1>{service.headline}</h1>
+      <p class="lead">Ein persönlicher, klarer Weg zum Instrument – in deinem Tempo und mit Raum für Ideen und Wünsche, die dir entsprechen. Lernbegleitung für Anfänger und Fortgeschrittene.</p>
+      <div class="hero-actions">
+        <Button href={service.ctaUrl}>Lernbegleitung anfragen</Button>
+        <a class="jump-link" href="#angebote">Angebote ansehen <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+  </section>
+
+  <nav class="path-nav" id="angebote" aria-label="Angebote auf dieser Seite">
+    <div class="container path-nav__grid">
+      <a href="#einzelbegleitung"><span>01</span><strong>1:1-Lernbegleitung</strong><small>Dein persönlicher Weg</small></a>
+      <a href="#ensemble"><span>02</span><strong>Handpan-Ensemble</strong><small>Gemeinsam musizieren</small></a>
+      <a href="#workshops"><span>03</span><strong>Workshops</strong><small>Einsteigen oder vertiefen</small></a>
+    </div>
+  </nav>
+
+  <section class="section" id="einzelbegleitung">
+    <div class="container rich-layout">
+      <aside>
+        {image ? (
+          <div class="feature-image"><img src={image} alt={service.image?.alt || service.title} width="1200" /></div>
+        ) : (
+          <div class="feature-image"><Image src={learningImage} alt="Persönliche Lernbegleitung an einer kupferfarbenen Handpan" width={1200} /></div>
+        )}
+        {(service.duration || service.priceInfo) && (
+          <div class="meta-row">
+            {service.duration && <span class="meta-chip">Dauer: {service.duration}</span>}
+            {service.priceInfo && <span class="meta-chip">{service.priceInfo}</span>}
+          </div>
+        )}
+      </aside>
+
+      <div>
+        <p class="eyebrow">1:1-LERNBEGLEITUNG</p>
+        <h2 class="section-title">Spielen lernen, das zu dir passt.</h2>
+        <div class="prose">
+          <p>Vielleicht bringst du bereits musikalische Vorerfahrung mit und wünschst dir Feedback und neue Inspirationen. Vielleicht hast du noch nie ein Instrument gespielt. Vielleicht steht deine erste Handpan bereits zuhause und du fragst dich: Und jetzt?</p>
+          <p>In der 1:1-Lernbegleitung verbinden wir eine verständliche Struktur mit neugierigem Ausprobieren. Es geht nicht darum, möglichst schnell möglichst viel zu können, sondern einen sicheren, musikalischen Zugang aufzubauen.</p>
+        </div>
+        <ul class="topic-list">
+          <li>Rhythmus und Timing</li>
+          <li>Anschlagtechnik und Klang</li>
+          <li>Grooves und Patterns</li>
+          <li>Melodie und Dynamik</li>
+          <li>Koordination</li>
+          <li>Übergänge und Variationen</li>
+          <li>Freies Spiel und Improvisation</li>
+          <li>Komposition und Arrangement</li>
+        </ul>
+        <div class="action"><Button href={service.ctaUrl}>Lernbegleitung anfragen</Button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--linen" id="ensemble">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">BANDCOACHING · HANDPAN-ENSEMBLE</p>
+        <h2>Begegnung und Austausch stehen bei uns an erster Stelle.</h2>
+      </div>
+
+      <div class="ensemble-layout">
+        <div class="ensemble-image"><Image src={ensembleImage} alt="Drei Menschen musizieren gemeinsam auf Handpans" width={1200} /></div>
+        <div class="prose ensemble-copy">
+          <h3>Begegnung, Austausch und gemeinsames Musizieren</h3>
+          <p>Wenn du Lust hast, dich regelmäßig mit anderen Handpan-Artists zu treffen, gemeinsam Musik zu entwickeln, deine eigenen Ideen einzubringen und dich inspirieren zu lassen, bist du herzlich willkommen. Zum Kennenlernen kannst du gerne zunächst ein unverbindliches Schnuppertreffen vereinbaren.</p>
+          <p>Gemeinsam entwickeln wir ein abwechslungsreiches Auftrittsprogramm, in dem sowohl ein- und mehrstimmige Patterns als auch Solostücke ihren Platz finden. Dabei geht es nicht nur darum, gemeinsam zu spielen, sondern auch darum, musikalisch miteinander zu wachsen und unsere unterschiedlichen Ideen und Spielweisen zu einem gemeinsamen Klangbild zu verbinden.</p>
+        </div>
+      </div>
+
+      <div class="ensemble-points">
+        <article>
+          <span>01</span>
+          <h3>Rhythmus und Flow</h3>
+          <p>Beim Warm-up mit Bodypercussion nähern wir uns spielerisch den rhythmischen Figuren der Patterns an und trainieren dabei Koordination, Timing und Körpergefühl. Das zunächst langsame Übertragen auf die Handpan, die schrittweise Wiederholung einzelner Takte im Loop und das meditative Eingrooven in einen stabilen Beat spielen dabei eine zentrale Rolle.</p>
+          <p>Im kreativen Prozess erfährst du, wie elegante Übergänge zwischen Strophe und Refrain entstehen und wie sich durch progressive Variationen der Melodie-Patterns ein musikalischer Spannungsbogen entwickeln lässt. Wir experimentieren mit Dynamik, Zusammenspiel und Ausdruck und entdecken dabei, wie aus einzelnen Patterns ein lebendiges gemeinsames Stück entsteht.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Festhalten und wachsen</h3>
+          <p>Die Stücke werden gefilmt und ich notiere sie sowohl in Zahlenschrift als auch mit Notennamen und klassischer Notenschrift. So können wir musikalische Ideen festhalten, weiterentwickeln und nach und nach zu einem gemeinsamen Repertoire ausbauen.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Vom Probenraum auf die Bühne</h3>
+          <p>Ein weiterer wichtiger Bestandteil ist die Bühnenerfahrung. Die gemeinsam erarbeiteten Stücke tragen wir vom Proberaum auf die Bühne. Dabei kannst du Erfahrungen mit dem gemeinsamen Auftreten sammeln, Sicherheit on stage gewinnen und erleben, wie sich unsere Musik im Zusammenspiel mit einem Publikum entfaltet.</p>
+          <p>Ob du bereits Bühnenerfahrung mitbringst oder deine ersten Schritte in diese Richtung machen möchtest – beides ist willkommen. Im Mittelpunkt steht die Freude am gemeinsamen Musizieren und die Bereitschaft, sich aufeinander einzulassen.</p>
+          <p>Wenn dich das anspricht, melde dich gerne! Wir freuen uns über Verstärkung, neue musikalische Impulse und vor allem auf viele schöne gemeinsame Momente mit der Handpan.</p>
+        </article>
+      </div>
+      <div class="ensemble-action"><Button href={service.ctaUrl} variant="secondary">Schnuppertreffen anfragen</Button></div>
+    </div>
+  </section>
+
+  <section class="section workshops" id="workshops">
+    <div class="container">
+      <p class="eyebrow">WORKSHOPS</p>
+      <div class="workshops-heading">
+        <h2>Der passende Raum für deinen nächsten Schritt.</h2>
+        <p class="lead">Ob du die Handpan zum ersten Mal berührst oder dein Spiel gezielt vertiefen möchtest: Du findest einen Workshop auf deinem Niveau.</p>
+      </div>
+      <div class="workshop-grid">
+        <article class="workshop-card">
+          <div class="workshop-image"><Image src={beginnerWorkshopImage} alt="Erste Spielversuche bei einem Handpan-Workshop" width={1200} /></div>
+          <div class="workshop-content">
+            <p class="workshop-label">Workshop für Einsteiger</p>
+            <h2>Deine erste Reise mit der Handpan</h2>
+            <div class="prose">
+              <p>Du möchtest die Handpan kennenlernen und herausfinden, was in diesem faszinierenden Instrument steckt?</p>
+              <p>In meinem Einsteiger-Workshop bekommst du die Möglichkeit, dich ganz in Ruhe und ohne Vorkenntnisse an die Handpan heranzutasten. Entdecke ihren Klang, spüre ihre Schwingung und finde deinen ganz eigenen Zugang zum Spielen.</p>
+            </div>
+            <details>
+              <summary>Was dich im Workshop erwartet <span aria-hidden="true">+</span></summary>
+              <div class="prose details-content">
+                <p>Wie halte und spiele ich die Handpan am besten? Sitze ich bequem mit dem Instrument auf dem Schoß oder spiele ich lieber im Stehen auf einem Stativ? Welche Spielhaltung fühlt sich für mich richtig an?</p>
+                <p>Wir erkunden gemeinsam, wie die einzelnen Tonfelder zum Klingen und Schwingen gebracht werden – mit welchen Fingern, an welchen Stellen und mit welcher Intensität. Du lernst, wie du deine Anschläge sanft abfederst, damit sich der Klang voll entfalten kann.</p>
+                <p>Und dann wird es musikalisch: Welche Skala und Harmonie passen zu dir? Wie findest du deine ersten Töne? Und wie entsteht daraus deine erste eigene Melodie?</p>
+                <p>Dabei geht es nicht darum, etwas perfekt zu machen. Vielmehr darfst du lauschen, ausprobieren, experimentieren und staunen, was mit wenigen Tönen möglich ist.</p>
+                <p>Der Workshop bietet viel Raum für spielerisches Erkunden, persönliche Fragen und deine ersten eigenen Erfahrungen mit der Handpan.</p>
+                <p>Du brauchst keine musikalischen Vorkenntnisse – nur Neugier und Lust, dich auf den Klang einzulassen. Du möchtest die Handpan kennenlernen? Dann melde dich gerne bei Interesse!</p>
+              </div>
+            </details>
+            <div class="card-action"><Button href={service.ctaUrl}>Einsteiger-Workshop anfragen</Button></div>
+          </div>
+        </article>
+
+        <article class="workshop-card">
+          <div class="workshop-image"><Image src={advancedWorkshopImage} alt="Fortgeschrittenes, ausdrucksstarkes Handpan-Spiel" width={1200} /></div>
+          <div class="workshop-content">
+            <p class="workshop-label">Workshop für Fortgeschrittene</p>
+            <h2>Dein Spiel. Dein Ausdruck. Dein nächster Schritt.</h2>
+            <div class="prose">
+              <p>Du spielst bereits Handpan und möchtest dein Spiel vertiefen, neue Impulse bekommen und deinen eigenen musikalischen Ausdruck weiterentwickeln?</p>
+              <p>In diesem Workshop geht es um mehr Sicherheit, musikalischen Flow und kreative Freiheit. Wir arbeiten an Rhythmus und Timing, Anschlagtechnik, Dynamik, Koordination und abwechslungsreichen Patterns. Du lernst, Übergänge bewusst zu gestalten, Variationen zu entwickeln und aus einzelnen Ideen lebendige musikalische Stücke entstehen zu lassen.</p>
+            </div>
+            <details>
+              <summary>Was dich im Workshop erwartet <span aria-hidden="true">+</span></summary>
+              <div class="prose details-content">
+                <p>Dabei verbinden wir gezieltes Üben mit freiem Ausprobieren und Improvisation. Du bringst dein Spiel mit – ich gebe dir neue Impulse, Inspiration und individuelles Feedback.</p>
+                <p>Ob du dein Repertoire erweitern, an deiner Technik feilen oder einfach neue Wege auf der Handpan entdecken möchtest: Du bestimmst, wohin die Reise geht.</p>
+                <p>Für alle, die ihre Handpan nicht nur spielen, sondern musikalisch mit ihr wachsen möchten.</p>
+                <p>Melde dich gerne und entdecke deinen nächsten Schritt auf der Handpan.</p>
+              </div>
+            </details>
+            <div class="card-action"><Button href={service.ctaUrl}>Fortgeschrittenen-Workshop anfragen</Button></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <ContactCTA />
+</BaseLayout>
+
+<style>
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2.25rem; align-items: center; }
+  .jump-link { display: inline-flex; min-height: 3.4rem; align-items: center; gap: 0.7rem; padding: 0.8rem 1.15rem; color: var(--color-ink); font-size: 0.86rem; font-weight: 700; text-decoration: none; }
+  .jump-link span { color: var(--color-clay); font-size: 1.1rem; transition: transform 180ms ease; }
+  .jump-link:hover span { transform: translateY(0.2rem); }
+
+  .path-nav { border-bottom: 1px solid rgb(38 53 47 / 0.1); background: var(--color-white); }
+  .path-nav__grid { display: grid; }
+  .path-nav a { position: relative; display: grid; grid-template-columns: auto 1fr; gap: 0 1rem; padding: 1.4rem 0; color: var(--color-ink); text-decoration: none; }
+  .path-nav a + a { border-top: 1px solid rgb(38 53 47 / 0.1); }
+  .path-nav a > span { grid-row: 1 / 3; color: var(--color-clay); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; }
+  .path-nav strong { font-size: 0.93rem; }
+  .path-nav small { margin-top: 0.1rem; color: var(--color-steel); font-size: 0.76rem; }
+  .path-nav a::after { position: absolute; right: 0; top: 50%; color: var(--color-clay); content: '↓'; transform: translateY(-50%); transition: transform 180ms ease; }
+  .path-nav a:hover::after { transform: translateY(-35%); }
+
+  .section-title { max-width: 12ch; margin-bottom: 1.75rem; font-size: clamp(2.35rem, 4.5vw, 4.25rem); }
+
+  .topic-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+    margin: 2.5rem 0 0;
+    padding: 0;
+    border-top: 1px solid var(--color-sand);
+    list-style: none;
+  }
+
+  .topic-list li {
+    position: relative;
+    padding: 0.85rem 0.5rem 0.85rem 1.4rem;
+    border-bottom: 1px solid var(--color-sand);
+    color: var(--color-ink);
+  }
+
+  .topic-list li::before {
+    content: '↗';
+    position: absolute;
+    left: 0;
+    color: var(--color-clay);
+  }
+
+  .action { margin-top: 2rem; }
+  .section-heading { max-width: 58rem; }
+  .section-heading h2 { text-wrap: balance; }
+
+  .ensemble-layout {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: start;
+    margin-top: 3.5rem;
+  }
+
+  .ensemble-image {
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .ensemble-image :global(img) { width: 100%; height: auto; }
+
+  .ensemble-copy h3:first-child { margin-top: 0; }
+
+  .ensemble-points {
+    display: grid;
+    gap: 1rem;
+    margin-top: clamp(2.5rem, 6vw, 5rem);
+  }
+
+  .ensemble-points article {
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    border: 1px solid rgb(38 53 47 / 0.1);
+    border-radius: var(--radius-md);
+    background: rgb(255 253 247 / 0.62);
+  }
+
+  .ensemble-points article > span { display: block; margin-bottom: 2rem; color: var(--color-clay); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; }
+  .ensemble-points h3 { font-size: clamp(1.65rem, 2.3vw, 2.1rem); }
+  .ensemble-points p { margin-top: 1rem; color: var(--color-steel); font-size: 0.95rem; }
+  .ensemble-action { margin-top: 2rem; }
+
+  .workshop-grid {
+    display: grid;
+    gap: 2rem;
+    margin-top: 3.5rem;
+  }
+
+  .workshops-heading { display: grid; gap: 1.25rem; }
+  .workshops-heading h2 { max-width: 14ch; }
+  .workshops-heading .lead { max-width: 38rem; }
+
+  .workshop-card {
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    border: 1px solid rgb(38 53 47 / 0.1);
+    border-radius: var(--radius-lg);
+    background: var(--color-linen);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .workshop-image {
+    overflow: hidden;
+  }
+
+  .workshop-image :global(img) { width: 100%; height: auto; }
+
+  .workshop-content { display: flex; flex: 1; flex-direction: column; padding: clamp(1.5rem, 4vw, 3rem); }
+  .workshop-content h2 { font-size: clamp(2rem, 3.8vw, 3.5rem); }
+
+  .workshop-label {
+    margin-bottom: 0.9rem;
+    color: var(--color-clay);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .workshop-content .prose { margin-top: 1.75rem; }
+  details { margin-top: 2rem; border-top: 1px solid var(--color-sand); border-bottom: 1px solid var(--color-sand); }
+  summary { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 0; color: var(--color-ink); font-size: 0.88rem; font-weight: 700; cursor: pointer; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary span { color: var(--color-clay); font-size: 1.4rem; font-weight: 400; transition: transform 180ms ease; }
+  details[open] summary span { transform: rotate(45deg); }
+  .details-content { padding: 0 0 1.5rem; }
+  .card-action { margin-top: auto; padding-top: 2rem; }
+
+  @media (min-width: 54rem) {
+    .path-nav__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .path-nav a { padding: 1.45rem clamp(1rem, 2.3vw, 2rem); }
+    .path-nav a:first-child { padding-left: 0; }
+    .path-nav a + a { border-top: 0; border-left: 1px solid rgb(38 53 47 / 0.1); }
+    .ensemble-layout { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); }
+    .ensemble-image { position: sticky; top: 8rem; }
+    .ensemble-points { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .workshops-heading { grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.7fr); align-items: end; }
+    .workshop-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 38rem) {
+    .hero-actions { align-items: stretch; flex-direction: column; }
+    .jump-link { justify-content: center; }
+    .topic-list { grid-template-columns: 1fr; }
+  }
+</style>

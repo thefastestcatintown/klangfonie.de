@@ -7,7 +7,7 @@ export const service = defineType({
   fields: [
     defineField({ name: 'title', title: 'Interner Titel', type: 'string', validation: (rule) => rule.required() }),
     defineField({ name: 'slug', title: 'URL-Kürzel', type: 'slug', options: { source: 'title' }, validation: (rule) => rule.required() }),
-    defineField({ name: 'category', title: 'Kategorie', type: 'string', options: { list: ['Unterricht', 'Yoga', 'Live', 'Band'], layout: 'radio' }, validation: (rule) => rule.required() }),
+    defineField({ name: 'category', title: 'Kategorie', type: 'string', options: { list: [{ title: 'Lernbegleitung', value: 'Unterricht' }, { title: 'Yoga', value: 'Yoga' }, { title: 'Live', value: 'Live' }, { title: 'Band', value: 'Band' }], layout: 'radio' }, validation: (rule) => rule.required() }),
     defineField({ name: 'shortDescription', title: 'Kurzbeschreibung', type: 'text', rows: 3, validation: (rule) => rule.required() }),
     defineField({ name: 'headline', title: 'Seitenüberschrift', type: 'string', validation: (rule) => rule.required() }),
     defineField({ name: 'body', title: 'Ausführlicher Text', type: 'blockContent' }),

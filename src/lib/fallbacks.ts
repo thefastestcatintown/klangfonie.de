@@ -1,8 +1,8 @@
 import type { AboutPage, HomePage, Service, SiteSettings, Video } from './types';
 
 export const fallbackSettings: SiteSettings = {
-  siteTitle: 'Klangfonie',
-  defaultSeoTitle: 'Klangfonie – Handpan, Musik & Begegnung',
+  siteTitle: 'Klangfonia',
+  defaultSeoTitle: 'Klangfonia – Handpan, Musik & Begegnung',
   defaultSeoDescription: 'Handpanunterricht und feinfühlige Live-Musik für Yoga, Events und besondere Momente mit Daniela Schneider.',
   email: '',
   location: 'Deutschland',
@@ -11,8 +11,8 @@ export const fallbackSettings: SiteSettings = {
 export const fallbackHome: HomePage = {
   heroEyebrow: 'DANIELA SCHNEIDER · HANDPAN · MUSIK',
   heroHeadline: 'Klang, der verbindet.',
-  heroText: 'Ich verbinde Handpanunterricht, Live-Musik und feinfühlige Klangbegleitung für Yoga, besondere Momente und Menschen, die selbst ins Spielen eintauchen möchten.',
-  primaryCtaLabel: 'Handpanunterricht entdecken',
+  heroText: 'Ich verbinde persönliche Lernbegleitung an der Handpan, Live-Musik und feinfühlige Klangbegleitung für Yoga, besondere Momente und Menschen, die selbst ins Spielen eintauchen möchten.',
+  primaryCtaLabel: 'Lernbegleitung entdecken',
   primaryCtaUrl: '/unterricht',
   secondaryCtaLabel: 'Musik hören',
   secondaryCtaUrl: '#musik',
@@ -22,9 +22,9 @@ export const fallbackHome: HomePage = {
 
 export const fallbackServices: Service[] = [
   {
-    title: 'Handpanunterricht', slug: 'unterricht', category: 'Unterricht',
-    shortDescription: 'Individueller Unterricht für Menschen, die das Instrument neu entdecken oder ihr Spiel weiterentwickeln möchten.',
-    headline: 'Dein eigener Zugang zur Handpan.', ctaLabel: 'Unterricht anfragen', ctaUrl: '/kontakt?interesse=unterricht', sortOrder: 10,
+    title: 'Lernbegleitung', slug: 'unterricht', category: 'Unterricht',
+    shortDescription: 'Persönliche Lernbegleitung für Menschen, die das Instrument neu entdecken oder ihr Spiel weiterentwickeln möchten.',
+    headline: 'Dein eigener Zugang zur Handpan.', ctaLabel: 'Lernbegleitung anfragen', ctaUrl: '/kontakt?interesse=unterricht', sortOrder: 10,
   },
   {
     title: 'Yoga & Handpan', slug: 'yoga', category: 'Yoga',

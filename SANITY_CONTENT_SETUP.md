@@ -4,8 +4,8 @@ Nach der Konfiguration aus der `README.md` öffnest du `http://localhost:4321/st
 
 ## 1. Website-Einstellungen
 
-- **Name der Website:** Klangfonie
-- **Standardtitel:** Klangfonie – Handpan, Musik & Begegnung
+- **Name der Website:** Klangfonia
+- **Standardtitel:** Klangfonia – Handpan, Musik & Begegnung
 - **Standardbeschreibung:** Handpanunterricht und feinfühlige Live-Musik für Yoga, Events und besondere Momente mit Daniela Schneider.
 - **E-Mail:** echte Kontaktadresse ergänzen
 - Telefon, Instagram, YouTube und Ort nur eintragen, wenn die Angaben veröffentlicht werden sollen.
@@ -14,8 +14,8 @@ Nach der Konfiguration aus der `README.md` öffnest du `http://localhost:4321/st
 
 - **Hero: kleine Zeile:** HANDPAN · MUSIK · BEGEGNUNG
 - **Hero: Überschrift:** Klang, der verbindet.
-- **Hero: Text:** Handpanunterricht, Live-Musik und feinfühlige Klangbegleitung für Yoga, besondere Momente und Menschen, die selbst ins Spielen eintauchen möchten.
-- **Primärer Button:** Handpanunterricht entdecken → `/unterricht`
+- **Hero: Text:** Persönliche Lernbegleitung an der Handpan, Live-Musik und feinfühlige Klangbegleitung für Yoga, besondere Momente und Menschen, die selbst ins Spielen eintauchen möchten.
+- **Primärer Button:** Lernbegleitung entdecken → `/unterricht`
 - **Sekundärer Button:** Musik hören → `#musik`
 - **Einleitung: Überschrift:** Erst hören. Dann weiterlesen.
 - **Einleitung: Text:** Die Handpan muss man eigentlich nicht erklären. Man muss sie hören.
@@ -25,13 +25,13 @@ Nach der Konfiguration aus der `README.md` öffnest du `http://localhost:4321/st
 
 Je ein Dokument anlegen. `sortOrder` steuert die Reihenfolge.
 
-### Handpanunterricht
+### Lernbegleitung
 
 - Kategorie: Unterricht
 - URL-Kürzel: `unterricht`
 - Seitenüberschrift: Dein eigener Zugang zur Handpan.
-- Kurzbeschreibung: Individueller Unterricht für Menschen, die das Instrument neu entdecken oder ihr Spiel weiterentwickeln möchten.
-- Button: Unterricht anfragen → `/kontakt?interesse=unterricht`
+- Kurzbeschreibung: Persönliche Lernbegleitung für Menschen, die das Instrument neu entdecken oder ihr Spiel weiterentwickeln möchten.
+- Button: Lernbegleitung anfragen → `/kontakt?interesse=unterricht`
 - Reihenfolge: 10
 
 ### Yoga & Handpan

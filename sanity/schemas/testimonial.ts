@@ -22,7 +22,7 @@ export const testimonial = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({ name: 'name', title: 'Name oder Bezeichnung', description: 'Zum Beispiel „Anna“ oder „Christopher Eschenbecher“', type: 'string', validation: (rule) => rule.required() }),
-    defineField({ name: 'context', title: 'Angebot oder Anlass (optional)', description: 'Zum Beispiel „Handpanunterricht“ oder „Yoga-Retreat“', type: 'string' }),
+    defineField({ name: 'context', title: 'Angebot oder Anlass (optional)', description: 'Zum Beispiel „Lernbegleitung“ oder „Yoga-Retreat“', type: 'string' }),
     defineField({ name: 'sortOrder', title: 'Reihenfolge', type: 'number', initialValue: 10 }),
   ],
   orderings: [{ title: 'Reihenfolge', name: 'sortOrderAsc', by: [{ field: 'sortOrder', direction: 'asc' }] }],

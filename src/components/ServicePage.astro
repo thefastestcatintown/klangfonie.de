@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from './Button.astro';
 import ContactCTA from './ContactCTA.astro';
@@ -8,23 +10,26 @@ import { imageUrl } from '../lib/sanity';
 
 interface Props {
   service: Service;
-  eyebrow: string;
   intro: string;
   bullets: string[];
   fallbackBody: string[];
+  fallbackImage?: ImageMetadata;
+  fallbackImageAlt?: string;
   note?: string;
 }
-const { service, eyebrow, intro, bullets, fallbackBody, note } = Astro.props;
-const image = imageUrl(service.image, 1200, 1000);
+const { service, intro, bullets, fallbackBody, fallbackImage, fallbackImageAlt = service.title, note } = Astro.props;
+const image = imageUrl(service.image, 1200);
 ---
-<BaseLayout title={`${service.title} – Klangfonie`} description={service.shortDescription} image={image}>
+<BaseLayout title={`${service.title} – Klangfonia`} description={service.shortDescription} image={image}>
   <section class="page-hero">
-    <div class="container page-hero__inner"><p class="eyebrow">{eyebrow}</p><h1>{service.headline}</h1><p class="lead">{intro}</p></div>
+    <div class="container page-hero__inner"><h1>{service.headline}</h1><p class="lead">{intro}</p></div>
   </section>
   <section class="section">
     <div class="container rich-layout">
       <aside>
-        {image ? <div class="feature-image"><img src={image} alt={service.image?.alt || service.title} width="600" height="500" /></div> : (
+        {image ? <div class="feature-image"><img src={image} alt={service.image?.alt || service.title} width="1200" /></div> : fallbackImage ? (
+          <div class="feature-image"><Image src={fallbackImage} alt={fallbackImageAlt} width={1200} /></div>
+        ) : (
           <div class="image-placeholder"><span>Bild kann im Sanity Studio ergänzt werden.</span></div>
         )}
         {(service.duration || service.priceInfo) && <div class="meta-row">{service.duration && <span class="meta-chip">Dauer: {service.duration}</span>}{service.priceInfo && <span class="meta-chip">{service.priceInfo}</span>}</div>}

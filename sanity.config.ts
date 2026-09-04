@@ -7,7 +7,7 @@ const dataset = import.meta.env?.PUBLIC_SANITY_DATASET || process.env.PUBLIC_SAN
 
 export default defineConfig({
   name: 'klangfonie',
-  title: 'Klangfonie Inhalte',
+  title: 'Klangfonia Inhalte',
   projectId,
   dataset,
   plugins: [

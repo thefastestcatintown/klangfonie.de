@@ -1,6 +1,6 @@
-# Klangfonie
+# Klangfonia
 
-Moderne, statisch erzeugte Website für Daniela Schneider / Klangfonie. Gebaut mit Astro, TypeScript und einem direkt unter `/studio` eingebetteten Sanity Studio.
+Moderne, statisch erzeugte Website für Daniela Schneider / Klangfonia. Gebaut mit Astro, TypeScript und einem direkt unter `/studio` eingebetteten Sanity Studio.
 
 ## Entwicklung starten
 
@@ -57,7 +57,7 @@ Daniela kann im Studio folgende Inhalte bearbeiten, ohne das Layout frei umbauen
 - Website-Einstellungen und Kontaktdaten
 - Hero und Einleitung der Startseite
 - Über-Daniela-Seite samt Rich Text und musikalischen Stationen
-- Angebote für Unterricht, Yoga, Live und Band
+- Angebote für Lernbegleitung, Yoga, Live und Band
 - echte Kundenstimmen
 - YouTube-Videos
 - kommende Termine

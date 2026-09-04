@@ -1,11 +1,13 @@
 ---
 import ServicePage from '../components/ServicePage.astro';
+import yogaImage from '../assets/images/sample-yoga-handpan.png';
 import { getService } from '../lib/sanity';
 const service = await getService('Yoga');
 ---
 <ServicePage
   service={service}
-  eyebrow="YOGA & HANDPAN"
+  fallbackImage={yogaImage}
+  fallbackImageAlt="Kupferfarbene Handpan in einem hellen Yogaraum"
   intro="Live-Klang, der Atem, Bewegung und Stille aufnimmt – aufmerksam, zurückhaltend und im richtigen Moment präsent."
   fallbackBody={[
     'Live-Musik verändert eine Yogaklasse nicht, weil sie spektakulärer wird, sondern weil Klang Bewegungen verbinden, Übergänge tragen und Stille vertiefen kann.',

@@ -3,14 +3,19 @@ import { getImage } from 'astro:assets';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import danielaPlaying from '../assets/images/daniela-handpan-playing.png';
+import handpanLogo from '../assets/images/klangfonia-handpan-logo.png';
 import { getSettings } from '../lib/sanity';
 import { withBase } from '../lib/urls';
+import '@fontsource/great-vibes/latin-400.css';
 import '../styles/global.css';
 
 interface Props { title?: string; description?: string; image?: string; noindex?: boolean; }
 const settings = await getSettings();
 const defaultSocialImage = await getImage({ src: danielaPlaying, width: 1200, height: 630, fit: 'cover', position: 'center', format: 'webp', quality: 85 });
-const { title = settings.defaultSeoTitle, description = settings.defaultSeoDescription, image = defaultSocialImage.src, noindex = false } = Astro.props;
+const favicon = await getImage({ src: handpanLogo, width: 96, height: 96, fit: 'contain', format: 'png' });
+const brandName = 'Klangfonia';
+const defaultTitle = settings.defaultSeoTitle.replaceAll('Klangfonie', brandName);
+const { title = defaultTitle, description = settings.defaultSeoDescription, image = defaultSocialImage.src, noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
 const ogImage = new URL(withBase(image), Astro.site ?? Astro.url.origin);
 ---
@@ -23,10 +28,10 @@ const ogImage = new URL(withBase(image), Astro.site ?? Astro.url.origin);
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
+    <link rel="icon" type="image/png" href={withBase(favicon.src)} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="de_DE" />
-    <meta property="og:site_name" content={settings.siteTitle} />
+    <meta property="og:site_name" content={brandName} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />

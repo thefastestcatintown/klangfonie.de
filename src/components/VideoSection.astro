@@ -12,11 +12,11 @@ const embedUrl = youtubeEmbedUrl(video?.youtubeUrl);
     </div>
     <div class="video-frame">
       {embedUrl ? (
-        <iframe src={embedUrl} title={video?.title || 'Klangfonie Video'} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <iframe src={embedUrl} title={video?.title || 'Klangfonia Video'} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       ) : (
         <div class="video-placeholder">
           <span class="play" aria-hidden="true">▶</span>
-          <div><strong>Hier klingt bald Klangfonie.</strong><small>Video lässt sich im Sanity Studio hinterlegen.</small></div>
+          <div><strong>Hier klingt bald Klangfonia.</strong><small>Video lässt sich im Sanity Studio hinterlegen.</small></div>
         </div>
       )}
     </div>

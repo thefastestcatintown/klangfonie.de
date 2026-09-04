@@ -12,7 +12,7 @@ async function safeFetch<T>(query: string, params: Record<string, unknown>, fall
     const value = await sanityClient.fetch<T>(query, params);
     return value ?? fallback;
   } catch (error) {
-    console.warn('[Klangfonie] Sanity-Abfrage fehlgeschlagen, Fallback wird verwendet.', error);
+    console.warn('[Klangfonia] Sanity-Abfrage fehlgeschlagen, Fallback wird verwendet.', error);
     return fallback;
   }
 }
