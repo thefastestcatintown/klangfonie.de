@@ -3,7 +3,6 @@ import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from './Button.astro';
-import ContactCTA from './ContactCTA.astro';
 import RichText from './RichText.astro';
 import type { Service } from '../lib/types';
 import { imageUrl } from '../lib/sanity';
@@ -42,7 +41,6 @@ const image = imageUrl(service.image, 1200);
       </div>
     </div>
   </section>
-  <ContactCTA />
 </BaseLayout>
 <style>
   .service-list { display: grid; gap: 0; margin: 2.5rem 0 0; padding: 0; border-top: 1px solid var(--color-sand); list-style: none; }

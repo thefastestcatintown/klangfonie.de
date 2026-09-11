@@ -1,9 +1,8 @@
 ---
-interface Props { eyebrow?: string; title: string; text?: string; align?: 'left' | 'center'; }
-const { eyebrow, title, text, align = 'left' } = Astro.props;
+interface Props { title: string; text?: string; align?: 'left' | 'center'; }
+const { title, text, align = 'left' } = Astro.props;
 ---
 <header class:list={['heading', `heading--${align}`]}>
-  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
   <h2>{title}</h2>
   {text && <p class="lead">{text}</p>}
 </header>

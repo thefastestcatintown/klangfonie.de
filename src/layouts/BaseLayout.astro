@@ -3,7 +3,7 @@ import { getImage } from 'astro:assets';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import danielaPlaying from '../assets/images/daniela-handpan-playing.png';
-import handpanLogo from '../assets/images/klangfonia-handpan-logo.png';
+import handpanLogo from '../assets/images/klangfonia-logo2-symbol.png';
 import { getSettings } from '../lib/sanity';
 import { withBase } from '../lib/urls';
 import '@fontsource/great-vibes/latin-400.css';
@@ -43,5 +43,6 @@ const ogImage = new URL(withBase(image), Astro.site ?? Astro.url.origin);
     <Header />
     <main id="main-content"><slot /></main>
     <Footer settings={settings} />
+    <script>import '../scripts/motion';</script>
   </body>
 </html>

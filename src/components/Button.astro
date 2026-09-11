@@ -28,4 +28,7 @@ const resolvedHref = external ? href : withBase(href);
   .button--secondary:hover { border-color: var(--color-ink); background: rgb(255 254 251 / 0.6); }
   .button--light { background: var(--color-white); color: var(--color-ink); }
   @media (max-width: 40rem) { .button { width: 100%; padding-inline: 1rem; } }
+  @media (prefers-reduced-motion: reduce) {
+    .button:hover, .button:hover span { transform: none; }
+  }
 </style>

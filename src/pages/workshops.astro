@@ -1,0 +1,116 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import advancedWorkshopImage from '../assets/images/sample-advanced-workshop.png';
+import beginnerWorkshopImage from '../assets/images/sample-beginner-workshop.png';
+import { withBase } from '../lib/urls';
+---
+
+<BaseLayout title="Workshops – Klangfonia" description="Die Handpan kennenlernen oder dein Spiel vertiefen: Workshops für Einsteiger und Fortgeschrittene mit Raum für deinen eigenen musikalischen Ausdruck.">
+  <section class="page-hero">
+    <div class="container page-hero__inner">
+      <h1>Workshops</h1>
+      <p class="lead">Die Handpan kennenlernen oder dein Spiel vertiefen: Workshops für Einsteiger und Fortgeschrittene mit Raum für deinen eigenen musikalischen Ausdruck.</p>
+    </div>
+  </section>
+
+  <section class="section workshops" id="workshops">
+    <div class="container">
+      <div class="workshops-heading">
+        <h2>Der passende Raum für deinen nächsten Schritt.</h2>
+        <p class="lead">Ob du die Handpan zum ersten Mal berührst oder dein Spiel gezielt vertiefen möchtest: Du findest einen Workshop auf deinem Niveau.</p>
+      </div>
+      <div class="workshop-grid">
+        <article class="workshop-card">
+          <div class="workshop-image"><Image src={beginnerWorkshopImage} alt="Erste Spielversuche bei einem Handpan-Workshop" width={1200} /></div>
+          <div class="workshop-content">
+            <h2>Deine erste Reise mit der Handpan</h2>
+            <div class="prose">
+              <p>Du möchtest die Handpan kennenlernen und herausfinden, was in diesem faszinierenden Instrument steckt?</p>
+              <p>In meinem Einsteiger-Workshop bekommst du die Möglichkeit, dich ganz in Ruhe und ohne Vorkenntnisse an die Handpan heranzutasten. Entdecke ihren Klang, spüre ihre Schwingung und finde deinen ganz eigenen Zugang zum Spielen.</p>
+            </div>
+            <details>
+              <summary>Was dich im Workshop erwartet <span aria-hidden="true">+</span></summary>
+              <div class="prose details-content">
+                <p>Wie halte und spiele ich die Handpan am besten? Sitze ich bequem mit dem Instrument auf dem Schoß oder spiele ich lieber im Stehen auf einem Stativ? Welche Spielhaltung fühlt sich für mich richtig an?</p>
+                <p>Wir erkunden gemeinsam, wie die einzelnen Tonfelder zum Klingen und Schwingen gebracht werden – mit welchen Fingern, an welchen Stellen und mit welcher Intensität. Du lernst, wie du deine Anschläge sanft abfederst, damit sich der Klang voll entfalten kann.</p>
+                <p>Und dann wird es musikalisch: Welche Skala und Harmonie passen zu dir? Wie findest du deine ersten Töne? Und wie entsteht daraus deine erste eigene Melodie?</p>
+                <p>Dabei geht es nicht darum, etwas perfekt zu machen. Vielmehr darfst du lauschen, ausprobieren, experimentieren und staunen, was mit wenigen Tönen möglich ist.</p>
+                <p>Der Workshop bietet viel Raum für spielerisches Erkunden, persönliche Fragen und deine ersten eigenen Erfahrungen mit der Handpan.</p>
+                <p>Du brauchst keine musikalischen Vorkenntnisse – nur Neugier und Lust, dich auf den Klang einzulassen. Du möchtest die Handpan kennenlernen? Dann melde dich gerne bei Interesse!</p>
+              </div>
+            </details>
+            <div class="card-action"><Button href={withBase('/kontakt?interesse=workshops')}>Einsteiger-Workshop anfragen</Button></div>
+          </div>
+        </article>
+
+        <article class="workshop-card">
+          <div class="workshop-image"><Image src={advancedWorkshopImage} alt="Fortgeschrittenes, ausdrucksstarkes Handpan-Spiel" width={1200} /></div>
+          <div class="workshop-content">
+            <h2>Dein Spiel. Dein Ausdruck. Dein nächster Schritt.</h2>
+            <div class="prose">
+              <p>Du spielst bereits Handpan und möchtest dein Spiel vertiefen, neue Impulse bekommen und deinen eigenen musikalischen Ausdruck weiterentwickeln?</p>
+              <p>In diesem Workshop geht es um mehr Sicherheit, musikalischen Flow und kreative Freiheit. Wir arbeiten an Rhythmus und Timing, Anschlagtechnik, Dynamik, Koordination und abwechslungsreichen Patterns. Du lernst, Übergänge bewusst zu gestalten, Variationen zu entwickeln und aus einzelnen Ideen lebendige musikalische Stücke entstehen zu lassen.</p>
+            </div>
+            <details>
+              <summary>Was dich im Workshop erwartet <span aria-hidden="true">+</span></summary>
+              <div class="prose details-content">
+                <p>Dabei verbinden wir gezieltes Üben mit freiem Ausprobieren und Improvisation. Du bringst dein Spiel mit – ich gebe dir neue Impulse, Inspiration und individuelles Feedback.</p>
+                <p>Ob du dein Repertoire erweitern, an deiner Technik feilen oder einfach neue Wege auf der Handpan entdecken möchtest: Du bestimmst, wohin die Reise geht.</p>
+                <p>Für alle, die ihre Handpan nicht nur spielen, sondern musikalisch mit ihr wachsen möchten.</p>
+                <p>Melde dich gerne und entdecke deinen nächsten Schritt auf der Handpan.</p>
+              </div>
+            </details>
+            <div class="card-action"><Button href={withBase('/kontakt?interesse=workshops')}>Fortgeschrittenen-Workshop anfragen</Button></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  .workshop-grid {
+    display: grid;
+    gap: 2rem;
+    margin-top: 1.5rem;
+  }
+
+  .workshops-heading { display: grid; gap: 1.25rem; }
+  .workshops-heading h2 { max-width: 22ch; }
+  .workshops-heading .lead { max-width: 38rem; }
+
+  .workshop-card {
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    border: 1px solid rgb(38 53 47 / 0.1);
+    border-radius: var(--radius-lg);
+    background: var(--color-linen);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .workshop-image {
+    overflow: hidden;
+  }
+
+  .workshop-image :global(img) { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+
+  .workshop-content { display: flex; flex: 1; flex-direction: column; padding: clamp(1.25rem, 2vw, 1.75rem); }
+  .workshop-content h2 { font-size: clamp(1.75rem, 2.4vw, 2.5rem); }
+
+
+  .workshop-content .prose { margin-top: 1rem; }
+  details { margin-top: 2rem; border-top: 1px solid var(--color-sand); border-bottom: 1px solid var(--color-sand); }
+  summary { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 0; color: var(--color-ink); font-size: 0.88rem; font-weight: 700; cursor: pointer; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary span { color: var(--color-clay); font-size: 1.4rem; font-weight: 400; transition: transform 180ms ease; }
+  details[open] summary span { transform: rotate(45deg); }
+  .details-content { padding: 0 0 1.5rem; }
+  .card-action { margin-top: auto; padding-top: 2rem; }
+
+
+  @media (min-width: 54rem) { .workshops-heading { grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.7fr); align-items: end; } .workshop-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>

@@ -2,7 +2,6 @@
 import { Image } from 'astro:assets';
 import danielaPortrait from '../assets/images/daniela-handpan-portrait.png';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ContactCTA from '../components/ContactCTA.astro';
 import RichText from '../components/RichText.astro';
 import { getAbout, imageUrl } from '../lib/sanity';
 const about = await getAbout();
@@ -16,10 +15,9 @@ const portrait = imageUrl(about.portrait, 1000, 1200);
       {about.milestones && about.milestones.length > 0 && <div class="milestones"><h2>Musikalische Stationen</h2>{about.milestones.map((item) => <div><span>{item.year}</span><p>{item.text}</p></div>)}</div>}
     </div>
   </div></section>
-  <ContactCTA />
 </BaseLayout>
 <style>
-  .portrait { position: sticky; top: 7rem; overflow: hidden; aspect-ratio: 3 / 4; padding: 0 0 1rem 1rem; border-radius: 9rem var(--radius-lg) var(--radius-lg); background: var(--color-sage-soft); }
+  .portrait { position: sticky; top: 9rem; overflow: hidden; aspect-ratio: 3 / 4; padding: 0 0 1rem 1rem; border-radius: 9rem var(--radius-lg) var(--radius-lg); background: var(--color-sage-soft); }
   .portrait :global(img) { width: 100%; height: 100%; border-radius: 8rem var(--radius-md) var(--radius-md); object-fit: cover; object-position: 70% top; box-shadow: var(--shadow-soft); }
   .milestones { margin-top: 4rem; }.milestones h2 { margin-bottom: 2rem; font-size: 2.5rem; }.milestones > div { display: grid; grid-template-columns: 6rem 1fr; gap: 1rem; padding: 1rem 0; border-top: 1px solid var(--color-sand); }.milestones span { color: var(--color-clay); font-weight: 700; }.milestones p { color: var(--color-steel); }
   @media (max-width: 47.99rem) { .portrait { position: static; } }

@@ -7,7 +7,6 @@ const settings = await getSettings();
   <section class="page-hero"><div class="container page-hero__inner"><h1>Erzähl mir, was du vorhast.</h1><p class="lead">Ein paar Zeilen genügen für den Anfang. Ich melde mich persönlich bei dir zurück.</p></div></section>
   <section class="section"><div class="container contact-grid">
     <aside>
-      <p class="eyebrow">DIREKTER KONTAKT</p>
       <h2>{settings.email ? 'Lieber per E-Mail?' : 'Deine Anfrage'}</h2>
       {settings.email
         ? <a class="email" href={`mailto:${settings.email}`}>{settings.email}</a>
@@ -23,7 +22,7 @@ const settings = await getSettings();
       </div>
       <label><span>Wofür interessierst du dich?</span>
         <select name="interest" required data-interest>
-          <option value="">Bitte auswählen</option><option value="unterricht">Lernbegleitung</option><option value="yoga">Yoga-Begleitung</option><option value="live">Live-Musik</option><option value="band">Band / Konzert</option><option value="sonstiges">Sonstiges</option>
+          <option value="">Bitte auswählen</option><option value="unterricht">Lernbegleitung 1:1</option><option value="ensemble">Big Band</option><option value="workshops">Handpan-Workshops</option><option value="yoga">Yoga-Begleitung</option><option value="live">Live-Musik</option><option value="band">Band / Konzert</option><option value="sonstiges">Sonstiges</option>
         </select>
       </label>
       <label><span>Nachricht</span><textarea name="message" rows="7" required placeholder="Was möchtest du gerne anfragen?"></textarea></label>
@@ -58,13 +57,13 @@ const settings = await getSettings();
   });
 </script>
 <style>
-  .contact-grid { display: grid; gap: clamp(3rem, 9vw, 8rem); align-items: start; }
-  aside { position: sticky; top: 7rem; } aside h2 { max-width: 8ch; font-size: clamp(2.2rem, 5vw, 3.8rem); }
+  .contact-grid { display: grid; gap: clamp(2rem, 4vw, 3.5rem); align-items: start; }
+  aside { position: sticky; top: 9rem; } aside h2 { max-width: 15ch; font-size: clamp(2rem, 3vw, 2.75rem); }
   .email { display: inline-block; margin-top: 1.5rem; color: var(--color-clay); font-weight: 700; }.contact-line { display: block; margin-top: 0.65rem; color: var(--color-steel); }
   .intro { max-width: 28rem; margin-top: 1.5rem; color: var(--color-steel); }
   .note { max-width: 30rem; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--color-sand); color: var(--color-steel); font-size: 0.9rem; }
-  .contact-form { display: grid; gap: 1.3rem; padding: clamp(1.5rem, 4vw, 3rem); border-radius: var(--radius-lg); background: var(--color-linen); }
-  .field-row { display: grid; gap: 1.3rem; }
+  .contact-form { display: grid; gap: 1rem; padding: clamp(1.25rem, 2.5vw, 2rem); border-radius: var(--radius-lg); background: var(--color-linen); }
+  .field-row { display: grid; gap: 1rem; }
   label { display: grid; gap: 0.45rem; color: var(--color-ink); font-size: 0.83rem; font-weight: 700; }
   input, select, textarea { width: 100%; border: 1px solid rgb(36 55 70 / 0.22); border-radius: var(--radius-sm); background: var(--color-white); color: var(--color-charcoal); }
   input, select { min-height: 3.25rem; padding: 0 0.9rem; } textarea { min-height: 10rem; padding: 0.8rem 0.9rem; resize: vertical; }

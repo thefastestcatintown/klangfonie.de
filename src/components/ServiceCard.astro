@@ -8,8 +8,7 @@ import type { Service } from '../lib/types';
 import { imageUrl } from '../lib/sanity';
 import { withBase } from '../lib/urls';
 interface Props { service: Service; index?: number; }
-const { service, index = 0 } = Astro.props;
-const numerals = ['I', 'II', 'III', 'IV'];
+const { service } = Astro.props;
 const categoryLabel = service.category === 'Unterricht' ? 'Lernbegleitung' : service.category;
 const ctaLabel = service.category === 'Unterricht' ? 'Lernbegleitung entdecken' : service.ctaLabel;
 const cmsImage = imageUrl(service.image, 960);
@@ -30,7 +29,6 @@ const imageAlt = service.image?.alt || `${categoryLabel} mit Handpan`;
     </div>
   )}
   <div class="service-content">
-    <div class="service-meta"><span>{numerals[index] || index + 1}</span><span>{categoryLabel}</span></div>
     <h3>{service.headline}</h3>
     <p>{service.shortDescription}</p>
     <a href={withBase(service.ctaUrl)} aria-label={`${ctaLabel}: ${service.headline}`}>{ctaLabel} <span aria-hidden="true">→</span></a>
@@ -45,7 +43,6 @@ const imageAlt = service.image?.alt || `${categoryLabel} mit Handpan`;
   .service-image::after { position: absolute; inset: 0; background: linear-gradient(to top, rgb(32 43 39 / 0.12), transparent 45%); content: ''; pointer-events: none; }
   .service-image :global(img) { width: 100%; height: 100%; object-fit: contain; }
   .service-content { display: flex; flex: 1; flex-direction: column; padding: clamp(1.5rem, 3vw, 2.4rem); }
-  .service-meta { display: flex; align-items: center; justify-content: space-between; color: var(--color-clay); font-size: 0.72rem; font-weight: 750; letter-spacing: 0.12em; text-transform: uppercase; }
   h3 { max-width: 12ch; margin-top: 1.75rem; }
   p { margin-top: 1.25rem; color: var(--color-steel); }
   a { display: inline-flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: auto; padding-top: 1.5rem; border-top: 1px solid rgb(38 53 47 / 0.13); color: var(--color-ink); font-size: 0.84rem; font-weight: 740; text-decoration: none; }
