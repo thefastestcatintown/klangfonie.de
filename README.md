@@ -89,3 +89,22 @@ Das Formular ist vollständig gestaltet und validiert Eingaben im Browser. Es ve
 - echtes Bildmaterial und Videos einpflegen
 - Formularversand und gegebenenfalls Einwilligung für YouTube-Einbettungen konfigurieren
 - `PUBLIC_SITE_URL` auf die endgültige Canonical-Domain setzen
+
+## Wartung und technische SEO
+
+- Navigation: `src/lib/navigation.ts` ist die gemeinsame Quelle für Header und Footer.
+- Termine: `src/lib/dates.ts` formatiert Datumsbereiche auf Server und Client in der Zeitzone Europe/Berlin. Die Aktualisierung im Browser liegt in `src/scripts/events.ts`.
+- Metadaten: Titel und Beschreibungen der öffentlichen Seiten stehen in `src/lib/seo.ts`. Explizite Props an `BaseLayout` überschreiben sie. Die sichtbaren Überschriften bleiben davon unabhängig; für zusätzliche Seiten greifen die Standardwerte aus Sanity.
+- URLs: `src/lib/urls.ts` berücksichtigt `PUBLIC_BASE_PATH` und vereinheitlicht Seiten-URLs mit abschließendem Slash. `PUBLIC_SITE_URL` legt die Domain für Canonical-URLs, strukturierte Daten und Sitemap fest.
+- `robots.txt` wird beim Build aus derselben Konfiguration erzeugt. Studio, Fehlerseite, rechtliche Seiten und die alte Weiterleitungsroute stehen nicht in der Sitemap.
+- JSON-LD beschreibt Website, Daniela und die jeweilige Seite. Es werden keine unbelegten Adressen, Bewertungen oder Veranstaltungsdaten ergänzt.
+
+Prüfungen mit Node.js 22.6 oder neuer:
+
+```bash
+npm test
+npm run build
+npm run check:seo
+```
+
+`check:seo` prüft den letzten Build: eindeutige Metadaten, Canonical/Sitemap-Konsistenz, JSON-LD, Indexierungsregeln und robots.txt. Ein alternatives Build-Verzeichnis kann als Argument übergeben werden. Die Tests veröffentlichen die Website nicht und melden keine Sitemap bei Suchmaschinen an.

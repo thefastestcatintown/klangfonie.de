@@ -12,6 +12,7 @@ export default defineConfig({
   site: env.PUBLIC_SITE_URL || 'https://klangfonie.de',
   base: env.PUBLIC_BASE_PATH || '/',
   output: 'static',
+  trailingSlash: 'always',
   integrations: [
     sanity({
       projectId,
@@ -23,7 +24,7 @@ export default defineConfig({
     }),
     react(),
     sitemap({
-      filter: (page) => !['/studio/', '/impressum/', '/datenschutz/', '/ueber-daniel/'].some((path) => page.endsWith(path)),
+      filter: (page) => !/(?:^|\/)(?:studio(?:\/.*)?|impressum\/?|datenschutz\/?|ueber-daniel\/?|404(?:\.html)?\/?)$/.test(new URL(page).pathname),
     }),
   ],
 });

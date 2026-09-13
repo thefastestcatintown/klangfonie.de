@@ -1,24 +1,22 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
-import VideoSection from '../components/VideoSection.astro';
 import EventsSection from '../components/EventsSection.astro';
-import { getFeaturedVideo, getHome } from '../lib/sanity';
+import { getHome } from '../lib/sanity';
 
-const [home, video] = await Promise.all([getHome(), getFeaturedVideo()]);
+const home = await getHome();
 const intro = {
   ...home,
   heroText: 'Handpan entdecken, gemeinsam wachsen und Musik erleben. Mit Daniela Schneider.',
   primaryCtaLabel: 'Lernbegleitung entdecken',
   primaryCtaUrl: '/unterricht',
   secondaryCtaLabel: 'Musik hören',
-  secondaryCtaUrl: '#musik',
+  secondaryCtaUrl: '/live#musik',
 };
 ---
 <BaseLayout>
   <div class="home-content">
     <Hero content={intro} />
-    <VideoSection video={video} headline="Ein Moment Musik." text="Lehn dich zurück und hör rein." />
     <EventsSection />
   </div>
 </BaseLayout>

@@ -12,7 +12,7 @@ async function safeFetch<T>(query: string, params: Record<string, unknown>, fall
     const value = await sanityClient.fetch<T>(query, params);
     return value ?? fallback;
   } catch (error) {
-    console.warn('[Klangfonia] Sanity-Abfrage fehlgeschlagen, Fallback wird verwendet.', error);
+    console.warn('[Klangfonia] Sanity-Abfrage fehlgeschlagen, Fallback wird verwendet:', error instanceof Error ? error.message : 'Unbekannter Fehler');
     return fallback;
   }
 }
@@ -57,17 +57,4 @@ export async function getFeaturedVideo(): Promise<Video | null> {
 
 export async function getEvents(): Promise<Event[]> {
   return safeFetch(`*[_type == "event" && date >= now()] | order(date asc){_id, title, date, endDate, location, image, description, externalUrl}`, {}, []);
-}
-
-export function youtubeEmbedUrl(url?: string): string | undefined {
-  if (!url) return undefined;
-  try {
-    const parsed = new URL(url);
-    const id = parsed.hostname.includes('youtu.be')
-      ? parsed.pathname.slice(1)
-      : parsed.searchParams.get('v') || parsed.pathname.split('/').filter(Boolean).pop();
-    return id ? `https://www.youtube-nocookie.com/embed/${id}?rel=0` : undefined;
-  } catch {
-    return undefined;
-  }
 }

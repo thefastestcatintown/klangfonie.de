@@ -1,3 +1,4 @@
 ---
-return Astro.redirect(`${import.meta.env.BASE_URL.replace(/\/$/, '')}/ueber-daniela`, 301);
+import { withBase } from '../lib/urls';
+return Astro.redirect(withBase('/ueber-daniela'), 301);
 ---

@@ -19,7 +19,7 @@ interface Props {
 const { service, intro, bullets, fallbackBody, fallbackImage, fallbackImageAlt = service.title, note } = Astro.props;
 const image = imageUrl(service.image, 1200);
 ---
-<BaseLayout title={`${service.title} – Klangfonia`} description={service.shortDescription} image={image}>
+<BaseLayout image={image}>
   <section class="page-hero">
     <div class="container page-hero__inner"><h1>{service.headline}</h1><p class="lead">{intro}</p></div>
   </section>

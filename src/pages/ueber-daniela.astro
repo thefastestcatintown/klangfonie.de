@@ -1,24 +1,24 @@
 ---
-import { Image } from 'astro:assets';
-import danielaPortrait from '../assets/images/daniela-handpan-portrait.png';
+import { Image, getImage } from 'astro:assets';
+import profil2 from '../assets/images/profil2.png';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import RichText from '../components/RichText.astro';
-import { getAbout, imageUrl } from '../lib/sanity';
+import { getAbout } from '../lib/sanity';
 const about = await getAbout();
-const portrait = imageUrl(about.portrait, 1000, 1200);
+const portrait = await getImage({ src: profil2, width: 1200, format: 'webp' });
 ---
-<BaseLayout title="Über Daniela Schneider – Klangfonia" description={about.intro} image={portrait}>
+<BaseLayout image={portrait.src}>
   <section class="page-hero"><div class="container page-hero__inner"><h1>{about.headline}</h1><p class="lead">{about.intro}</p></div></section>
   <section class="section" id="geschichte"><div class="container rich-layout">
-    <div class="portrait">{portrait ? <img src={portrait} alt={about.portrait?.alt || 'Daniela Schneider mit ihrer Handpan'} width="600" height="720" /> : <Image src={danielaPortrait} alt="Daniela Schneider mit ihrer Handpan in einem sonnigen Garten" width={941} height={1672} />}</div>
+    <div class="portrait"><Image src={profil2} alt="Daniela Schneider spielt Handpan unter einem Baum" widths={[480, 800, 1200, 1662]} sizes="(min-width: 84rem) 505px, (min-width: 48rem) 42vw, calc(100vw - 2rem)" /></div>
     <div><RichText value={about.body} fallback={['Beim Spielen interessiert mich weniger Perfektion als Präsenz. Zuhören. Reagieren. Einen Rhythmus entstehen lassen und ihm Raum geben.', 'Die Handpan verbindet für mich Rhythmus und Melodie auf unmittelbare Weise. In der Lernbegleitung, in einer Yogaklasse oder auf der Bühne entsteht daraus jedes Mal ein anderer Dialog.']} />
       {about.milestones && about.milestones.length > 0 && <div class="milestones"><h2>Musikalische Stationen</h2>{about.milestones.map((item) => <div><span>{item.year}</span><p>{item.text}</p></div>)}</div>}
     </div>
   </div></section>
 </BaseLayout>
 <style>
-  .portrait { position: sticky; top: 9rem; overflow: hidden; aspect-ratio: 3 / 4; padding: 0 0 1rem 1rem; border-radius: 9rem var(--radius-lg) var(--radius-lg); background: var(--color-sage-soft); }
-  .portrait :global(img) { width: 100%; height: 100%; border-radius: 8rem var(--radius-md) var(--radius-md); object-fit: cover; object-position: 70% top; box-shadow: var(--shadow-soft); }
+  .portrait { position: sticky; top: 9rem; overflow: hidden; aspect-ratio: 3 / 4; padding: 0 0 1rem 1rem; border-radius: var(--radius-lg); background: var(--color-sage-soft); }
+  .portrait :global(img) { width: 100%; height: 100%; border-radius: 8rem var(--radius-md) var(--radius-md); object-fit: cover; object-position: 28% center; box-shadow: var(--shadow-soft); }
   .milestones { margin-top: 4rem; }.milestones h2 { margin-bottom: 2rem; font-size: 2.5rem; }.milestones > div { display: grid; grid-template-columns: 6rem 1fr; gap: 1rem; padding: 1rem 0; border-top: 1px solid var(--color-sand); }.milestones span { color: var(--color-clay); font-weight: 700; }.milestones p { color: var(--color-steel); }
   @media (max-width: 47.99rem) { .portrait { position: static; } }
 </style>

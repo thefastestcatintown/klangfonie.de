@@ -2,22 +2,32 @@
 import { getImage } from 'astro:assets';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import danielaPlaying from '../assets/images/daniela-handpan-playing.png';
-import handpanLogo from '../assets/images/klangfonia-logo2-symbol.png';
+import profil1 from '../assets/images/profil1.png';
+import handpanLogo from '../assets/images/klangfonia-logo2-transparent.png';
 import { getSettings } from '../lib/sanity';
-import { withBase } from '../lib/urls';
+import { withBase, canonicalUrl, routePath } from '../lib/urls';
+import { brandName, pageMetadata, serializeJsonLd, structuredData } from '../lib/seo';
 import '@fontsource/great-vibes/latin-400.css';
 import '../styles/global.css';
 
 interface Props { title?: string; description?: string; image?: string; noindex?: boolean; }
 const settings = await getSettings();
-const defaultSocialImage = await getImage({ src: danielaPlaying, width: 1200, height: 630, fit: 'cover', position: 'center', format: 'webp', quality: 85 });
+const defaultSocialImage = await getImage({ src: profil1, width: 1200, height: 630, fit: 'cover', position: 'center', format: 'webp', quality: 85 });
 const favicon = await getImage({ src: handpanLogo, width: 96, height: 96, fit: 'contain', format: 'png' });
-const brandName = 'Klangfonia';
+const route = routePath(Astro.url.pathname);
+const metadata = pageMetadata[route];
 const defaultTitle = settings.defaultSeoTitle.replaceAll('Klangfonie', brandName);
-const { title = defaultTitle, description = settings.defaultSeoDescription, image = defaultSocialImage.src, noindex = false } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
-const ogImage = new URL(withBase(image), Astro.site ?? Astro.url.origin);
+const {
+  title = metadata?.title ?? defaultTitle,
+  description = metadata?.description ?? settings.defaultSeoDescription,
+  image = defaultSocialImage.src,
+  noindex = false,
+} = Astro.props;
+const site = Astro.site ?? new URL('https://klangfonie.de');
+const canonical = canonicalUrl(Astro.url.pathname, site);
+const ogImage = new URL(withBase(image), site).href;
+const schema = structuredData({ canonical, home: canonicalUrl('/', site), about: canonicalUrl('/ueber-daniela', site), image: ogImage, title, description, route, settings });
+
 ---
 <!doctype html>
 <html lang="de">
@@ -28,6 +38,7 @@ const ogImage = new URL(withBase(image), Astro.site ?? Astro.url.origin);
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <link rel="sitemap" type="application/xml" href={withBase('/sitemap-index.xml')} />
     <link rel="icon" type="image/png" href={withBase(favicon.src)} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="de_DE" />
@@ -36,7 +47,14 @@ const ogImage = new URL(withBase(image), Astro.site ?? Astro.url.origin);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta property="og:image:alt" content="Daniela Schneider – Handpan, Coaching und Musik" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content="Daniela Schneider – Handpan, Coaching und Musik" />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
+    {!noindex && <script type="application/ld+json" set:html={serializeJsonLd(schema)} />}
   </head>
   <body>
     <a class="skip-link" href="#main-content">Zum Inhalt springen</a>

@@ -3,12 +3,13 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
 import RichText from '../components/RichText.astro';
+import VideoSection from '../components/VideoSection.astro';
 import liveImage from '../assets/images/sample-live-handpan.png';
-import { getService, imageUrl } from '../lib/sanity';
-const service = await getService('Live');
+import { getFeaturedVideo, getService, imageUrl } from '../lib/sanity';
+const [service, video] = await Promise.all([getService('Live'), getFeaturedVideo()]);
 const image = imageUrl(service.image, 1200);
 ---
-<BaseLayout title="Live-Musik & Band – Klangfonia" description={service.shortDescription} image={image}>
+<BaseLayout image={image}>
   <section class="page-hero">
     <div class="container page-hero__inner">
       <h1>{service.headline}</h1>
@@ -38,6 +39,7 @@ const image = imageUrl(service.image, 1200);
     </div>
   </section>
 
+  <VideoSection video={video} headline="Ein Moment Musik." text="Lehn dich zurück und hör rein." />
 </BaseLayout>
 
 <style>

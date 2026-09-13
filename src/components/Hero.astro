@@ -1,13 +1,11 @@
 ---
 import { Image } from 'astro:assets';
-import danielaPlaying from '../assets/images/daniela-handpan-playing.png';
+import profil1 from '../assets/images/profil1.png';
 import Button from './Button.astro';
 import type { HomePage } from '../lib/types';
-import { imageUrl } from '../lib/sanity';
 
 interface Props { content: HomePage; }
 const { content } = Astro.props;
-const cmsImage = imageUrl(content.heroImage, 1600, 1300);
 const primaryCtaLabel = content.primaryCtaUrl.includes('/unterricht') ? 'Lernbegleitung entdecken' : content.primaryCtaLabel;
 ---
 <section class="hero">
@@ -21,50 +19,26 @@ const primaryCtaLabel = content.primaryCtaUrl.includes('/unterricht') ? 'Lernbeg
       </div>
     </div>
     <figure class="hero-visual reveal">
-      {cmsImage ? (
-        <img src={cmsImage} alt={content.heroImage?.alt || 'Daniela spielt Handpan'} width="800" height="900" fetchpriority="high" />
-      ) : (
-        <Image src={danielaPlaying} alt="Daniela Schneider spielt im Grünen auf ihrer Handpan" width={1400} height={788} loading="eager" />
-      )}
-      <div class="sound-mark" aria-hidden="true"><i></i><i></i><i></i></div>
+      <Image src={profil1} alt="Daniela Schneider spielt Handpan auf einer Bank im Grünen" widths={[480, 800, 1200, 1600, 1774]} sizes="(min-width: 84rem) 1280px, (min-width: 48rem) calc(100vw - 4rem), calc(100vw - 2rem)" loading="eager" fetchpriority="high" />
       <figcaption><strong>Daniela Schneider</strong><span>Coaching &amp; Musik</span></figcaption>
     </figure>
   </div>
 </section>
 <style>
-  .hero { position: relative; overflow: hidden; padding: clamp(1.75rem, 3vw, 2.75rem) 0; background: radial-gradient(circle at 92% 8%, rgb(196 151 112 / 0.2), transparent 24rem), var(--color-linen); }
-  .hero::after { content: ''; position: absolute; right: -8rem; bottom: -12rem; width: 31rem; height: 31rem; border: 1px solid rgb(165 93 58 / 0.2); border-radius: 50%; pointer-events: none; }
-  .hero-grid { position: relative; z-index: 1; display: grid; gap: clamp(1.75rem, 3.5vw, 3rem); align-items: center; }
-  .hero-copy { position: relative; z-index: 2; }
-  h1 { font-size: clamp(2.5rem, 4.2vw, 3.75rem); max-width: 15ch; text-wrap: balance; }
-  .lead { max-width: 37rem; margin-top: 0.75rem; }
+  .hero { padding: clamp(1rem, 2vw, 2rem) 0 clamp(2rem, 4vw, 3.5rem); background: var(--color-linen); border-bottom: 1px solid var(--color-border); }
+  .hero-grid { display: flex; flex-direction: column; gap: clamp(1.5rem, 3vw, 2.5rem); }
+  .hero-copy { width: 100%; }
+  h1 { font-size: clamp(2.5rem, 4.2vw, 3.75rem); max-width: 24ch; text-wrap: balance; }
+  .lead { max-width: 42rem; margin-top: 0.75rem; }
   .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
-  .hero-visual { position: relative; min-width: 0; margin: 0; }
-  .hero-visual::before { content: ''; position: absolute; inset: -1.25rem 1.5rem 1.25rem -1.25rem; border: 1px solid rgb(165 93 58 / 0.35); border-radius: 2.5rem 11rem 2.5rem 2.5rem; }
-  .hero-visual :global(img) { position: relative; width: 100%; height: auto; aspect-ratio: 3 / 2; border-radius: 2rem 10rem 2rem 2rem; object-fit: cover; object-position: 52% 46%; box-shadow: 0 2rem 5rem rgb(37 42 36 / 0.16); }
-  figcaption { position: absolute; right: 1rem; bottom: 1rem; display: flex; padding: 0.7rem 0.9rem; border-radius: 0.8rem; flex-direction: column; background: rgb(255 253 247 / 0.92); color: var(--color-ink); line-height: 1.2; backdrop-filter: blur(8px); }
+  .hero-visual { order: -1; position: relative; width: 100%; margin: 0; }
+  .hero-visual :global(img) { width: 100%; height: auto; aspect-ratio: 2 / 1; border-radius: var(--radius-lg); object-fit: cover; box-shadow: var(--shadow-soft); }
+  figcaption { position: absolute; right: 1rem; bottom: 1rem; display: flex; flex-direction: column; padding: 0.7rem 1rem; border: 1px solid rgb(255 255 255 / 0.65); border-radius: 0.6rem; background: rgb(255 253 247 / 0.92); color: var(--color-ink); line-height: 1.2; }
   figcaption strong { font-family: var(--font-display); font-size: 1rem; font-weight: 500; }
   figcaption span { margin-top: 0.22rem; color: var(--color-steel); font-size: 0.62rem; font-weight: 750; letter-spacing: 0.09em; text-transform: uppercase; }
-  .sound-mark { position: absolute; bottom: 2.2rem; left: -1.6rem; display: flex; width: 4.8rem; height: 4.8rem; align-items: center; justify-content: center; gap: 0.3rem; border: 5px solid var(--color-linen); border-radius: 50%; background: var(--color-ink); box-shadow: var(--shadow-soft); }
-  .sound-mark i { width: 2px; border-radius: 2px; background: var(--color-sand); }
-  .sound-mark i:nth-child(1) { height: 1rem; }.sound-mark i:nth-child(2) { height: 2rem; }.sound-mark i:nth-child(3) { height: 1.4rem; }
-  @media (min-width: 58rem) { .hero-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .hero-copy { padding-bottom: 1rem; } }
   @media (max-width: 40rem) {
-    .hero { padding-top: 2rem; }
     .hero-actions { align-items: stretch; flex-direction: column; }
-    .hero-visual { margin-top: 0.75rem; }
-    .hero-visual::before { inset: -0.7rem 0.75rem 0.75rem -0.7rem; border-radius: 1.8rem 7rem 1.8rem 1.8rem; }
-    .hero-visual :global(img) { aspect-ratio: 3 / 2; border-radius: 1.4rem 6.5rem 1.4rem 1.4rem; object-position: 52% 50%; }
-    .sound-mark { bottom: 1.7rem; left: -0.8rem; width: 4rem; height: 4rem; border-width: 4px; }
-    figcaption { right: 0.7rem; bottom: 0.7rem; max-width: calc(100% - 4.5rem); }
-  }
-  @media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
-    .hero-visual :global(img) { transition: transform 650ms cubic-bezier(0.22, 1, 0.36, 1); }
-    .hero-visual:hover :global(img) { transform: scale(1.012); }
-    .sound-mark i { transform-origin: center; }
-    .hero-visual:hover .sound-mark i { animation: sound-wave 900ms ease-in-out 2; }
-    .hero-visual:hover .sound-mark i:nth-child(2) { animation-delay: 120ms; }
-    .hero-visual:hover .sound-mark i:nth-child(3) { animation-delay: 240ms; }
-    @keyframes sound-wave { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.5); } }
+    .hero-visual :global(img) { aspect-ratio: 3 / 2; object-position: 30% center; }
+    figcaption { position: static; width: fit-content; margin-top: 0.75rem; }
   }
 </style>
