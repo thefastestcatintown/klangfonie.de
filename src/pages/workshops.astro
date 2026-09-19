@@ -1,6 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CoachingHero from '../components/CoachingHero.astro';
+import '../styles/coaching.css';
 import Button from '../components/Button.astro';
 import advancedWorkshopImage from '../assets/images/sample-advanced-workshop.png';
 import beginnerWorkshopImage from '../assets/images/sample-beginner-workshop.png';
@@ -8,23 +10,16 @@ import { withBase } from '../lib/urls';
 ---
 
 <BaseLayout>
-  <section class="page-hero">
-    <div class="container page-hero__inner">
-      <h1>Workshops</h1>
-      <p class="lead">Die Handpan kennenlernen oder dein Spiel vertiefen: Workshops für Einsteiger und Fortgeschrittene mit Raum für deinen eigenen musikalischen Ausdruck.</p>
-    </div>
-  </section>
+  <div class="coaching-page">
+  <CoachingHero title="Workshops" intro="Die Handpan kennenlernen oder dein Spiel vertiefen: Workshops für Einsteiger und Fortgeschrittene mit Raum für deinen eigenen musikalischen Ausdruck." />
 
   <section class="section workshops" id="workshops">
     <div class="container">
-      <div class="workshops-heading">
-        <h2>Der passende Raum für deinen nächsten Schritt.</h2>
-        <p class="lead">Ob du die Handpan zum ersten Mal berührst oder dein Spiel gezielt vertiefen möchtest: Du findest einen Workshop auf deinem Niveau.</p>
-      </div>
       <div class="workshop-grid">
-        <article class="workshop-card">
+        <article class="workshop-card coaching-card">
           <div class="workshop-image"><Image src={beginnerWorkshopImage} alt="Erste Spielversuche bei einem Handpan-Workshop" width={1200} /></div>
           <div class="workshop-content">
+            <p class="coaching-eyebrow">Für Einsteiger</p>
             <h2>Deine erste Reise mit der Handpan</h2>
             <div class="prose">
               <p>Du möchtest die Handpan kennenlernen und herausfinden, was in diesem faszinierenden Instrument steckt?</p>
@@ -45,9 +40,10 @@ import { withBase } from '../lib/urls';
           </div>
         </article>
 
-        <article class="workshop-card">
+        <article class="workshop-card coaching-card">
           <div class="workshop-image"><Image src={advancedWorkshopImage} alt="Fortgeschrittenes, ausdrucksstarkes Handpan-Spiel" width={1200} /></div>
           <div class="workshop-content">
+            <p class="coaching-eyebrow">Für Fortgeschrittene</p>
             <h2>Dein Spiel. Dein Ausdruck. Dein nächster Schritt.</h2>
             <div class="prose">
               <p>Du spielst bereits Handpan und möchtest dein Spiel vertiefen, neue Impulse bekommen und deinen eigenen musikalischen Ausdruck weiterentwickeln?</p>
@@ -69,27 +65,20 @@ import { withBase } from '../lib/urls';
     </div>
   </section>
 
+  </div>
 </BaseLayout>
 
 <style>
   .workshop-grid {
     display: grid;
-    gap: 2rem;
-    margin-top: 1.5rem;
+    gap: var(--coaching-gap);
   }
 
-  .workshops-heading { display: grid; gap: 1.25rem; }
-  .workshops-heading h2 { max-width: 22ch; }
-  .workshops-heading .lead { max-width: 38rem; }
 
   .workshop-card {
     display: flex;
     overflow: hidden;
     flex-direction: column;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    background: var(--color-linen);
-    box-shadow: var(--shadow-soft);
   }
 
   .workshop-image {
@@ -99,7 +88,7 @@ import { withBase } from '../lib/urls';
   .workshop-image :global(img) { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
 
   .workshop-content { display: flex; flex: 1; flex-direction: column; padding: clamp(1.25rem, 2vw, 1.75rem); }
-  .workshop-content h2 { font-size: clamp(1.75rem, 2.4vw, 2.5rem); }
+  .workshop-content h2 { margin-top: 0.65rem; }
 
 
   .workshop-content .prose { margin-top: 1rem; }
@@ -112,5 +101,5 @@ import { withBase } from '../lib/urls';
   .card-action { margin-top: auto; padding-top: 2rem; }
 
 
-  @media (min-width: 54rem) { .workshops-heading { grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.7fr); align-items: end; } .workshop-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 54rem) { .workshop-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 </style>

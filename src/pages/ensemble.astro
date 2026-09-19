@@ -1,99 +1,50 @@
 ---
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Button from '../components/Button.astro';
+import CoachingHero from '../components/CoachingHero.astro';
+import '../styles/coaching.css';
 import ensembleImage from '../assets/images/sample-handpan-ensemble.png';
-import { withBase } from '../lib/urls';
 ---
 
 <BaseLayout>
-  <section class="page-hero">
-    <div class="container page-hero__inner">
-      <h1>Big Band</h1>
-      <p class="lead">Gemeinsam musizieren, eigene Ideen einbringen und als Big Band wachsen – vom ersten Schnuppertreffen bis auf die Bühne.</p>
-    </div>
-  </section>
+  <div class="coaching-page">
+  <CoachingHero title="Big Band" intro="Gemeinsam musizieren, eigene Ideen einbringen und als Big Band wachsen – vom ersten Schnuppertreffen bis auf die Bühne." />
 
-  <section class="section section--linen" id="ensemble">
+  <section class="section" id="ensemble">
     <div class="container">
-      <div class="section-heading">
-        <h2>Begegnung und Austausch stehen bei uns an erster Stelle.</h2>
-      </div>
-
-      <div class="ensemble-layout">
-        <div class="ensemble-image"><Image src={ensembleImage} alt="Drei Menschen musizieren gemeinsam auf Handpans" width={1200} /></div>
-        <div class="prose ensemble-copy">
-          <h3>Begegnung, Austausch und gemeinsames Musizieren</h3>
-          <p>Wenn du Lust hast, dich regelmäßig mit anderen Handpan-Artists zu treffen, gemeinsam Musik zu entwickeln, deine eigenen Ideen einzubringen und dich inspirieren zu lassen, bist du herzlich willkommen. Zum Kennenlernen kannst du gerne zunächst ein unverbindliches Schnuppertreffen vereinbaren.</p>
-          <p>Gemeinsam entwickeln wir ein abwechslungsreiches Auftrittsprogramm, in dem sowohl ein- und mehrstimmige Patterns als auch Solostücke ihren Platz finden. Dabei geht es nicht nur darum, gemeinsam zu spielen, sondern auch darum, musikalisch miteinander zu wachsen und unsere unterschiedlichen Ideen und Spielweisen zu einem gemeinsamen Klangbild zu verbinden.</p>
-        </div>
-      </div>
+      <div class="ensemble-image"><Image src={ensembleImage} alt="Drei Menschen musizieren gemeinsam auf Handpans" width={1600} /></div>
 
       <div class="ensemble-points">
-        <article>
-          <span>01</span>
-          <h3>Rhythmus und Flow</h3>
+        <article class="coaching-card">
+          <h2>Begegnung, Austausch und gemeinsames Musizieren</h2>
+          <p>Wenn du Lust hast, dich regelmäßig mit anderen Handpan-Artists zu treffen, gemeinsam Musik zu entwickeln, deine eigenen Ideen einzubringen und dich inspirieren zu lassen, bist du herzlich willkommen. Zum Kennenlernen kannst du gerne zunächst ein unverbindliches Schnuppertreffen vereinbaren.</p>
+          <p>Gemeinsam entwickeln wir ein abwechslungsreiches Auftrittsprogramm, in dem sowohl ein- und mehrstimmige Patterns als auch Solostücke ihren Platz finden. Dabei geht es nicht nur darum, gemeinsam zu spielen, sondern auch darum, musikalisch miteinander zu wachsen und unsere unterschiedlichen Ideen und Spielweisen zu einem gemeinsamen Klangbild zu verbinden.</p>
+        </article>
+        <article class="coaching-card">
+          <h2>Rhythmus, Timing und musikalischer Flow</h2>
           <p>Beim Warm-up mit Bodypercussion nähern wir uns spielerisch den rhythmischen Figuren der Patterns an und trainieren dabei Koordination, Timing und Körpergefühl. Das zunächst langsame Übertragen auf die Handpan, die schrittweise Wiederholung einzelner Takte im Loop und das meditative Eingrooven in einen stabilen Beat spielen dabei eine zentrale Rolle.</p>
+          <p>Die Stücke werden gefilmt und ich notiere sie sowohl in Zahlenschrift als auch mit Notennamen und klassischer Notenschrift. So können wir musikalische Ideen festhalten, weiterentwickeln und auch nach und nach zu einem gemeinsamen Repertoire ausbauen.</p>
           <p>Im kreativen Prozess erfährst du, wie elegante Übergänge zwischen Strophe und Refrain entstehen und wie sich durch progressive Variationen der Melodie-Patterns ein musikalischer Spannungsbogen entwickeln lässt. Wir experimentieren mit Dynamik, Zusammenspiel und Ausdruck und entdecken dabei, wie aus einzelnen Patterns ein lebendiges gemeinsames Stück entsteht.</p>
         </article>
-        <article>
-          <span>02</span>
-          <h3>Festhalten und wachsen</h3>
-          <p>Die Stücke werden gefilmt und ich notiere sie sowohl in Zahlenschrift als auch mit Notennamen und klassischer Notenschrift. So können wir musikalische Ideen festhalten, weiterentwickeln und nach und nach zu einem gemeinsamen Repertoire ausbauen.</p>
-        </article>
-        <article>
-          <span>03</span>
-          <h3>Vom Probenraum auf die Bühne</h3>
+        <article class="coaching-card">
+          <h2>Von dem Probenraum auf die Bühne</h2>
           <p>Ein weiterer wichtiger Bestandteil ist die Bühnenerfahrung. Die gemeinsam erarbeiteten Stücke tragen wir vom Proberaum auf die Bühne. Dabei kannst du Erfahrungen mit dem gemeinsamen Auftreten sammeln, Sicherheit on stage gewinnen und erleben, wie sich unsere Musik im Zusammenspiel mit einem Publikum entfaltet.</p>
           <p>Ob du bereits Bühnenerfahrung mitbringst oder deine ersten Schritte in diese Richtung machen möchtest – beides ist willkommen. Im Mittelpunkt steht die Freude am gemeinsamen Musizieren und die Bereitschaft, sich aufeinander einzulassen.</p>
-          <p>Wenn dich das anspricht, melde dich gerne! Wir freuen uns über Verstärkung, neue musikalische Impulse und vor allem auf viele schöne gemeinsame Momente mit der Handpan.</p>
+          <p>Wenn dich das anspricht, melde dich gerne! Ich/wir freuen uns über Verstärkung, neue musikalische Impulse und vor allem auf viele schöne gemeinsame Momente mit der Handpan.</p>
         </article>
       </div>
-      <div class="ensemble-action"><Button href={withBase('/kontakt?interesse=ensemble')} variant="secondary">Schnuppertreffen anfragen</Button></div>
     </div>
   </section>
 
+  </div>
 </BaseLayout>
 
 <style>
-  .section-heading { max-width: 58rem; }
-  .section-heading h2 { text-wrap: balance; }
-
-  .ensemble-layout {
-    display: grid;
-    gap: clamp(1.75rem, 3vw, 3rem);
-    align-items: start;
-    margin-top: 1.5rem;
-  }
-
-  .ensemble-image {
-    overflow: hidden;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-soft);
-  }
-
-  .ensemble-image :global(img) { width: 100%; height: auto; }
-
-  .ensemble-copy h3:first-child { margin-top: 0; }
-
-  .ensemble-points {
-    display: grid;
-    gap: 1rem;
-    margin-top: clamp(1.5rem, 3vw, 2.5rem);
-  }
-
-  .ensemble-points article {
-    padding: clamp(1.25rem, 2vw, 1.75rem);
-    border: 1px solid rgb(38 53 47 / 0.1);
-    border-radius: var(--radius-md);
-    background: rgb(255 253 247 / 0.62);
-  }
-
-  .ensemble-points article > span { display: block; margin-bottom: 1rem; color: var(--color-clay); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; }
-  .ensemble-points h3 { font-size: clamp(1.65rem, 2.3vw, 2.1rem); }
-  .ensemble-points p { margin-top: 1rem; color: var(--color-steel); font-size: 0.95rem; }
-  .ensemble-action { margin-top: 2rem; }
-
-
-  @media (min-width: 54rem) { .ensemble-layout { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); } .ensemble-image { position: sticky; top: 9rem; } .ensemble-points { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .ensemble-image { overflow: hidden; border: 1px solid var(--color-border); border-radius: var(--radius-lg); }
+  .ensemble-image :global(img) { width: 100%; height: auto; aspect-ratio: 16 / 7; object-fit: cover; }
+  .ensemble-points { display: grid; gap: var(--coaching-gap); margin-top: var(--coaching-gap); }
+  .ensemble-points article { padding: clamp(1.25rem, 2vw, 2rem); }
+  .ensemble-points p { margin-top: 1rem; color: var(--color-steel); }
+  @media (min-width: 64rem) { .ensemble-points { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 38rem) { .ensemble-image :global(img) { aspect-ratio: 4 / 3; } }
 </style>

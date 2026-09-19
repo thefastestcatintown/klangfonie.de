@@ -1,0 +1,17 @@
+---
+import { coachingLinks } from '../lib/navigation';
+import { routePath, withBase } from '../lib/urls';
+interface Props { title: string; intro: string; }
+const { title, intro } = Astro.props;
+const current = routePath(Astro.url.pathname);
+---
+<section class="page-hero coaching-hero">
+  <div class="container page-hero__inner">
+    <p class="coaching-eyebrow">Handpan · Coaching</p>
+    <h1>{title}</h1>
+    <p class="lead">{intro}</p>
+    <nav class="coaching-tabs" aria-label="Coaching-Angebote">
+      {coachingLinks.map(({ href, label }) => <a href={withBase(href)} aria-current={current === href ? 'page' : undefined}>{label}</a>)}
+    </nav>
+  </div>
+</section>

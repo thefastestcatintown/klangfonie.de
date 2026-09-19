@@ -1,7 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Button from '../components/Button.astro';
+import CoachingHero from '../components/CoachingHero.astro';
+import '../styles/coaching.css';
 import learningImage from '../assets/images/sample-learning-guidance.png';
 import { getService, imageUrl } from '../lib/sanity';
 const service = await getService('Unterricht');
@@ -9,12 +10,8 @@ const image = imageUrl(service.image, 1200);
 ---
 
 <BaseLayout image={image}>
-  <section class="page-hero">
-    <div class="container page-hero__inner">
-      <h1 class="learning-title"><span class="learning-title-word">Lernbegleitung</span> <span class="learning-title-ratio">1:1</span></h1>
-      <p class="lead">Ein persönlicher, klarer Weg zum Instrument – in deinem Tempo und mit Raum für Ideen und Wünsche, die dir entsprechen. Lernbegleitung für Anfänger und Fortgeschrittene.</p>
-    </div>
-  </section>
+  <div class="coaching-page">
+  <CoachingHero title="Lernbegleitung 1:1" intro="Dein persönlicher Weg zur Handpan – in deinem Tempo und mit Raum für Ideen und Wünsche, die dir entsprechen. Lernbegleitung für Anfänger und Fortgeschrittene." />
 
   <section class="section" id="einzelbegleitung">
     <div class="container rich-layout">
@@ -33,7 +30,6 @@ const image = imageUrl(service.image, 1200);
       </aside>
 
       <div>
-        <h2 class="section-title">Spielen lernen, das zu dir passt.</h2>
         <div class="prose">
           <p>Vielleicht bringst du bereits musikalische Vorerfahrung mit und wünschst dir Feedback und neue Inspirationen. Vielleicht hast du noch nie ein Instrument gespielt. Vielleicht steht deine erste Handpan bereits zuhause und du fragst dich: Und jetzt?</p>
           <p>In der Lernbegleitung 1:1 verbinden wir eine verständliche Struktur mit neugierigem Ausprobieren. Es geht nicht darum, möglichst schnell möglichst viel zu können, sondern einen sicheren, musikalischen Zugang aufzubauen.</p>
@@ -48,21 +44,15 @@ const image = imageUrl(service.image, 1200);
           <li>Freies Spiel und Improvisation</li>
           <li>Komposition und Arrangement</li>
         </ul>
-        <div class="action"><Button href={service.ctaUrl}>Lernbegleitung anfragen</Button></div>
+
       </div>
     </div>
   </section>
 
+  </div>
 </BaseLayout>
 
 <style>
-  .page-hero .learning-title { display: flex; align-items: baseline; gap: 0.3em; max-width: 100%; font-size: clamp(1rem, 4.6vw, 4.5rem); line-height: 1.4; white-space: nowrap; }
-  .learning-title-word { display: block; }
-  .learning-title-word::first-letter { color: var(--color-clay); font-family: var(--font-accent); font-size: 1.24em; letter-spacing: 0; line-height: 1.5; }
-  .learning-title-ratio { display: block; flex-shrink: 0; }
-
-  .section-title { max-width: 20ch; margin-bottom: 1rem; font-size: clamp(2rem, 3vw, 2.75rem); }
-
   .topic-list {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -87,7 +77,6 @@ const image = imageUrl(service.image, 1200);
     color: var(--color-clay);
   }
 
-  .action { margin-top: 2rem; }
 
   @media (max-width: 38rem) { .topic-list { grid-template-columns: 1fr; } }
 </style>

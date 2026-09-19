@@ -2,7 +2,6 @@
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
-import RichText from '../components/RichText.astro';
 import VideoSection from '../components/VideoSection.astro';
 import liveImage from '../assets/images/sample-live-handpan.png';
 import { getFeaturedVideo, getService, imageUrl } from '../lib/sanity';
@@ -12,8 +11,8 @@ const image = imageUrl(service.image, 1200);
 <BaseLayout image={image}>
   <section class="page-hero">
     <div class="container page-hero__inner">
-      <h1>{service.headline}</h1>
-      <p class="lead">Musik, die einem Anlass eine eigene Farbe gibt – solo, gemeinsam mit anderen Musiker:innen oder als fein abgestimmte Begleitung.</p>
+      <h1>Musik für besondere Räume</h1>
+      <p class="lead">Daniela Schneider entführt das Publikum in eine besondere Klangwelt, in der Rhythmus und Melodie miteinander verschmelzen. Im Mittelpunkt steht die Handpan mit ihren warmen, facettenreichen Klängen und perkussiven Effekten. Daraus entsteht eine Musik, die zugleich erdig und schwebend, kraftvoll und feinfühlig wirkt.</p>
     </div>
   </section>
 
@@ -27,13 +26,12 @@ const image = imageUrl(service.image, 1200);
         )}
       </div>
       <div>
-        <RichText value={service.body} fallback={['Ob intimes Konzert, Retreat, Empfang oder besonderer Moment: Die musikalische Form entsteht passend zum Raum und zu den Menschen darin.', 'Je nach Anlass spielt Daniela solo oder entwickelt gemeinsam mit weiteren Musiker:innen ein passendes Set.']} />
-        <ul class="live-list">
-          <li>Konzerte & kleine Bühnen</li>
-          <li>Retreats & Kulturveranstaltungen</li>
-          <li>Feiern & besondere Momente</li>
-          <li>Solo oder im Ensemble</li>
-        </ul>
+        <div class="prose">
+          <p>Mit großer Spielfreude verbindet Daniela Schneider melodische Linien mit pulsierenden Rhythmen, sphärischen Klängen und treibenden Grooves. Sanfte, meditative Passagen wechseln sich mit lebendigen und bewegenden Momenten ab. Aus wenigen Tönen entstehen weit schwingende Klangbilder, die sich immer wieder verdichten, verändern und neue musikalische Räume eröffnen.</p>
+          <p>Die Eigenkompositionen von Daniela Schneider erzählen ihre eigenen Geschichten. Manche Stücke erinnern an ferne Landschaften und Kulturen, andere lassen Bilder, Bewegungen oder ganz eigene innere Welten entstehen. Ihre charmante Moderation gibt den Kompositionen zusätzliche Persönlichkeit und lässt das Publikum auch an den Gedanken und dem Humor hinter der Musik teilhaben.</p>
+          <p>Daniela Schneider und ihr Soloprogramm – eine musikalische Reise zwischen sphärischen Melodien, erdigen Grooves, archaischen Rhythmen und meditativer Klangfülle. Musik zum Eintauchen, Lauschen, Träumen und Mitgehen – mal ruhig und schwebend, mal voller Energie und Lebensfreude.</p>
+          <p>Die Handpan-Musik von Daniela Schneider kann individuell für unterschiedlichste Anlässe und besondere Momente gebucht werden – von Yogastunden, Retreats und Klangevents über musikalische Begleitung in Wellnessorten und bei Trauerfeiern bis hin zu Privatkonzerten, Geburtstagen und anderen persönlichen Feierlichkeiten. Mit ihrer vielseitigen Klangsprache schafft sie den passenden musikalischen Raum – achtsam, berührend und immer auf den jeweiligen Anlass abgestimmt.</p>
+        </div>
         <Button href={service.ctaUrl}>Live-Musik anfragen</Button>
       </div>
     </div>
@@ -41,7 +39,3 @@ const image = imageUrl(service.image, 1200);
 
   <VideoSection video={video} headline="Ein Moment Musik." text="Lehn dich zurück und hör rein." />
 </BaseLayout>
-
-<style>
-  .live-list { margin: 2rem 0; padding-left: 1.2rem; color: var(--color-ink); }
-</style>
