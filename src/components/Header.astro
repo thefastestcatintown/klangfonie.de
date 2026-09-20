@@ -71,14 +71,14 @@ const navigation = navigationLinks.map((item) => ({ ...item, href: withBase(item
   window.addEventListener('resize', () => { if (window.innerWidth >= 960) closeMenu(); });
 </script>
 <style>
-  .site-header { --header-height: 8rem; position: sticky; top: 0; z-index: 50; border-bottom: 1px solid var(--color-border); background: rgb(252 250 245 / 0.94); backdrop-filter: blur(16px); }
+  .site-header { --header-height: 6.5rem; position: sticky; top: 0; z-index: 50; border-bottom: 1px solid var(--color-border); background: rgb(252 250 245 / 0.94); backdrop-filter: blur(16px); }
   .header-inner { display: flex; min-height: var(--header-height); align-items: center; justify-content: space-between; padding-block: 0.25rem; }
-  .brand { --brand-scale: 0.78; display: inline-flex; align-items: center; gap: 0.75rem; flex-shrink: 0; color: var(--color-ink); font-family: var(--font-display); font-size: 1.7rem; letter-spacing: -0.025em; text-decoration: none; }
+  .brand { --brand-scale: 0.7; display: inline-flex; align-items: center; gap: 0.75rem; flex-shrink: 0; color: var(--color-ink); font-family: var(--font-display); font-size: 1.7rem; letter-spacing: -0.025em; text-decoration: none; }
 
   .navigation { display: flex; align-items: center; gap: clamp(1rem, 2.2vw, 2rem); }
-  .navigation > a { position: relative; color: var(--color-ink); font-size: 0.85rem; font-weight: 700; text-decoration: none; }
+  .navigation > a { padding-block: 0.65rem; position: relative; color: var(--color-ink); font-size: 0.85rem; font-weight: 700; text-decoration: none; }
   .navigation > a::after, .coaching-menu summary::after {
-    content: ''; position: absolute; right: 0; bottom: -0.6rem; left: 0; height: 0.3rem; pointer-events: none;
+    content: ''; position: absolute; right: 0; bottom: 0; left: 0; height: 0.3rem; pointer-events: none;
     background:
       radial-gradient(circle, var(--color-clay) 65%, transparent 75%) center / 0.3rem 0.3rem no-repeat,
       linear-gradient(var(--color-clay), var(--color-clay)) left center / calc(50% - 0.35rem) 1px no-repeat,
@@ -87,7 +87,7 @@ const navigation = navigationLinks.map((item) => ({ ...item, href: withBase(item
   }
   .navigation > a:hover::after, .navigation > a[aria-current]::after, .coaching-menu.is-current summary::after, .coaching-menu summary:hover::after { opacity: 1; transform: scaleX(1); }
   .coaching-menu { position: relative; }
-  .coaching-menu summary { position: relative; display: flex; align-items: center; gap: 0.45rem; color: var(--color-ink); font-size: 0.85rem; font-weight: 700; cursor: pointer; list-style: none; }
+  .coaching-menu summary { padding-block: 0.65rem; position: relative; display: flex; align-items: center; gap: 0.45rem; color: var(--color-ink); font-size: 0.85rem; font-weight: 700; cursor: pointer; list-style: none; }
   .coaching-menu summary::-webkit-details-marker { display: none; }
   .coaching-menu.is-current summary, .coaching-menu summary:hover { color: var(--color-clay); }
   .chevron { transition: transform 180ms ease; }
@@ -100,7 +100,7 @@ const navigation = navigationLinks.map((item) => ({ ...item, href: withBase(item
   .menu-button i { display: block; width: 1.5rem; height: 1px; margin: 0.4rem auto; background: var(--color-ink); transition: transform 180ms ease; }
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
   @media (max-width: 59.99rem) {
-    .site-header { --header-height: 7rem; }
+    .site-header { --header-height: 5.75rem; }
     .header-inner { padding-block: 0.25rem; }
     .brand { font-size: 1.5rem; }
 
@@ -117,7 +117,7 @@ const navigation = navigationLinks.map((item) => ({ ...item, href: withBase(item
 
   }
   @media (max-width: 24rem) {
-    .site-header { --header-height: 7rem; }
+    .site-header { --header-height: 5.75rem; }
     .header-inner { padding-block: 0.25rem; }
     .brand { gap: 0.3rem; font-size: 1.3rem; }
 

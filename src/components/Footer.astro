@@ -7,19 +7,22 @@ import { footerLinks } from '../lib/navigation';
 interface Props { settings: SiteSettings; }
 const { settings } = Astro.props;
 const year = new Date().getFullYear();
+const hasContact = Boolean(settings.email || settings.phone);
+const hasSocials = Boolean(settings.instagram || settings.youtube);
+const footerColumns = 1 + Number(hasContact) + Number(hasSocials);
 ---
 <footer class="footer">
-  <div class:list={['container', 'footer-grid', { 'footer-grid--with-socials': settings.instagram || settings.youtube }] }>
+  <div class="container footer-grid" style={`--footer-columns: ${footerColumns}`}>
     <div>
       <a class="footer-brand" href={withBase('/')} aria-label="Klangfonia – Startseite">
         <Image class="footer-logo" src={footerLogo} alt="Klangfonia.de – Schwing dich frei – Daniela Schneider" width={400} densities={[1, 2]} format="png" />
       </a>
       <p>Handpan · Musik · Begegnung</p>
     </div>
-    <div>
+    {hasContact && <div class="footer-contact">
       {settings.email && <a href={`mailto:${settings.email}`}>{settings.email}</a>}
       {settings.phone && <a href={`tel:${settings.phone.replace(/\s/g, '')}`}>{settings.phone}</a>}
-    </div>
+    </div>}
     <div>
       <p class="footer-label">Entdecken</p>
       {footerLinks.map((item) => <a href={withBase(item.href)}>{item.label}</a>)}
@@ -38,20 +41,20 @@ const year = new Date().getFullYear();
   </div>
 </footer>
 <style>
-  .footer { padding: 2rem 0 1.25rem; border-top: 1px solid var(--color-border); background: linear-gradient(135deg, #cbd4c2, var(--color-footer)); color: var(--color-ink); }
-  .footer-grid { display: grid; gap: 1.5rem; }
-  .footer-grid > div { display: flex; align-items: flex-start; flex-direction: column; }
-  .footer a { color: inherit; text-decoration: none; }
+  .footer { padding: clamp(2.5rem, 5vw, 4rem) 0 1.5rem; border-top: 1px solid var(--color-border); background: linear-gradient(135deg, #cbd4c2, var(--color-footer)); color: var(--color-ink); }
+  .footer-grid { display: grid; gap: 2.5rem; }
+  .footer-grid > div { display: flex; align-items: flex-start; flex-direction: column; min-width: 0; }
+  .footer a { padding-block: 0.2rem; overflow-wrap: anywhere; color: inherit; text-decoration: none; }
   .footer a:hover { color: var(--color-clay-dark); text-decoration: underline; text-underline-offset: 0.25em; }
   .footer-brand { max-width: 100%; display: inline-flex; align-items: center; gap: 0.65rem; margin-bottom: 0.5rem; color: var(--color-ink) !important; font-family: var(--font-display); font-size: 2rem; letter-spacing: -0.035em; }
-  .footer-logo { display: block; width: 25rem; max-width: 100%; height: auto; }
+  .footer-logo { display: block; width: 20rem; max-width: 100%; height: auto; }
 
   .footer-label { margin-bottom: 0.75rem; color: var(--color-ink); font-size: 0.72rem; font-weight: 750; letter-spacing: 0.14em; text-transform: uppercase; }
-  .footer-bottom { display: flex; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgb(38 53 47 / 0.2); align-items: center; justify-content: space-between; gap: 1rem; font-size: 0.8rem; }
+  .footer-bottom { display: flex; margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid rgb(38 53 47 / 0.2); align-items: center; justify-content: space-between; gap: 1rem; font-size: 0.8rem; }
   .footer-bottom div { display: flex; gap: 1.25rem; }
-  @media (min-width: 40rem) {
-    .footer-grid { grid-template-columns: 2fr repeat(2, 1fr); }
-    .footer-grid--with-socials { grid-template-columns: 2fr repeat(3, 1fr); }
+  .footer-contact { gap: 0.5rem; }
+  @media (min-width: 60rem) {
+    .footer-grid { grid-template-columns: minmax(0, 1.6fr) repeat(var(--footer-columns), minmax(0, 1fr)); }
   }
   @media (max-width: 32rem) { .footer-brand { font-size: 1.65rem; }  .footer-bottom { align-items: flex-start; flex-direction: column; } }
 </style>

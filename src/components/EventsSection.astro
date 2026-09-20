@@ -44,7 +44,7 @@ const sanityDataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
 <style>
   section { background: var(--color-white); }
   .events { display: grid; margin-top: 1.25rem; border-top: 1px solid var(--color-border); }
-  .events :global(article) { display: grid; gap: 1rem; padding: 1.25rem 0; border-bottom: 1px solid var(--color-border); }
+  .events :global(article) { display: grid; gap: 1rem; padding: 1.75rem 0; border-bottom: 1px solid var(--color-border); }
   .events :global(time) { color: var(--color-clay); font-size: 0.82rem; font-weight: 700; }
   .events :global(h3) { font-size: 1.5rem; }
   .events :global(p) { color: var(--color-steel); }
@@ -52,7 +52,8 @@ const sanityDataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
   .events :global(.event-image) { width: 100%; aspect-ratio: 3 / 2; border-radius: 1rem; object-fit: cover; }
   .events :global(.event-location) { margin-top: 0.4rem; color: var(--color-ink); font-weight: 700; }
   .events :global(a) { align-self: start; color: var(--color-ink); font-weight: 700; }
-  .events :global(.events-empty) { padding: 1.25rem 0; border-bottom: 1px solid var(--color-border); font-size: 1.05rem; }
+  .events :global(.events-empty) { padding: 1.75rem 0; border-bottom: 1px solid var(--color-border); font-size: 1.05rem; }
   @media (min-width: 40rem) { .events :global(.event-details.has-image) { grid-template-columns: minmax(10rem, 15rem) 1fr; } }
-  @media (min-width: 48rem) { .events :global(article) { grid-template-columns: 12rem 1fr auto; } }
+  @media (min-width: 48rem) { .events :global(article) { grid-template-columns: 10rem minmax(0, 1fr); column-gap: 2rem; } }
+  @media (min-width: 70rem) { .events :global(article) { grid-template-columns: 10rem minmax(0, 1fr) auto; } }
 </style>

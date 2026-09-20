@@ -1,17 +1,17 @@
 /* Shared visual language for the three coaching offers. */
-.coaching-page { --coaching-gap: clamp(1.5rem, 3vw, 2.5rem); }
-.coaching-page .coaching-hero { padding-block: clamp(2.5rem, 5vw, 4.5rem) 0; }
+.coaching-page { --coaching-gap: var(--layout-gap); }
+.coaching-page .coaching-hero { padding-block: var(--hero-space) 0; }
 .coaching-eyebrow { color: var(--color-clay-dark); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; }
-.coaching-hero h1 { max-width: 100%; font-size: clamp(2rem, 4.8vw, 4rem); }
+.coaching-hero h1 { max-width: 24ch; }
 .coaching-hero .lead { max-width: 46rem; }
-.coaching-tabs { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; padding-bottom: 1.25rem; }
+.coaching-tabs { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; padding-bottom: 1.75rem; }
 .coaching-tabs a { padding: 0.65rem 1rem; border: 1px solid var(--color-border); border-radius: 99rem; font-size: 0.85rem; text-decoration: none; background: var(--color-white); }
 .coaching-tabs a:hover { border-color: var(--color-clay); }
 .coaching-tabs a[aria-current='page'] { background: var(--color-ink); border-color: var(--color-ink); color: var(--color-white); }
-.coaching-page > .section { padding-block: clamp(2.5rem, 5vw, 4.5rem); }
+.coaching-page > .section { padding-block: var(--section-space); }
 .coaching-page .prose { line-height: 1.8; }
 .coaching-page .rich-layout { gap: var(--coaching-gap); }
-.coaching-page .feature-image { box-shadow: none; }
+.coaching-page .feature-image { box-shadow: var(--shadow-soft); }
 .coaching-page .feature-image img { aspect-ratio: 4 / 3; object-fit: cover; }
 .coaching-page .coaching-card { overflow: hidden; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-linen); box-shadow: none; }
 .coaching-page .coaching-card h2, .coaching-page .coaching-card h3 { padding: 0; font-size: clamp(1.4rem, 2vw, 1.8rem); line-height: 1.35; text-wrap: balance; overflow-wrap: normal; hyphens: auto; }

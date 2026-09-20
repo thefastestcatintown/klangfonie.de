@@ -26,16 +26,22 @@ const primaryCtaLabel = content.primaryCtaUrl.includes('/unterricht') ? 'Lernbeg
 </section>
 <style>
   .hero { padding: clamp(1rem, 2vw, 2rem) 0 clamp(2rem, 4vw, 3.5rem); background: var(--color-linen); border-bottom: 1px solid var(--color-border); }
-  .hero-grid { display: flex; flex-direction: column; gap: clamp(1.5rem, 3vw, 2.5rem); }
-  .hero-copy { width: 100%; }
+  .hero-grid { display: flex; flex-direction: column; gap: clamp(2rem, 4vw, 3.5rem); }
+  .hero-copy { width: 100%; padding-bottom: 1rem; }
   h1 { font-size: clamp(2.5rem, 4.2vw, 3.75rem); max-width: 24ch; text-wrap: balance; }
   .lead { max-width: 42rem; margin-top: 0.75rem; }
   .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
   .hero-visual { order: -1; position: relative; width: 100%; margin: 0; }
   .hero-visual :global(img) { width: 100%; height: auto; aspect-ratio: 2 / 1; border-radius: var(--radius-lg); object-fit: cover; box-shadow: var(--shadow-soft); }
-  figcaption { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.4rem 1.25rem; margin-top: 1rem; padding-left: 1rem; border-left: 2px solid var(--color-clay); color: var(--color-ink); line-height: 1.5; }
+  figcaption { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.4rem 1.25rem; margin-top: 1rem; padding-left: 1rem; border-left: 1px solid var(--color-clay); color: var(--color-ink); line-height: 1.5; }
   figcaption strong { font-family: var(--font-display); font-size: clamp(1.05rem, 1.6vw, 1.3rem); font-weight: 400; letter-spacing: -0.025em; }
   figcaption span { color: var(--color-steel); font-size: 0.8rem; font-weight: 400; letter-spacing: 0.04em; }
+  @media (min-width: 64rem) {
+    .hero-copy { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); column-gap: var(--layout-gap); align-items: center; }
+    h1 { grid-row: span 2; }
+    .lead { margin-top: 0; }
+    .hero-actions { margin-top: 1.25rem; }
+  }
   @media (max-width: 40rem) {
     .hero-actions { align-items: stretch; flex-direction: column; }
     .hero-visual :global(img) { aspect-ratio: 3 / 2; object-position: 30% center; }
