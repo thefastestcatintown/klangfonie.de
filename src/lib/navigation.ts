@@ -11,4 +11,4 @@ export const navigationLinks = [
   { href: '/#termine', label: 'Termine' },
 ];
 
-export const footerLinks = [...coachingLinks, ...navigationLinks, { href: '/kontakt', label: 'Kontakt' }];
+export const footerLinks = [{ href: '/unterricht', label: 'Coaching' }, ...navigationLinks, { href: '/kontakt', label: 'Kontakt' }];

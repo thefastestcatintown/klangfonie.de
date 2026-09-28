@@ -23,15 +23,15 @@ const embedUrl = youtubeEmbedUrl(video?.youtubeUrl);
   </div>
 </section>
 <style>
-  .video-section { background: var(--color-linen); color: var(--color-white); }
-  .video-section > .container { padding: clamp(1.25rem, 3vw, 2.5rem); border: 1px solid rgb(255 255 255 / 0.08); border-radius: var(--radius-lg); background: linear-gradient(135deg, #304439, #202f28); box-shadow: var(--shadow-soft); }
+  .video-section { border-block: 1px solid var(--color-border); background: radial-gradient(ellipse at 100% 0%, rgb(185 157 117 / 0.12), transparent 60%), linear-gradient(135deg, var(--color-white), var(--color-linen)); color: var(--color-ink); }
   .video-intro { max-width: 47rem; }
-  h2, .lead { color: var(--color-white); }
-  .lead { margin-top: 0.75rem; opacity: 0.75; }
-  .video-frame { position: relative; overflow: hidden; width: 100%; max-width: 48rem; aspect-ratio: 16 / 9; margin: 1.5rem auto 0; border: 0; border-radius: 0.75rem; background: #000; box-shadow: 0 10px 28px rgb(0 0 0 / 0.16); }
+  .video-intro::before { content: ''; display: block; width: 3rem; height: 1px; margin-bottom: 1.25rem; background: var(--color-clay); }
+  h2 { color: var(--color-ink); }
+  .lead { margin-top: 0.75rem; color: var(--color-steel); }
+  .video-frame { position: relative; overflow: hidden; width: 100%; max-width: 48rem; aspect-ratio: 16 / 9; margin: 1.5rem auto 0; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-linen); box-shadow: var(--shadow-soft); }
   iframe { position: absolute; inset: 0; display: block; width: 100%; height: 100%; border: 0; }
-  .video-placeholder { display: flex; height: 100%; align-items: center; justify-content: center; gap: 1.25rem; padding: 1.5rem; background: radial-gradient(circle at 62% 38%, rgb(142 155 127 / 0.3), transparent 35%), linear-gradient(135deg, #1f2b27, #314039); text-align: left; }
-  .video-placeholder::before { content: ''; position: absolute; width: 21rem; height: 21rem; border: 1px solid rgb(222 209 191 / 0.15); border-radius: 50%; }
+  .video-placeholder { display: flex; height: 100%; align-items: center; justify-content: center; gap: 1.25rem; padding: 1.5rem; background: radial-gradient(circle at 62% 38%, rgb(252 250 245 / 0.7), transparent 60%), linear-gradient(135deg, var(--color-linen), var(--color-sage-soft)); text-align: left; }
+  .video-placeholder::before { content: ''; position: absolute; width: 21rem; height: 21rem; border: 1px solid var(--color-border); border-radius: 50%; }
   .play { display: grid; z-index: 1; width: 4.5rem; height: 4.5rem; flex: 0 0 auto; place-items: center; border-radius: 50%; background: var(--color-clay); color: white; box-shadow: 0 1rem 2rem rgb(0 0 0 / 0.16); }
   .video-placeholder div { z-index: 1; display: flex; flex-direction: column; }.video-placeholder strong { font-family: var(--font-display); font-size: clamp(1.25rem, 3vw, 2rem); font-weight: 400; }.video-placeholder small { opacity: 0.7; }
   @media (min-width: 60rem) {
