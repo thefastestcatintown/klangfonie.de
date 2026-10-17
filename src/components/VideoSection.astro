@@ -1,6 +1,7 @@
 ---
 import type { Video } from '../lib/types';
 import { youtubeEmbedUrl } from '../lib/youtube';
+import { withBase } from '../lib/urls';
 interface Props { video: Video | null; headline: string; text: string; }
 const { video, headline, text } = Astro.props;
 const embedUrl = youtubeEmbedUrl(video?.youtubeUrl);
@@ -12,7 +13,15 @@ const embedUrl = youtubeEmbedUrl(video?.youtubeUrl);
     </div>
     <div class="video-frame">
       {embedUrl ? (
-        <iframe src={embedUrl} title={video?.title || 'Klangfonia Video'} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <div class="video-consent" data-video-consent data-video-src={embedUrl} data-video-title={video?.title || 'Klangfonia Video'}>
+          <span class="play" aria-hidden="true">▶</span>
+          <div class="video-consent__copy">
+            <strong>{video?.title || 'Klangfonia Video'}</strong>
+            <p>Mit dem Laden des Videos stimmst du zu, dass eine Verbindung zu YouTube hergestellt und Daten an Google übertragen werden können.</p>
+            <button type="button" data-video-load>Video von YouTube laden</button>
+            <a href={withBase('/datenschutz')}>Mehr zum Datenschutz</a>
+          </div>
+        </div>
       ) : (
         <div class="video-placeholder">
           <span class="play" aria-hidden="true">▶</span>
@@ -22,6 +31,28 @@ const embedUrl = youtubeEmbedUrl(video?.youtubeUrl);
     </div>
   </div>
 </section>
+
+<script>
+  document.addEventListener('click', (event) => {
+    if (!(event.target instanceof Element)) return;
+    const button = event.target.closest<HTMLButtonElement>('[data-video-load]');
+    if (!button) return;
+    const consent = button.closest<HTMLElement>('[data-video-consent]');
+    const frame = consent?.parentElement;
+    const source = consent?.dataset.videoSrc;
+    if (!consent || !frame || !source) return;
+
+    const iframe = document.createElement('iframe');
+    iframe.src = `${source}&autoplay=1`;
+    iframe.title = consent.dataset.videoTitle || 'Klangfonia Video';
+    iframe.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share';
+    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+    iframe.allowFullscreen = true;
+    frame.replaceChildren(iframe);
+    iframe.focus();
+  });
+</script>
+
 <style>
   .video-section { border-block: 1px solid var(--color-border); background: radial-gradient(ellipse at 100% 0%, rgb(185 157 117 / 0.12), transparent 60%), linear-gradient(135deg, var(--color-white), var(--color-linen)); color: var(--color-ink); }
   .video-intro { max-width: 47rem; }
@@ -30,12 +61,24 @@ const embedUrl = youtubeEmbedUrl(video?.youtubeUrl);
   .lead { margin-top: 0.75rem; color: var(--color-steel); }
   .video-frame { position: relative; overflow: hidden; width: 100%; max-width: 48rem; aspect-ratio: 16 / 9; margin: 1.5rem auto 0; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-linen); box-shadow: var(--shadow-soft); }
   iframe { position: absolute; inset: 0; display: block; width: 100%; height: 100%; border: 0; }
-  .video-placeholder { display: flex; height: 100%; align-items: center; justify-content: center; gap: 1.25rem; padding: 1.5rem; background: radial-gradient(circle at 62% 38%, rgb(252 250 245 / 0.7), transparent 60%), linear-gradient(135deg, var(--color-linen), var(--color-sage-soft)); text-align: left; }
-  .video-placeholder::before { content: ''; position: absolute; width: 21rem; height: 21rem; border: 1px solid var(--color-border); border-radius: 50%; }
+  .video-placeholder, .video-consent { display: flex; height: 100%; align-items: center; justify-content: center; gap: 1.25rem; padding: 1.5rem; background: radial-gradient(circle at 62% 38%, rgb(252 250 245 / 0.7), transparent 60%), linear-gradient(135deg, var(--color-linen), var(--color-sage-soft)); text-align: left; }
+  .video-placeholder::before, .video-consent::before { content: ''; position: absolute; width: 21rem; height: 21rem; border: 1px solid var(--color-border); border-radius: 50%; pointer-events: none; }
   .play { display: grid; z-index: 1; width: 4.5rem; height: 4.5rem; flex: 0 0 auto; place-items: center; border-radius: 50%; background: var(--color-clay); color: white; box-shadow: 0 1rem 2rem rgb(0 0 0 / 0.16); }
   .video-placeholder div { z-index: 1; display: flex; flex-direction: column; }.video-placeholder strong { font-family: var(--font-display); font-size: clamp(1.25rem, 3vw, 2rem); font-weight: 400; }.video-placeholder small { opacity: 0.7; }
+  .video-consent__copy { z-index: 1; display: flex; max-width: 30rem; flex-direction: column; align-items: flex-start; gap: 0.55rem; }
+  .video-consent strong { font-family: var(--font-display); font-size: clamp(1.1rem, 2.4vw, 1.55rem); font-weight: 400; line-height: 1.2; }
+  .video-consent p { color: var(--color-steel); font-size: 0.82rem; line-height: 1.5; }
+  .video-consent button { padding: 0.65rem 1rem; border: 0; border-radius: 99rem; background: var(--color-ink); color: var(--color-white); cursor: pointer; font-weight: 700; }
+  .video-consent button:hover { background: var(--color-clay-dark); }
+  .video-consent button:focus-visible { outline: 3px solid var(--color-clay); outline-offset: 3px; }
+  .video-consent a { color: var(--color-ink); font-size: 0.78rem; }
   @media (min-width: 60rem) {
     .video-section > .container { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); align-items: center; gap: 2.5rem; }
     .video-frame { margin: 0; }
+  }
+  @media (max-width: 32rem) {
+    .video-consent { gap: 0.85rem; padding: 1rem; }
+    .video-consent .play { width: 3rem; height: 3rem; }
+    .video-consent p { font-size: 0.74rem; }
   }
 </style>
