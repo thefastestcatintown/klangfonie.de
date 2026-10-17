@@ -80,7 +80,15 @@ Die lokal eingebundenen Originalaufnahmen von Daniela dienen als hochwertiger Fa
 
 ## Kontaktformular
 
-Das Formular ist vollständig gestaltet und validiert Eingaben im Browser. Es versendet aktuell bewusst nichts und zeigt keine Fake-Erfolgsmeldung. Später kann der Formular-Handler mit Formspree, Netlify Forms oder einer Astro Server Action verbunden werden.
+Das Formular ist vollständig gestaltet, validiert Eingaben im Browser und versendet sie per Formspree, sobald ein Formular-Endpoint konfiguriert ist. Ohne Endpoint nutzt es weiterhin die E-Mail-/Kopierfunktion als Rückfall.
+
+Für den echten Versand wird ein Formspree-Formular verwendet. Lege dort ein Formular mit der gewünschten Empfängeradresse an und hinterlege dessen Endpoint lokal in `.env` sowie für GitHub Pages als Repository-Variable `PUBLIC_CONTACT_FORM_ENDPOINT`:
+
+```env
+PUBLIC_CONTACT_FORM_ENDPOINT=https://formspree.io/f/DEINE_FORMULAR_ID
+```
+
+Ist kein Endpoint gesetzt, fällt das Formular weiterhin auf die vorhandene E-Mail-/Kopierfunktion zurück. Die Empfängeradresse wird bei Formspree verwaltet und kann dort später ohne Codeänderung ausgetauscht werden.
 
 ## Vor dem Livegang
 

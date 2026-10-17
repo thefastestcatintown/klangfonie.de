@@ -28,6 +28,7 @@ jobs:
           PUBLIC_SANITY_DATASET: ${{ vars.PUBLIC_SANITY_DATASET }}
           PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
           PUBLIC_BASE_PATH: ${{ vars.PUBLIC_BASE_PATH }}
+          PUBLIC_CONTACT_FORM_ENDPOINT: ${{ vars.PUBLIC_CONTACT_FORM_ENDPOINT }}
 
   deploy:
     needs: build

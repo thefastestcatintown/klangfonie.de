@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getSettings } from '../lib/sanity';
 const settings = await getSettings();
+const formEndpoint = import.meta.env.PUBLIC_CONTACT_FORM_ENDPOINT?.trim();
 ---
 <BaseLayout>
   <section class="page-hero"><div class="container page-hero__inner"><h1>Erzähl mir, was du vorhast.</h1><p class="lead">Ein paar Zeilen genügen für den Anfang. Ich melde mich persönlich bei dir zurück.</p></div></section>
@@ -15,7 +16,7 @@ const settings = await getSettings();
       {settings.location && <p class="contact-line">{settings.location}</p>}
       {settings.email && <p class="note">Du kannst das Formular nutzen oder Daniela direkt eine E-Mail schreiben.</p>}
     </aside>
-    <form class="contact-form" data-contact-form data-recipient={settings.email || undefined} novalidate>
+    <form class="contact-form" data-contact-form data-endpoint={formEndpoint || undefined} data-recipient={settings.email || undefined} novalidate>
       <div class="field-row">
         <label><span>Name</span><input type="text" name="name" autocomplete="name" required /></label>
         <label><span>E-Mail</span><input type="email" name="email" autocomplete="email" required /></label>
@@ -26,8 +27,9 @@ const settings = await getSettings();
         </select>
       </label>
       <label><span>Nachricht</span><textarea name="message" rows="7" required placeholder="Was möchtest du gerne anfragen?"></textarea></label>
-      <button type="submit">{settings.email ? 'E-Mail vorbereiten' : 'Anfrage kopieren'} <span aria-hidden="true">↗</span></button>
-      <p class="form-status" role="status" data-form-status hidden>{settings.email ? 'Die Nachricht wurde in deinem E-Mail-Programm vorbereitet. Bitte prüfe sie dort und sende sie ab.' : 'Die Anfrage wurde kopiert. Du kannst sie nun in eine E-Mail oder Nachricht einfügen.'}</p>
+      <label class="honeypot" aria-hidden="true">Bitte nicht ausfüllen<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label>
+      <button type="submit"><span data-submit-label>{formEndpoint ? 'Nachricht senden' : settings.email ? 'E-Mail vorbereiten' : 'Anfrage kopieren'}</span> <span aria-hidden="true">↗</span></button>
+      <p class="form-status" role="status" aria-live="polite" tabindex="-1" data-form-status hidden></p>
     </form>
   </div></section>
 </BaseLayout>
@@ -39,6 +41,7 @@ const settings = await getSettings();
     event.preventDefault();
     const form = event.currentTarget as HTMLFormElement;
     if (!form.reportValidity()) return;
+    const endpoint = form.dataset.endpoint;
     const recipient = form.dataset.recipient;
     const data = new FormData(form);
     const name = String(data.get('name') || '').trim();
@@ -47,12 +50,50 @@ const settings = await getSettings();
     const message = String(data.get('message') || '').trim();
     const subject = `Klangfonia – ${selectedInterest}`;
     const body = `Hallo Daniela,\n\n${message}\n\nViele Grüße\n${name}\n${email}`;
+    const status = document.querySelector<HTMLElement>('[data-form-status]');
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const submitLabel = form.querySelector<HTMLElement>('[data-submit-label]');
+
+    if (endpoint && button && submitLabel) {
+      button.disabled = true;
+      submitLabel.textContent = 'Wird gesendet…';
+      if (status) status.hidden = true;
+
+      data.set('_subject', subject);
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          body: data,
+          headers: { Accept: 'application/json' },
+        });
+        if (!response.ok) throw new Error(`Formularversand fehlgeschlagen (${response.status})`);
+
+        form.reset();
+        if (select && interest && [...select.options].some((option) => option.value === interest)) select.value = interest;
+        if (status) {
+          status.textContent = 'Vielen Dank! Deine Nachricht wurde gesendet. Ich melde mich persönlich bei dir zurück.';
+          status.dataset.state = 'success';
+        }
+      } catch {
+        if (status) {
+          status.textContent = 'Die Nachricht konnte gerade nicht gesendet werden. Bitte versuche es noch einmal oder nutze die angegebene E-Mail-Adresse.';
+          status.dataset.state = 'error';
+        }
+      } finally {
+        button.disabled = false;
+        submitLabel.textContent = 'Nachricht senden';
+        if (status) { status.hidden = false; status.focus(); }
+      }
+      return;
+    }
+
     if (recipient) {
       window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      if (status) status.textContent = 'Die Nachricht wurde in deinem E-Mail-Programm vorbereitet. Bitte prüfe sie dort und sende sie ab.';
     } else {
       await navigator.clipboard.writeText(`${subject}\n\n${body}`);
+      if (status) status.textContent = 'Die Anfrage wurde kopiert. Du kannst sie nun in eine E-Mail oder Nachricht einfügen.';
     }
-    const status = document.querySelector<HTMLElement>('[data-form-status]');
     if (status) { status.hidden = false; status.focus(); }
   });
 </script>
@@ -70,9 +111,11 @@ const settings = await getSettings();
   input:focus, select:focus, textarea:focus { border-color: var(--color-clay); outline: 2px solid rgb(184 121 85 / 0.18); }
   button { display: inline-flex; width: fit-content; min-height: 3.25rem; align-items: center; gap: 0.75rem; padding: 0.75rem 1.25rem; border: 0; border-radius: 99rem; background: var(--color-clay); color: white; font-size: 0.86rem; font-weight: 720; cursor: pointer; transition: background 180ms ease, transform 180ms ease; }
   button:hover { background: var(--color-clay-dark); transform: translateY(-2px); }
+  button:disabled { cursor: wait; opacity: 0.7; transform: none; }
   .email { max-width: 100%; overflow-wrap: anywhere; }
   .contact-grid > * { min-width: 0; }
-  .form-status { padding: 1rem; border-left: 3px solid var(--color-clay); background: var(--color-white); color: var(--color-steel); }.form-status a { color: var(--color-ink); font-weight: 700; }
+  .honeypot { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+  .form-status { padding: 1rem; border-left: 3px solid var(--color-clay); background: var(--color-white); color: var(--color-steel); }.form-status[data-state='success'] { border-left-color: var(--color-ink); }.form-status[data-state='error'] { border-left-color: #a23b2a; color: #7d2e21; }.form-status a { color: var(--color-ink); font-weight: 700; }
   @media (min-width: 42rem) { .field-row { grid-template-columns: 1fr 1fr; } }
   @media (min-width: 52rem) { .contact-grid { grid-template-columns: 0.75fr 1.25fr; } }
   @media (max-width: 51.99rem) { aside { position: static; } }
