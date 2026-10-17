@@ -11,7 +11,7 @@ const image = imageUrl(service.image, 1200);
 <BaseLayout image={image}>
   <section class="page-hero">
     <div class="container page-hero__inner">
-      <h1>Musik für besondere Räume</h1>
+      <h1>Handpan-Musik für besondere Räume</h1>
       <p class="lead">Daniela Schneider aus Berlin-Neukölln entführt das Publikum in eine besondere Klangwelt, in der Rhythmus und Melodie miteinander verschmelzen. Im Mittelpunkt steht die Handpan mit ihren warmen, facettenreichen Klängen und perkussiven Effekten. Daraus entsteht eine Musik, die zugleich erdig und schwebend, kraftvoll und feinfühlig wirkt.</p>
     </div>
   </section>
@@ -22,7 +22,7 @@ const image = imageUrl(service.image, 1200);
         {image ? (
           <div class="feature-image"><img src={image} alt={service.image?.alt || service.title} width="1200" /></div>
         ) : (
-          <div class="feature-image"><Image src={liveImage} alt="Handpan-Spieler bei einem kleinen, stimmungsvollen Konzert" width={1200} /></div>
+          <div class="feature-image"><Image src={liveImage} alt="Live-Auftritt mit Handpan bei einem stimmungsvollen Konzert" width={1200} /></div>
         )}
       </div>
       <div>

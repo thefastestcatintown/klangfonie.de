@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CoachingHero from '../components/CoachingHero.astro';
+import Button from '../components/Button.astro';
 import '../styles/coaching.css';
 import learningImage from '../assets/images/sample-learning-guidance.png';
 import { getService, imageUrl } from '../lib/sanity';
@@ -30,6 +31,7 @@ const image = imageUrl(service.image, 1200);
       </aside>
 
       <div>
+        <h2>Was du beim Handpan-Unterricht lernst</h2>
         <div class="prose">
           <p>Vielleicht bringst du bereits musikalische Vorerfahrung mit und wünschst dir Feedback und neue Inspirationen. Vielleicht hast du noch nie ein Instrument gespielt. Vielleicht steht deine erste Handpan bereits zuhause und du fragst dich: Und jetzt?</p>
           <p>In der Lernbegleitung 1:1 verbinden wir eine verständliche Struktur mit neugierigem Ausprobieren. Es geht nicht darum, möglichst schnell möglichst viel zu können, sondern einen sicheren, musikalischen Zugang aufzubauen.</p>
@@ -44,7 +46,7 @@ const image = imageUrl(service.image, 1200);
           <li>Freies Spiel und Improvisation</li>
           <li>Komposition und Arrangement</li>
         </ul>
-
+        <div class="action"><Button href="/kontakt?interesse=unterricht">Lernbegleitung anfragen</Button></div>
       </div>
     </div>
   </section>
@@ -76,6 +78,9 @@ const image = imageUrl(service.image, 1200);
     left: 0;
     color: var(--color-clay);
   }
+
+  .prose { margin-top: 1rem; }
+  .action { margin-top: 2rem; }
 
 
   @media (max-width: 38rem) { .topic-list { grid-template-columns: 1fr; } }

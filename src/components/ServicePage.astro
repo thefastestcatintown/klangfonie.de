@@ -9,6 +9,8 @@ import { imageUrl } from '../lib/sanity';
 
 interface Props {
   service: Service;
+  title?: string;
+  contentHeading?: string;
   intro: string;
   bullets: string[];
   fallbackBody: string[];
@@ -16,12 +18,12 @@ interface Props {
   fallbackImageAlt?: string;
   note?: string;
 }
-const { service, intro, bullets, fallbackBody, fallbackImage, fallbackImageAlt = service.title, note } = Astro.props;
+const { service, title, contentHeading, intro, bullets, fallbackBody, fallbackImage, fallbackImageAlt = service.title, note } = Astro.props;
 const image = imageUrl(service.image, 1200);
 ---
 <BaseLayout image={image}>
   <section class="page-hero">
-    <div class="container page-hero__inner"><h1>{service.headline}</h1><p class="lead">{intro}</p></div>
+    <div class="container page-hero__inner"><h1>{title || service.headline}</h1><p class="lead">{intro}</p></div>
   </section>
   <section class="section">
     <div class="container rich-layout">
@@ -34,6 +36,7 @@ const image = imageUrl(service.image, 1200);
         {(service.duration || service.priceInfo) && <div class="meta-row">{service.duration && <span class="meta-chip">Dauer: {service.duration}</span>}{service.priceInfo && <span class="meta-chip">{service.priceInfo}</span>}</div>}
       </aside>
       <div>
+        {contentHeading && <h2>{contentHeading}</h2>}
         <RichText value={service.body} fallback={fallbackBody} />
         <ul class="service-list">{bullets.map((bullet) => <li>{bullet}</li>)}</ul>
         {note && <p class="highlight">{note}</p>}
@@ -44,6 +47,7 @@ const image = imageUrl(service.image, 1200);
 </BaseLayout>
 <style>
   .service-list { display: grid; gap: 0; margin: 2.5rem 0 0; padding: 0; border-top: 1px solid var(--color-sand); list-style: none; }
+  h2 + :global(.prose) { margin-top: 1rem; }
   .service-list li { position: relative; padding: 0.85rem 0 0.85rem 1.4rem; border-bottom: 1px solid var(--color-sand); color: var(--color-ink); }
   .service-list li::before { content: '↗'; position: absolute; left: 0; color: var(--color-clay); }
   .action { margin-top: 2rem; }

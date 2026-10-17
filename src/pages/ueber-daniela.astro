@@ -3,6 +3,7 @@ import { Image, getImage } from 'astro:assets';
 import profil2 from '../assets/images/profil2.png';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import RichText from '../components/RichText.astro';
+import Button from '../components/Button.astro';
 import { getAbout } from '../lib/sanity';
 const about = await getAbout();
 const portrait = await getImage({ src: profil2, width: 1200, format: 'webp' });
@@ -12,14 +13,17 @@ const portrait = await getImage({ src: profil2, width: 1200, format: 'webp' });
   <div class="container location-note"><p>Danielas Handpan-Angebote sind in Berlin-Neukölln zuhause.</p></div>
   <section class="section" id="geschichte"><div class="container rich-layout">
     <div class="portrait"><Image src={profil2} alt="Daniela Schneider spielt Handpan unter einem Baum" widths={[480, 800, 1200, 1662]} sizes="(min-width: 84rem) 505px, (min-width: 48rem) 42vw, calc(100vw - 2rem)" /></div>
-    <div><RichText value={about.body} fallback={['Beim Spielen interessiert mich weniger Perfektion als Präsenz. Zuhören. Reagieren. Einen Rhythmus entstehen lassen und ihm Raum geben.', 'Die Handpan verbindet für mich Rhythmus und Melodie auf unmittelbare Weise. In der Lernbegleitung, in einer Yogaklasse oder auf der Bühne entsteht daraus jedes Mal ein anderer Dialog.']} />
+    <div><h2>Mein Weg mit der Handpan</h2><RichText value={about.body} fallback={['Beim Spielen interessiert mich weniger Perfektion als Präsenz. Zuhören. Reagieren. Einen Rhythmus entstehen lassen und ihm Raum geben.', 'Die Handpan verbindet für mich Rhythmus und Melodie auf unmittelbare Weise. In der Lernbegleitung, in einer Yogaklasse oder auf der Bühne entsteht daraus jedes Mal ein anderer Dialog.']} />
       {about.milestones && about.milestones.length > 0 && <div class="milestones"><h2>Musikalische Stationen</h2>{about.milestones.map((item) => <div><span>{item.year}</span><p>{item.text}</p></div>)}</div>}
+      <div class="about-links"><Button href="/unterricht">Lernbegleitung entdecken</Button><Button href="/kontakt" variant="secondary">Daniela kontaktieren</Button></div>
     </div>
   </div></section>
 </BaseLayout>
 <style>
   .portrait { position: sticky; top: 9rem; overflow: hidden; aspect-ratio: 3 / 4; padding: 0; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-sage-soft); }
   .location-note { margin-top: 1.25rem; color: var(--color-steel); font-size: 0.95rem; }
+  .portrait + div > h2 + :global(.prose) { margin-top: 1rem; }
+  .about-links { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
   .portrait :global(img) { width: 100%; height: 100%; border-radius: var(--radius-lg); object-fit: cover; object-position: 28% center; box-shadow: var(--shadow-soft); }
   .milestones { margin-top: 4rem; }.milestones h2 { margin-bottom: 2rem; font-size: 2.5rem; }.milestones > div { display: grid; grid-template-columns: 6rem 1fr; gap: 1rem; padding: 1rem 0; border-top: 1px solid var(--color-sand); }.milestones span { color: var(--color-clay); font-weight: 700; }.milestones p { color: var(--color-steel); }
   @media (max-width: 47.99rem) { .portrait { position: static; } }
