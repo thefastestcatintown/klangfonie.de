@@ -1,11 +1,12 @@
 ---
-import { Image } from 'astro:assets';
+import { getImage, Image } from 'astro:assets';
 import symbol from '../assets/images/logo-transparent.png';
 import wordmark from '../assets/images/logo-footer-transparent.png';
+const optimizedWordmark = await getImage({ src: wordmark, width: 400, format: 'webp', quality: 82 });
 ---
 <span class="brand-lockup" aria-hidden="true" style="display: inline-flex; flex-direction: row; align-items: center;">
   <span class="brand-instrument">
-    <Image class="brand-symbol" src={symbol} alt="" width={144} densities={[1, 2, 3]} format="png" loading="eager" />
+    <Image class="brand-symbol" src={symbol} alt="" width={112} densities={[1, 2]} format="webp" quality={82} loading="eager" />
   </span>
   <svg class="brand-wordmark" xmlns="http://www.w3.org/2000/svg" width="108" height="44" viewBox="40 140 1220 500" focusable="false">
     <defs>
@@ -13,7 +14,7 @@ import wordmark from '../assets/images/logo-footer-transparent.png';
         <polygon points="40,140 1260,140 1260,570 613,570 613,600 552,640 40,640" />
       </clipPath>
     </defs>
-    <image href={wordmark.src} width="1477" height="1065" clip-path="url(#header-wordmark-clip)" />
+    <image href={optimizedWordmark.src} width="1477" height="1065" clip-path="url(#header-wordmark-clip)" />
   </svg>
 </span>
 <style>

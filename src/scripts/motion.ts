@@ -13,7 +13,7 @@ function startMotion() {
   if (reducedMotion.matches || !('IntersectionObserver' in window)) return;
 
   const candidates = [...document.querySelectorAll<HTMLElement>(
-    '.hero-copy, .hero-visual, .page-hero__inner, main .section > .container > *',
+    '.page-hero__inner, main .section > .container > *',
   )];
   // Animate each block once, without nesting effects or moving sticky containers.
   const targets = candidates.filter((element) =>
