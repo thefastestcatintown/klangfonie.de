@@ -37,6 +37,7 @@ for (const route of Object.keys(pageMetadata)) {
   assert.ok(new URL(meta(html, 'og:image')).protocol === 'https:');
   assert.ok(!meta(html, 'robots').includes('noindex'));
   assert.equal([...html.matchAll(/<h1\b/g)].length, 1);
+  assert.ok(/Berlin|Neukölln/.test(title + description + html), `${route}: local relevance`);
   const ld = html.match(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/);
   assert.ok(ld, `${route}: JSON-LD`);
   const graph = JSON.parse(ld[1])['@graph'];

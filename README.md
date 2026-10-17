@@ -116,3 +116,5 @@ npm run check:seo
 ```
 
 `check:seo` prüft den letzten Build: eindeutige Metadaten, Canonical/Sitemap-Konsistenz, JSON-LD, Indexierungsregeln und robots.txt. Ein alternatives Build-Verzeichnis kann als Argument übergeben werden. Die Tests veröffentlichen die Website nicht und melden keine Sitemap bei Suchmaschinen an.
+
+Für die Bestätigung einer URL-Präfix-Property in Google Search Console kann optional `PUBLIC_GOOGLE_SITE_VERIFICATION` lokal und als GitHub-Repository-Variable gesetzt werden. Nach Anschluss der endgültigen Domain muss `PUBLIC_SITE_URL` auf `https://klangfonie.de` und `PUBLIC_BASE_PATH` auf `/` gesetzt werden; anschließend wird `https://klangfonie.de/sitemap-index.xml` in der Search Console eingereicht.

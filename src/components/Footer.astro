@@ -17,6 +17,7 @@ const socials = ['Instagram', 'YouTube'];
       <a class="footer-brand" href={withBase('/')} aria-label="Klangfonia – Startseite">
         <Image class="footer-logo" src={footerLogo} alt="Klangfonia.de – Schwing dich frei – Daniela Schneider" width={400} densities={[1, 2]} format="png" />
       </a>
+      <p class="footer-location">Handpan in {settings.location || 'Berlin-Neukölln'}</p>
     </div>
     {hasContact && <div class="footer-contact">
       {settings.email && <a href={`mailto:${settings.email}`}>{settings.email}</a>}
@@ -60,6 +61,7 @@ const socials = ['Instagram', 'YouTube'];
   .footer a:hover { color: var(--color-clay-dark); text-decoration: underline; text-underline-offset: 0.25em; }
   .footer-brand { max-width: 100%; display: inline-flex; align-items: center; gap: 0.65rem; margin-bottom: 0.5rem; color: var(--color-ink) !important; font-family: var(--font-display); font-size: 2rem; letter-spacing: -0.035em; }
   .footer-logo { display: block; width: 15rem; max-width: 100%; height: auto; }
+  .footer-location { color: var(--color-steel); font-size: 0.9rem; }
 
   .footer-socials { display: flex; align-items: center; justify-content: flex-start; gap: 0.75rem; padding: 0; border: 0; background: transparent; }
   .social-icon { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; color: var(--color-ink); }

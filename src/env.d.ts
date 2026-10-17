@@ -7,6 +7,7 @@ interface ImportMetaEnv {
   readonly PUBLIC_SITE_URL?: string;
   readonly PUBLIC_BASE_PATH?: string;
   readonly PUBLIC_CONTACT_FORM_ENDPOINT?: string;
+  readonly PUBLIC_GOOGLE_SITE_VERIFICATION?: string;
 }
 
 interface ImportMeta {

@@ -27,6 +27,7 @@ const site = Astro.site ?? new URL('https://klangfonie.de');
 const canonical = canonicalUrl(Astro.url.pathname, site);
 const ogImage = new URL(withBase(image), site).href;
 const schema = structuredData({ canonical, home: canonicalUrl('/', site), about: canonicalUrl('/ueber-daniela', site), image: ogImage, title, description, route, settings });
+const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION?.trim();
 
 ---
 <!doctype html>
@@ -37,6 +38,7 @@ const schema = structuredData({ canonical, home: canonicalUrl('/', site), about:
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {googleSiteVerification && <meta name="google-site-verification" content={googleSiteVerification} />}
     <link rel="canonical" href={canonical} />
     <link rel="sitemap" type="application/xml" href={withBase('/sitemap-index.xml')} />
     <link rel="icon" type="image/png" href={withBase(favicon.src)} />

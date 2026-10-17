@@ -3,11 +3,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import EventsSection from '../components/EventsSection.astro';
 import { getHome } from '../lib/sanity';
+import { withBase } from '../lib/urls';
 
 const home = await getHome();
 const intro = {
   ...home,
-  heroText: 'Handpan entdecken, gemeinsam wachsen und Musik erleben. Mit Daniela Schneider.',
+  heroText: 'Handpan entdecken, gemeinsam wachsen und Musik erleben – mit Daniela Schneider in Berlin-Neukölln.',
   primaryCtaLabel: 'Lernbegleitung entdecken',
   primaryCtaUrl: '/unterricht',
   secondaryCtaLabel: 'Musik hören',
@@ -17,10 +18,37 @@ const intro = {
 <BaseLayout>
   <div class="home-content">
     <Hero content={intro} />
+    <section class="section local-intro" aria-labelledby="handpan-berlin">
+      <div class="container local-intro__grid">
+        <div>
+          <p class="local-intro__eyebrow">Berlin-Neukölln</p>
+          <h2 id="handpan-berlin">Handpan lernen und gemeinsam Musik erleben</h2>
+        </div>
+        <div class="local-intro__copy">
+          <p>Bei Klangfonia findest du in Berlin-Neukölln einen persönlichen Zugang zur Handpan – unabhängig davon, ob du zum ersten Mal spielst oder deine musikalischen Ideen weiterentwickeln möchtest.</p>
+          <p>Daniela Schneider begleitet dich im Einzelunterricht, in Workshops und beim gemeinsamen Spiel in der Handpan Big Band. Für Yoga, Retreats, Konzerte und besondere Anlässe kannst du sie außerdem als Live-Musikerin anfragen.</p>
+          <nav class="local-intro__links" aria-label="Handpan-Angebote in Berlin">
+            <a href={withBase('/unterricht')}>Handpan-Unterricht</a>
+            <a href={withBase('/workshops')}>Workshops</a>
+            <a href={withBase('/ensemble')}>Handpan Big Band</a>
+            <a href={withBase('/live')}>Live-Musik</a>
+          </nav>
+        </div>
+      </div>
+    </section>
     <EventsSection />
   </div>
 </BaseLayout>
 
 <style>
   .home-content { --section-space: clamp(3rem, 6vw, 5.5rem); }
+  .local-intro { background: var(--color-white); }
+  .local-intro__grid { display: grid; gap: var(--layout-gap); align-items: start; }
+  .local-intro__eyebrow { margin-bottom: 0.75rem; color: var(--color-clay-dark); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; }
+  .local-intro h2 { max-width: 18ch; font-size: clamp(2rem, 4vw, 3.5rem); }
+  .local-intro__copy { max-width: 43rem; }
+  .local-intro__copy > p + p { margin-top: 1rem; }
+  .local-intro__links { display: flex; flex-wrap: wrap; gap: 0.7rem 1.2rem; margin-top: 1.75rem; }
+  .local-intro__links a { color: var(--color-ink); font-weight: 700; text-decoration-color: var(--color-clay); text-underline-offset: 0.25em; }
+  @media (min-width: 52rem) { .local-intro__grid { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); } }
 </style>
