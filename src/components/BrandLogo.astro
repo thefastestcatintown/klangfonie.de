@@ -6,7 +6,7 @@ const optimizedWordmark = await getImage({ src: wordmark, width: 400, format: 'w
 ---
 <span class="brand-lockup" aria-hidden="true" style="display: inline-flex; flex-direction: row; align-items: center;">
   <span class="brand-instrument">
-    <Image class="brand-symbol" src={symbol} alt="" width={112} densities={[1, 2]} format="webp" quality={82} loading="eager" />
+    <Image class="brand-symbol" src={symbol} alt="" widths={[96, 144, 192]} sizes="(max-width: 59.99rem) 73px, 90px" format="webp" quality={82} loading="eager" />
   </span>
   <svg class="brand-wordmark" xmlns="http://www.w3.org/2000/svg" width="108" height="44" viewBox="40 140 1220 500" focusable="false">
     <defs>
