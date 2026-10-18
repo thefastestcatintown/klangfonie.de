@@ -18,8 +18,9 @@ interface Props {
   fallbackImage?: ImageMetadata;
   fallbackImageAlt?: string;
   note?: string;
+  ctaLabel?: string;
 }
-const { service, title, contentHeading, intro, bullets, fallbackBody, closingBody = [], fallbackImage, fallbackImageAlt = service.title, note } = Astro.props;
+const { service, title, contentHeading, intro, bullets, fallbackBody, closingBody = [], fallbackImage, fallbackImageAlt = service.title, note, ctaLabel } = Astro.props;
 const image = imageUrl(service.image, 1200);
 ---
 <BaseLayout image={image}>
@@ -42,7 +43,7 @@ const image = imageUrl(service.image, 1200);
         <ul class="service-list">{bullets.map((bullet) => <li>{bullet}</li>)}</ul>
         {closingBody.length > 0 && <div class="prose closing-copy">{closingBody.map((paragraph) => <p>{paragraph}</p>)}</div>}
         {note && <p class="highlight">{note}</p>}
-        <div class="action"><Button href={service.ctaUrl}>{service.ctaLabel}</Button></div>
+        <div class="action"><Button href={service.ctaUrl}>{ctaLabel || service.ctaLabel}</Button></div>
       </div>
     </div>
   </section>
