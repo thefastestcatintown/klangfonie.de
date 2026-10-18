@@ -23,13 +23,13 @@ const optimizedWordmark = await getImage({ src: wordmark, width: 400, format: 'w
   .brand-instrument::after { content: ''; position: absolute; inset: 13% 17% 16%; border: 1px solid var(--color-clay); border-radius: 50%; opacity: 0; pointer-events: none; }
   .brand-symbol { display: block; width: calc(8rem * var(--brand-scale, 1)); height: auto; }
   /* SVG owns the crop and intrinsic size, even before the stylesheet loads. */
-  .brand-wordmark { display: block; flex-shrink: 0; width: 6.75rem; height: auto; }
+  .brand-wordmark { display: block; flex-shrink: 0; width: 7.5rem; height: auto; }
   @media (max-width: 59.99rem) {
     .brand-symbol { width: calc(6.5rem * var(--brand-scale, 1)); }
     .brand-lockup { gap: 0.4rem; }
-    .brand-wordmark { width: 5.625rem; }
+    .brand-wordmark { width: 6.25rem; }
   }
-  @media (max-width: 24rem) { .brand-wordmark { width: 4.78125rem; } }
+  @media (max-width: 24rem) { .brand-wordmark { width: 5.25rem; } }
   @media (prefers-reduced-motion: no-preference) {
     .brand-instrument::after { animation: handpan-resonance 1.8s ease-out 500ms 2; }
     :global(a:focus-visible) .brand-instrument::after { animation: handpan-resonance-focus 1.8s ease-out; }
