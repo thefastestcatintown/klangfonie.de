@@ -5,14 +5,14 @@ export const coachingLinks = [
 ];
 
 export const aboutLinks = [
-  { href: '/ueber-daniela#intention', label: 'Meine Intention' },
-  { href: '/ueber-daniela#geschichte', label: 'Meine Geschichte' },
+  { href: '/ueber-daniela/intention', label: 'Meine Intention' },
+  { href: '/ueber-daniela/geschichte', label: 'Meine Geschichte' },
 ];
 
 export const navigationLinks = [
   { href: '/yoga', label: 'Retreats' },
   { href: '/live', label: 'Musik' },
-  { href: '/ueber-daniela', label: 'Über mich' },
+  { href: '/ueber-daniela/intention', label: 'Über mich' },
   { href: '/#termine', label: 'Termine' },
 ];
 

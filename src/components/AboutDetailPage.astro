@@ -1,0 +1,65 @@
+---
+import { Image, getImage } from 'astro:assets';
+import profil2 from '../assets/images/profil2.png';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from './Button.astro';
+
+interface Milestone {
+  year?: string;
+  text: string;
+  details?: string[];
+}
+
+interface Props {
+  title: string;
+  paragraphs: string[];
+  milestones?: Milestone[];
+}
+
+const { title, paragraphs, milestones = [] } = Astro.props;
+const portrait = await getImage({ src: profil2, width: 1200, format: 'webp' });
+---
+<BaseLayout image={portrait.src}>
+  <section class="page-hero">
+    <div class="container page-hero__inner"><h1>{title}</h1></div>
+  </section>
+  <div class="container location-note"><p>Danielas Handpan-Angebote sind in Berlin-Neukölln zuhause.</p></div>
+  <section class="section">
+    <div class="container rich-layout">
+      <div class="portrait">
+        <Image src={profil2} alt="Daniela Schneider spielt Handpan unter einem Baum" widths={[480, 800, 1200, 1662]} sizes="(min-width: 84rem) 505px, (min-width: 48rem) 42vw, calc(100vw - 2rem)" />
+      </div>
+      <div>
+        <div class="prose">{paragraphs.map((paragraph) => <p>{paragraph}</p>)}</div>
+        {milestones.length > 0 && <div class="milestones">{milestones.map((item) => <div class="milestone">
+          <span>{item.year}</span>
+          <div class="milestone__content">
+            <p><strong>{item.text}</strong></p>
+            {item.details && item.details.length > 0 && <ul>{item.details.map((detail) => {
+              const [name, description] = detail.split(' – ');
+              return <li>{description ? <><strong>{name}</strong> – {description}</> : detail}</li>;
+            })}</ul>}
+          </div>
+        </div>)}</div>}
+        <div class="about-links"><Button href="/unterricht">Lernbegleitung entdecken</Button><Button href="/kontakt" variant="secondary">Daniela kontaktieren</Button></div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .portrait { position: sticky; top: 9rem; overflow: hidden; aspect-ratio: 3 / 4; padding: 0; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-sage-soft); }
+  .location-note { margin-top: 1.25rem; color: var(--color-steel); font-size: 0.95rem; }
+  .prose { display: grid; gap: 1rem; }
+  .about-links { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+  .portrait :global(img) { width: 100%; height: 100%; border-radius: var(--radius-lg); object-fit: cover; object-position: 28% center; box-shadow: var(--shadow-soft); }
+  .milestones { margin-top: 3rem; }
+  .milestone { display: grid; grid-template-columns: 7rem 1fr; gap: 1rem; padding: 1.25rem 0; border-top: 1px solid var(--color-sand); }
+  .milestone > span { color: var(--color-clay); font-weight: 700; }
+  .milestone__content { color: var(--color-steel); }
+  .milestone__content ul { display: grid; gap: 0.35rem; margin: 0.75rem 0 0; padding-left: 1.25rem; }
+  @media (max-width: 47.99rem) {
+    .portrait { position: static; }
+    .milestone { grid-template-columns: 1fr; gap: 0.35rem; }
+  }
+</style>

@@ -1,0 +1,6 @@
+---
+import AboutDetailPage from '../../components/AboutDetailPage.astro';
+import { fallbackAbout } from '../../lib/fallbacks';
+import { storyCopy } from '../../lib/about-content';
+---
+<AboutDetailPage title="Meine Geschichte" paragraphs={storyCopy} milestones={fallbackAbout.milestones} />

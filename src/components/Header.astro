@@ -24,10 +24,10 @@ const navigation = navigationLinks.map((item) => ({ ...item, href: withBase(item
         </ul>
       </details>
       {navigation.map((item) => item.href.includes('/ueber-daniela/') ? (
-        <details class:list={['dropdown-menu', 'dropdown-menu--about', { 'is-current': pathname === '/ueber-daniela' }]} data-submenu>
+        <details class:list={['dropdown-menu', 'dropdown-menu--about', { 'is-current': pathname.startsWith('/ueber-daniela') }]} data-submenu>
           <summary>Über mich</summary>
           <ul class="submenu">
-            {aboutLinks.map((aboutItem) => <li><a href={aboutItem.href}>{aboutItem.label}</a></li>)}
+            {aboutLinks.map((aboutItem) => <li><a href={aboutItem.href} aria-current={pathname === routePath(aboutItem.href) ? 'page' : undefined}>{aboutItem.label}</a></li>)}
           </ul>
         </details>
       ) : <a href={item.href} aria-current={!item.href.includes('#') && pathname === routePath(item.href) ? 'page' : undefined}>{item.label}</a>)}

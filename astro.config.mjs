@@ -24,7 +24,7 @@ export default defineConfig({
     }),
     react(),
     sitemap({
-      filter: (page) => !/(?:^|\/)(?:studio(?:\/.*)?|impressum\/?|datenschutz\/?|ueber-daniel\/?|404(?:\.html)?\/?)$/.test(new URL(page).pathname),
+      filter: (page) => !/(?:^|\/)(?:studio(?:\/.*)?|impressum\/?|datenschutz\/?|ueber-daniel\/?|ueber-daniela\/?|404(?:\.html)?\/?)$/.test(new URL(page).pathname),
     }),
   ],
 });

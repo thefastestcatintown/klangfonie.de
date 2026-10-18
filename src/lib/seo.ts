@@ -8,7 +8,8 @@ export const pageMetadata: Record<string, { title: string; description: string; 
   '/workshops': { title: 'Handpan-Workshops in Berlin-Neukölln | Klangfonia', description: 'Handpan-Workshops in Berlin-Neukölln für Einsteiger und Fortgeschrittene: Klang, Technik, Rhythmus und eigener musikalischer Ausdruck mit Daniela Schneider.', label: 'Workshops' },
   '/yoga': { title: 'Live-Handpan für Yoga & Retreats in Berlin | Klangfonia', description: 'Live-Handpan mit Daniela Schneider aus Berlin für Yoga, Retreats und Meditation – feinfühlige Musik für Bewegung, Atem und stille Momente.', label: 'Retreats' },
   '/live': { title: 'Handpan-Live-Musik in Berlin | Daniela Schneider', description: 'Handpan-Live-Musik aus Berlin für Konzerte, Feiern und besondere Momente. Daniela Schneider spielt solo oder mit weiteren Musiker:innen – passend zum Anlass.', label: 'Musik' },
-  '/ueber-daniela': { title: 'Daniela Schneider – Handpan-Musikerin aus Berlin | Klangfonia', description: 'Daniela Schneider ist Handpan-Musikerin und Lernbegleiterin in Berlin-Neukölln. Erfahre mehr über ihren persönlichen Zugang zu Musik und Begegnung.', label: 'Über mich' },
+  '/ueber-daniela/intention': { title: 'Daniela Schneiders musikalische Intention | Klangfonia', description: 'Daniela Schneider verbindet Handpan-Musik, Rhythmus und Feingefühl zu berührenden Klangerlebnissen und schafft musikalische Verbindung in Berlin.', label: 'Meine Intention' },
+  '/ueber-daniela/geschichte': { title: 'Daniela Schneider – musikalischer Weg | Klangfonia', description: 'Erfahre mehr über Daniela Schneiders musikalischen Weg, ihre Ausbildung und ihre langjährige Erfahrung als Percussionistin und Handpan-Musikerin in Berlin.', label: 'Meine Geschichte' },
   '/kontakt': { title: 'Handpan in Berlin-Neukölln anfragen | Klangfonia', description: 'Kontaktiere Daniela Schneider in Berlin-Neukölln zu Handpan-Unterricht, Big Band, Workshops, Yoga-Begleitung oder Live-Musik und erzähle von deiner Idee.', label: 'Kontakt' },
 };
 
@@ -41,9 +42,9 @@ export function structuredData(input: {
       ...(sameAs.length ? { sameAs } : {}),
     },
     {
-      '@type': route === '/ueber-daniela' ? 'ProfilePage' : 'WebPage', '@id': `${canonical}#webpage`,
+      '@type': route.startsWith('/ueber-daniela') ? 'ProfilePage' : 'WebPage', '@id': `${canonical}#webpage`,
       url: canonical, name: title, description, inLanguage: 'de-DE', isPartOf: { '@id': websiteId },
-      about: { '@id': personId }, ...(route === '/ueber-daniela' ? { mainEntity: { '@id': personId } } : {}),
+      about: { '@id': personId }, ...(route.startsWith('/ueber-daniela') ? { mainEntity: { '@id': personId } } : {}),
       primaryImageOfPage: { '@type': 'ImageObject', url: image },
       ...(route !== '/' ? { breadcrumb: { '@id': `${canonical}#breadcrumb` } } : {}),
     },
