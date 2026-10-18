@@ -17,11 +17,10 @@ const optimizedFooterLogo = await getImage({ src: footerLogo, width: 480, format
     <div>
       <a class="footer-brand" href={withBase('/')} aria-label="Klangfonia – Startseite">
         <svg class="footer-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1262 1065" role="img" aria-labelledby="footer-logo-title">
-          <title id="footer-logo-title">Klangfonia – Daniela Schneider, Handpan in Berlin</title>
+          <title id="footer-logo-title">Klangfonia – Daniela Schneider, Handpan-Musik</title>
           <image href={optimizedFooterLogo.src} width="1477" height="1065" />
         </svg>
       </a>
-      <p class="footer-location">Handpan in Berlin</p>
     </div>
     {hasContact && <div class="footer-contact">
       {settings.email && <a href={`mailto:${settings.email}`}>{settings.email}</a>}
@@ -65,7 +64,6 @@ const optimizedFooterLogo = await getImage({ src: footerLogo, width: 480, format
   .footer a:hover { color: var(--color-clay-dark); text-decoration: underline; text-underline-offset: 0.25em; }
   .footer-brand { max-width: 100%; display: inline-flex; align-items: center; gap: 0.65rem; margin-bottom: 0.5rem; color: var(--color-ink) !important; font-family: var(--font-display); font-size: 2rem; letter-spacing: -0.035em; }
   .footer-logo { display: block; width: 12.8rem; max-width: 100%; height: auto; }
-  .footer-location { color: var(--color-steel); font-size: 0.9rem; }
 
   .footer-socials { display: flex; align-items: center; justify-content: flex-start; gap: 0.75rem; padding: 0; border: 0; background: transparent; }
   .social-icon { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; color: var(--color-ink); }
