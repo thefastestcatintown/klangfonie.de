@@ -24,7 +24,7 @@ const navigation = navigationLinks.map((item) => ({ ...item, href: withBase(item
         </ul>
       </details>
       {navigation.map((item) => item.href.includes('/ueber-daniela/') ? (
-        <details class:list={['dropdown-menu', { 'is-current': pathname === '/ueber-daniela' }]} data-submenu>
+        <details class:list={['dropdown-menu', 'dropdown-menu--about', { 'is-current': pathname === '/ueber-daniela' }]} data-submenu>
           <summary>Über mich</summary>
           <ul class="submenu">
             {aboutLinks.map((aboutItem) => <li><a href={aboutItem.href}>{aboutItem.label}</a></li>)}
@@ -121,7 +121,8 @@ const navigation = navigationLinks.map((item) => ({ ...item, href: withBase(item
   .dropdown-menu summary { padding-block: 0.65rem; position: relative; display: flex; align-items: center; color: var(--color-ink); font-size: 0.85rem; font-weight: 700; cursor: pointer; list-style: none; }
   .dropdown-menu summary::-webkit-details-marker { display: none; }
   .dropdown-menu.is-current summary, .dropdown-menu summary:hover { color: var(--color-clay); }
-  .submenu { position: absolute; top: calc(100% + 0.5rem); left: -1rem; width: 18rem; margin: 0; padding: 0.5rem; list-style: none; border: 1px solid var(--color-border); border-radius: 0.8rem; background: var(--color-white); box-shadow: var(--shadow-soft); }
+  .submenu { position: absolute; z-index: 1; top: calc(100% + 0.5rem); left: -1rem; width: 18rem; max-width: calc(100vw - 2rem); margin: 0; padding: 0.5rem; list-style: none; border: 1px solid var(--color-border); border-radius: 0.8rem; background: var(--color-white); box-shadow: var(--shadow-soft); }
+  .dropdown-menu--about .submenu { right: -1rem; left: auto; }
   .submenu::before { content: ''; position: absolute; right: 0; bottom: 100%; left: 0; height: 0.6rem; }
   .submenu a { display: block; padding: 0.8rem; border-radius: 0.4rem; color: var(--color-ink); font-size: 0.85rem; text-decoration: none; }
   .submenu a:hover, .submenu a:focus-visible, .submenu a[aria-current='page'] { background: var(--color-linen); }
