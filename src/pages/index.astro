@@ -3,7 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import EventsSection from '../components/EventsSection.astro';
 import { getHome } from '../lib/sanity';
-import { withBase } from '../lib/urls';
 
 const home = await getHome();
 const intro = {
@@ -27,12 +26,6 @@ const intro = {
         <div class="local-intro__copy">
           <p>Bei Klangfonia findest du in Berlin-Neukölln einen persönlichen Zugang zur Handpan – unabhängig davon, ob du zum ersten Mal spielst oder deine musikalischen Ideen weiterentwickeln möchtest.</p>
           <p>Daniela Schneider begleitet dich im Einzelunterricht, in Workshops und beim gemeinsamen Spiel in der Handpan Big Band. Für Yoga, Retreats, Konzerte und besondere Anlässe kannst du sie außerdem als Live-Musikerin anfragen.</p>
-          <nav class="local-intro__links" aria-label="Handpan-Angebote in Berlin">
-            <a href={withBase('/unterricht')}>Handpan-Unterricht</a>
-            <a href={withBase('/workshops')}>Workshops</a>
-            <a href={withBase('/ensemble')}>Handpan Big Band</a>
-            <a href={withBase('/live')}>Live-Musik</a>
-          </nav>
         </div>
       </div>
     </section>
@@ -48,7 +41,5 @@ const intro = {
   .local-intro h2 { max-width: 18ch; font-size: clamp(2rem, 4vw, 3.5rem); }
   .local-intro__copy { max-width: 43rem; }
   .local-intro__copy > p + p { margin-top: 1rem; }
-  .local-intro__links { display: flex; flex-wrap: wrap; gap: 0.7rem 1.2rem; margin-top: 1.75rem; }
-  .local-intro__links a { color: var(--color-ink); font-weight: 700; text-decoration-color: var(--color-clay); text-underline-offset: 0.25em; }
   @media (min-width: 52rem) { .local-intro__grid { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); } }
 </style>
