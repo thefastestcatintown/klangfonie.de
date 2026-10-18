@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import EventsSection from '../components/EventsSection.astro';
+import TestimonialsSection from '../components/TestimonialsSection.astro';
 import DecorativeHeading from '../components/DecorativeHeading.astro';
 import { getHome } from '../lib/sanity';
 
@@ -30,6 +31,7 @@ const intro = {
         </div>
       </div>
     </section>
+    <TestimonialsSection />
     <EventsSection />
   </div>
 </BaseLayout>

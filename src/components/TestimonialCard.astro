@@ -1,9 +1,10 @@
 ---
 import type { Testimonial } from '../lib/types';
-interface Props { testimonial: Testimonial; }
-const { testimonial } = Astro.props;
+interface Props { testimonial: Testimonial; isExample?: boolean; }
+const { testimonial, isExample = false } = Astro.props;
 ---
 <figure class="testimonial">
+  {isExample && <span class="example-label">Beispiel</span>}
   <span class="quote-mark" aria-hidden="true">“</span>
   <blockquote>„{testimonial.quote}“</blockquote>
   <figcaption>
@@ -33,6 +34,21 @@ const { testimonial } = Astro.props;
     font-size: clamp(9rem, 17vw, 14rem);
     line-height: 1;
     pointer-events: none;
+  }
+  .example-label {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    margin-bottom: 1.25rem;
+    padding: 0.32rem 0.65rem;
+    border: 1px solid rgb(155 96 62 / 0.3);
+    border-radius: 999px;
+    color: var(--color-clay-dark);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    line-height: 1;
+    text-transform: uppercase;
   }
   blockquote {
     position: relative;

@@ -1,0 +1,88 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import TestimonialCard from './TestimonialCard.astro';
+import { getTestimonials } from '../lib/sanity';
+import type { Testimonial } from '../lib/types';
+
+const testimonials = await getTestimonials();
+
+const examples: Testimonial[] = [
+  {
+    quote: 'Ich hatte vorher noch nie ein Instrument gespielt. Daniela erklärt ruhig und verständlich, sodass ich schon nach kurzer Zeit eigene Rhythmen ausprobieren konnte.',
+    name: 'Beispielstimme',
+    sourceType: 'Schüler:in',
+    context: 'Lernbegleitung 1:1',
+  },
+  {
+    quote: 'Der Workshop hatte eine sehr angenehme Atmosphäre. Ich konnte ohne Druck entdecken, wie vielseitig die Handpan klingt, und habe viele Ideen zum Weiterüben mitgenommen.',
+    name: 'Beispielstimme',
+    sourceType: 'Schüler:in',
+    context: 'Einsteiger-Workshop',
+  },
+  {
+    quote: 'Daniela verbindet klare Erklärungen mit viel Raum für das eigene musikalische Gefühl. Dadurch hat sich mein Spiel freier und sicherer entwickelt.',
+    name: 'Beispielstimme',
+    sourceType: 'Schüler:in',
+    context: 'Handpan-Unterricht',
+  },
+];
+
+const cards = [
+  ...testimonials.map((testimonial) => ({ testimonial, isExample: false })),
+  ...examples.map((testimonial) => ({ testimonial, isExample: true })),
+].slice(0, 3);
+
+const hasExamples = cards.some(({ isExample }) => isExample);
+---
+
+<section class="section testimonials" aria-labelledby="schuelerstimmen">
+  <div class="container">
+    <div id="schuelerstimmen">
+      <SectionHeading
+        title="Schülerstimmen"
+        text="Persönliche Erfahrungen aus Unterricht und Workshops."
+        align="center"
+      />
+    </div>
+
+    <div class="testimonials__grid">
+      {cards.map(({ testimonial, isExample }) => (
+        <TestimonialCard testimonial={testimonial} isExample={isExample} />
+      ))}
+    </div>
+
+    {hasExamples && (
+      <p class="testimonials__note">
+        Die als „Beispiel“ gekennzeichneten Texte zeigen vorerst die geplante Darstellung und werden vor dem offiziellen Start durch freigegebene Originalstimmen ersetzt.
+      </p>
+    )}
+  </div>
+</section>
+
+<style>
+  .testimonials {
+    border-block: 1px solid rgb(38 53 47 / 0.08);
+    background:
+      radial-gradient(circle at 12% 18%, rgb(142 155 127 / 0.16), transparent 22rem),
+      var(--color-linen);
+  }
+  .testimonials__grid {
+    display: grid;
+    gap: 1.25rem;
+    margin-top: clamp(2.25rem, 5vw, 4rem);
+  }
+  .testimonials__note {
+    max-width: 52rem;
+    margin: 1.5rem auto 0;
+    color: var(--color-steel);
+    font-size: 0.8rem;
+    line-height: 1.6;
+    text-align: center;
+  }
+  @media (min-width: 48rem) {
+    .testimonials__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 72rem) {
+    .testimonials__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+</style>
