@@ -1,11 +1,49 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import DecorativeHeading from '../components/DecorativeHeading.astro';
+import { getSettings } from '../lib/sanity';
+
+const settings = await getSettings();
 ---
 <BaseLayout title="Impressum – Klangfonia" description="Impressum der Website Klangfonia." noindex>
   <section class="page-hero"><div class="container page-hero__inner"><DecorativeHeading level="h1" class="page-title" text="Impressum" /></div></section>
   <section class="section"><div class="container--small prose">
-    <p>Die gesetzlich erforderlichen Anbieterinformationen befinden sich derzeit in Vorbereitung.</p>
-    <div class="legal-note"><strong>Hinweis vor der Veröffentlichung</strong><span>Hier müssen noch die vollständigen Angaben zur verantwortlichen Person und eine ladungsfähige Anschrift eingesetzt werden.</span></div>
+    <h2>Angaben gemäß § 5 DDG</h2>
+    <address class="legal-address">
+      <strong>Daniela Schneider</strong><br />
+      Netzestr. 12<br />
+      12051 Berlin<br />
+      Deutschland
+    </address>
+
+    <h2>Kontakt</h2>
+    {settings.email ? (
+      <p>E-Mail: <a href={`mailto:${settings.email}`}>{settings.email}</a></p>
+    ) : (
+      <div class="legal-note"><strong>Noch zu ergänzen</strong><span>Vor der Veröffentlichung muss hier eine öffentlich erreichbare E-Mail-Adresse von Daniela Schneider eingetragen werden.</span></div>
+    )}
+
+    <h2>Tätigkeit</h2>
+    <p>Handpan-Musik, Handpan-Unterricht, Workshops und musikalische Begleitung von Veranstaltungen.</p>
+
+    <h2>Verantwortlich für den Inhalt</h2>
+    <address class="legal-address">
+      Daniela Schneider<br />
+      Netzestr. 12<br />
+      12051 Berlin
+    </address>
+
+    <h2>Haftung für Inhalte</h2>
+    <p>Die Inhalte dieser Website wurden mit Sorgfalt erstellt. Eine Gewähr für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte kann dennoch nicht übernommen werden. Gesetzliche Verpflichtungen zur Entfernung oder Sperrung von Informationen bleiben unberührt.</p>
+
+    <h2>Haftung für Links</h2>
+    <p>Diese Website kann Links zu externen Websites Dritter enthalten. Auf deren Inhalte besteht kein Einfluss. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber verantwortlich. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Bei Bekanntwerden einer Rechtsverletzung werden entsprechende Links entfernt.</p>
+
+    <h2>Urheberrecht</h2>
+    <p>Die auf dieser Website veröffentlichten Inhalte, Fotografien und Gestaltungen unterliegen dem Urheberrecht. Jede Verwertung außerhalb der gesetzlichen Grenzen bedarf der vorherigen Zustimmung der jeweiligen Rechteinhaberin oder des jeweiligen Rechteinhabers.</p>
   </div></section>
 </BaseLayout>
+
+<style>
+  .legal-address { font-style: normal; }
+</style>

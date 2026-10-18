@@ -1,11 +1,83 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import DecorativeHeading from '../components/DecorativeHeading.astro';
+import { getSettings } from '../lib/sanity';
+
+const settings = await getSettings();
 ---
 <BaseLayout title="Datenschutz – Klangfonia" description="Datenschutzhinweise der Website Klangfonia." noindex>
   <section class="page-hero"><div class="container page-hero__inner"><DecorativeHeading level="h1" class="page-title" text="Datenschutz" /></div></section>
   <section class="section"><div class="container--small prose">
-    <p>Die vollständigen Datenschutzhinweise werden passend zum Hosting und zu den tatsächlich eingesetzten Diensten vor der Veröffentlichung ergänzt.</p>
-    <div class="legal-note"><strong>Hinweis vor der Veröffentlichung</strong><span>Die Angaben müssen insbesondere Hosting, Sanity, eingebettete Medien sowie die spätere Kontaktmöglichkeit berücksichtigen.</span></div>
+    <p>Diese Datenschutzerklärung informiert darüber, welche personenbezogenen Daten beim Besuch dieser Website und bei einer Kontaktaufnahme verarbeitet werden.</p>
+
+    <h2>1. Verantwortliche</h2>
+    <address class="legal-address">
+      <strong>Daniela Schneider</strong><br />
+      Netzestr. 12<br />
+      12051 Berlin<br />
+      Deutschland
+    </address>
+    {settings.email ? (
+      <p>E-Mail: <a href={`mailto:${settings.email}`}>{settings.email}</a></p>
+    ) : (
+      <div class="legal-note"><strong>Noch zu ergänzen</strong><span>Vor der Veröffentlichung muss hier eine öffentlich erreichbare E-Mail-Adresse von Daniela Schneider eingetragen werden.</span></div>
+    )}
+
+    <h2>2. Hosting über GitHub Pages</h2>
+    <p>Diese Website wird als statische Website über GitHub Pages bereitgestellt. Anbieter ist GitHub, Inc., USA. Beim Aufruf der Website verarbeitet GitHub technisch erforderliche Verbindungsdaten. Dazu können insbesondere IP-Adresse, Datum und Uhrzeit des Zugriffs, aufgerufene Datei, übertragene Datenmenge, Referrer-URL, Browsertyp und Betriebssystem gehören. GitHub weist darauf hin, dass die IP-Adresse bei Besuchen von GitHub-Pages-Websites zu Sicherheitszwecken protokolliert und gespeichert wird.</p>
+    <p>Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Das berechtigte Interesse liegt in einer sicheren, stabilen und wirtschaftlichen Bereitstellung der Website. Soweit Daten in den USA verarbeitet werden, gelten die vom Anbieter eingesetzten Garantien für internationale Datenübermittlungen.</p>
+    <p>Weitere Informationen: <a href="https://docs.github.com/de/pages/getting-started-with-github-pages/what-is-github-pages#data-collection" target="_blank" rel="noreferrer">Datenerhebung bei GitHub Pages</a> und <a href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noreferrer">Datenschutzerklärung von GitHub</a>.</p>
+
+    <h2>3. Inhalte und Bilder über Sanity</h2>
+    <p>Einzelne Inhalte, aktuelle Termine und Bilder werden über das Content-Management-System Sanity bereitgestellt. Anbieter sind Sanity AS, Norwegen, und Sanity US Inc., USA. Beim Abruf solcher Inhalte stellt der Browser eine Verbindung zu den API- oder CDN-Servern von Sanity her. Dabei können insbesondere IP-Adresse, Zeitpunkt des Abrufs, Browser- und Geräteinformationen sowie die angeforderte Ressource verarbeitet werden.</p>
+    <p>Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Das berechtigte Interesse liegt in der zuverlässigen und aktuellen Bereitstellung der Website-Inhalte. Sanity gibt an, bei Übermittlungen außerhalb des EWR geeignete Garantien wie Standardvertragsklauseln einzusetzen.</p>
+    <p>Weitere Informationen: <a href="https://www.sanity.io/legal/privacy" target="_blank" rel="noreferrer">Datenschutzerklärung von Sanity</a>.</p>
+
+    <h2>4. Kontaktformular und Formspree</h2>
+    <p>Für das Kontaktformular wird Formspree, Inc., USA, eingesetzt. Wenn das Formular abgesendet wird, werden die eingegebenen Angaben direkt an Formspree übermittelt und von dort als Anfrage weitergeleitet. Verarbeitet werden Name, E-Mail-Adresse, ausgewähltes Interesse und Nachricht sowie technisch erforderliche Verbindungsdaten, insbesondere die IP-Adresse.</p>
+    <p>Die Verarbeitung erfolgt zur Bearbeitung der Anfrage und zur Kommunikation. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, soweit die Anfrage auf einen Vertrag oder vorvertragliche Maßnahmen gerichtet ist, und im Übrigen Art. 6 Abs. 1 lit. f DSGVO aufgrund des berechtigten Interesses an der Beantwortung von Anfragen. Eine mit der technischen oder organisatorischen Betreuung beauftragte Person kann die Anfrage ebenfalls erhalten. Formspree kann Daten in den USA verarbeiten.</p>
+    <p>Die Angaben werden gelöscht, sobald die Anfrage abschließend bearbeitet wurde und keine gesetzlichen Aufbewahrungspflichten oder berechtigten Interessen an einer weiteren Speicherung entgegenstehen.</p>
+    <p>Weitere Informationen: <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noreferrer">Datenschutzerklärung von Formspree</a>.</p>
+
+    <h2>5. YouTube-Videos</h2>
+    <p>Auf der Musikseite kann ein Video von YouTube eingebunden werden. Anbieter für Nutzerinnen und Nutzer im Europäischen Wirtschaftsraum ist Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Das Video wird über die Domain <code>youtube-nocookie.com</code> eingebunden und erst geladen, nachdem die Schaltfläche „Video von YouTube laden“ angeklickt wurde.</p>
+    <p>Erst nach diesem Klick wird eine Verbindung zu YouTube hergestellt. Dabei können insbesondere IP-Adresse, Browser- und Geräteinformationen sowie Informationen über die aufgerufene Seite an Google übermittelt werden. Google kann weitere Informationen im Endgerät speichern oder auslesen und die Daten dem Google-Konto zuordnen, wenn dort eine Anmeldung besteht. Eine Verarbeitung in den USA ist möglich.</p>
+    <p>Rechtsgrundlage ist die vor dem Laden erteilte Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO und – soweit Informationen im Endgerät gespeichert oder ausgelesen werden – § 25 Abs. 1 TDDDG. Die Einwilligung ist freiwillig. Ohne Klick wird keine Verbindung zu YouTube hergestellt. Ein Widerruf wirkt für die Zukunft und kann insbesondere durch Neuladen der Seite erfolgen; bereits erfolgte Übermittlungen bleiben davon unberührt.</p>
+    <p>Weitere Informationen: <a href="https://policies.google.com/privacy?hl=de" target="_blank" rel="noreferrer">Datenschutzerklärung von Google</a>.</p>
+
+    <h2>6. Cookies und Reichweitenmessung</h2>
+    <p>Diese Website setzt selbst keine Analyse- oder Marketingdienste ein und verwendet keine eigenen nicht notwendigen Cookies. Erst nach dem bewussten Laden eines YouTube-Videos können durch Google beziehungsweise YouTube Cookies oder vergleichbare Technologien eingesetzt werden.</p>
+
+    <h2>7. Externe Links</h2>
+    <p>Links zu externen Websites stellen erst dann eine Verbindung zum jeweiligen Anbieter her, wenn sie angeklickt werden. Für die dortige Datenverarbeitung ist der jeweilige Anbieter verantwortlich.</p>
+
+    <h2>8. Speicherdauer</h2>
+    <p>Personenbezogene Daten werden nur so lange gespeichert, wie es für den jeweiligen Zweck erforderlich ist. Anschließend werden sie gelöscht, sofern keine gesetzlichen Aufbewahrungspflichten, die Geltendmachung oder Abwehr von Rechtsansprüchen oder andere zulässige Gründe eine weitere Speicherung erfordern. Auf die Speicherdauer bei eigenständig verantwortlichen Anbietern wie GitHub, Sanity, Formspree oder Google besteht nur begrenzter Einfluss.</p>
+
+    <h2>9. Rechte betroffener Personen</h2>
+    <p>Betroffene Personen haben nach Maßgabe der gesetzlichen Voraussetzungen insbesondere das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung und Datenübertragbarkeit. Außerdem besteht ein Widerspruchsrecht gegen Verarbeitungen auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO sowie das Recht, eine erteilte Einwilligung jederzeit mit Wirkung für die Zukunft zu widerrufen.</p>
+    <p>Zur Ausübung dieser Rechte kann die oben genannte Verantwortliche kontaktiert werden.</p>
+
+    <h2>10. Beschwerderecht</h2>
+    <p>Es besteht das Recht, sich bei einer Datenschutzaufsichtsbehörde zu beschweren. Für die Verantwortliche ist insbesondere folgende Behörde zuständig:</p>
+    <address class="legal-address">
+      Berliner Beauftragte für Datenschutz und Informationsfreiheit<br />
+      Alt-Moabit 59–61<br />
+      10555 Berlin<br />
+      E-Mail: <a href="mailto:mailbox@datenschutz-berlin.de">mailbox@datenschutz-berlin.de</a><br />
+      <a href="https://www.datenschutz-berlin.de/" target="_blank" rel="noreferrer">www.datenschutz-berlin.de</a>
+    </address>
+
+    <h2>11. Verschlüsselung</h2>
+    <p>Die Website wird verschlüsselt über HTTPS übertragen. Dadurch sollen übermittelte Daten vor dem Mitlesen durch Dritte geschützt werden.</p>
+
+    <h2>12. Aktualität</h2>
+    <p>Diese Datenschutzerklärung wird angepasst, wenn sich die Website, die eingesetzten Dienste oder die rechtlichen Anforderungen ändern.</p>
+    <p><strong>Stand: Oktober 2026</strong></p>
   </div></section>
 </BaseLayout>
+
+<style>
+  .legal-address { font-style: normal; }
+  code { padding: 0.08em 0.3em; border-radius: 0.25rem; background: var(--color-linen); font-size: 0.92em; }
+</style>
