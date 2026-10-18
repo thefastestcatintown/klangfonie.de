@@ -5,7 +5,7 @@ const settings = await getSettings();
 const formEndpoint = import.meta.env.PUBLIC_CONTACT_FORM_ENDPOINT?.trim();
 ---
 <BaseLayout>
-  <section class="page-hero"><div class="container page-hero__inner"><h1>Handpan in Berlin anfragen</h1><p class="lead">Ob Handpan-Unterricht in Berlin-Neukölln, Workshop oder Live-Musik: Ein paar Zeilen genügen für den Anfang. Ich melde mich persönlich bei dir zurück.</p></div></section>
+  <section class="page-hero"><div class="container page-hero__inner"><h1>Handpan in Berlin anfragen</h1><p class="lead">Ob Handpan-Unterricht, Workshop oder Live-Musik: Ein paar Zeilen genügen für den Anfang. Ich melde mich persönlich bei dir zurück.</p></div></section>
   <section class="section"><div class="container contact-grid">
     <aside>
       <h2>{settings.email ? 'Lieber per E-Mail?' : 'Deine Anfrage'}</h2>
@@ -13,7 +13,6 @@ const formEndpoint = import.meta.env.PUBLIC_CONTACT_FORM_ENDPOINT?.trim();
         ? <a class="email" href={`mailto:${settings.email}`}>{settings.email}</a>
         : <p class="intro">Erzähl mir kurz, wobei ich dich begleiten darf. Deine Anfrage kannst du anschließend mit einem Klick kopieren.</p>}
       {settings.phone && <a class="contact-line" href={`tel:${settings.phone.replace(/\s/g, '')}`}>{settings.phone}</a>}
-      {settings.location && <p class="contact-line">{settings.location}</p>}
       {settings.email && <p class="note">Du kannst das Formular nutzen oder Daniela direkt eine E-Mail schreiben.</p>}
     </aside>
     <form class="contact-form" data-contact-form data-endpoint={formEndpoint || undefined} data-recipient={settings.email || undefined} novalidate>

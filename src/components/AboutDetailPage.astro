@@ -22,7 +22,6 @@ const portrait = await getImage({ src: profil2, width: 1200, format: 'webp' });
   <section class="page-hero">
     <div class="container page-hero__inner"><h1>{title}</h1></div>
   </section>
-  <div class="container location-note"><p>Danielas Handpan-Angebote sind in Berlin-Neukölln zuhause.</p></div>
   <section class="section">
     <div class="container rich-layout">
       <div class="portrait">
@@ -47,7 +46,6 @@ const portrait = await getImage({ src: profil2, width: 1200, format: 'webp' });
 
 <style>
   .portrait { position: sticky; top: 9rem; overflow: hidden; aspect-ratio: 3 / 4; padding: 0; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-sage-soft); }
-  .location-note { margin-top: 1.25rem; color: var(--color-steel); font-size: 0.95rem; }
   .prose { display: grid; gap: 1rem; }
   .portrait :global(img) { width: 100%; height: 100%; border-radius: var(--radius-lg); object-fit: cover; object-position: 28% center; box-shadow: var(--shadow-soft); }
   .milestones { margin-top: 3rem; }

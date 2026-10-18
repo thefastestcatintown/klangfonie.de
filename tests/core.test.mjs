@@ -51,7 +51,7 @@ test('JSON-LD safely serializes CMS strings and links the profile to the same pe
   const person = data['@graph'].find(item => item['@type'] === 'Person');
   const profile = data['@graph'].find(item => item['@type'] === 'ProfilePage');
   assert.deepEqual(person.sameAs, ['https://youtube.com/@daniela']);
-  assert.equal(person.workLocation.name, 'Berlin-Neukölln');
+  assert.equal(person.workLocation.name, 'Berlin');
   assert.equal(person.workLocation.address.addressLocality, 'Berlin');
   assert.equal(profile.mainEntity['@id'], person['@id']);
   assert.equal(data['@graph'].find(item => item['@type'] === 'BreadcrumbList').itemListElement[1].item, 'https://example.org/ueber-daniela/');

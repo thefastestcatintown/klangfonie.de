@@ -2,15 +2,15 @@ import type { SiteSettings } from './types';
 
 export const brandName = 'Klangfonia';
 export const pageMetadata: Record<string, { title: string; description: string; label: string }> = {
-  '/': { title: 'Handpan lernen in Berlin-Neukölln | Klangfonia', description: 'Handpan in Berlin-Neukölln mit Daniela Schneider: persönliche Lernbegleitung, Workshops, Big Band sowie Live-Musik für Yoga und besondere Anlässe.', label: 'Startseite' },
-  '/unterricht': { title: 'Handpan-Unterricht in Berlin-Neukölln | Klangfonia', description: 'Handpan lernen in Berlin-Neukölln: persönliche Lernbegleitung mit Daniela Schneider für Anfänger und Fortgeschrittene – in deinem eigenen Tempo.', label: 'Lernbegleitung 1:1' },
-  '/ensemble': { title: 'Handpan Big Band in Berlin | Klangfonia', description: 'Gemeinsam Handpan spielen in Berlin: In Danielas Big Band entwickelst du Patterns, Zusammenspiel und Bühnenerfahrung. Unverbindliches Schnuppertreffen anfragen.', label: 'Big Band' },
-  '/workshops': { title: 'Handpan-Workshops in Berlin-Neukölln | Klangfonia', description: 'Handpan-Workshops in Berlin-Neukölln für Einsteiger und Fortgeschrittene: Klang, Technik, Rhythmus und eigener musikalischer Ausdruck mit Daniela Schneider.', label: 'Workshops' },
-  '/yoga': { title: 'Live-Handpan für Yoga & Retreats in Berlin | Klangfonia', description: 'Live-Handpan mit Daniela Schneider aus Berlin für Yoga, Retreats und Meditation – feinfühlige Musik für Bewegung, Atem und stille Momente.', label: 'Retreats' },
-  '/live': { title: 'Handpan-Live-Musik in Berlin | Daniela Schneider', description: 'Handpan-Live-Musik aus Berlin für Konzerte, Feiern und besondere Momente. Daniela Schneider spielt solo oder mit weiteren Musiker:innen – passend zum Anlass.', label: 'Musik' },
+  '/': { title: 'Handpan lernen in Berlin | Klangfonia', description: 'Klangfonia mit Daniela Schneider: persönliche Lernbegleitung, Workshops, Big Band sowie Live-Musik für Yoga und besondere Anlässe.', label: 'Startseite' },
+  '/unterricht': { title: 'Handpan-Unterricht in Berlin | Klangfonia', description: 'Persönliche Handpan-Lernbegleitung mit Daniela Schneider für Anfänger und Fortgeschrittene – in deinem eigenen Tempo.', label: 'Lernbegleitung 1:1' },
+  '/ensemble': { title: 'Handpan Big Band in Berlin | Klangfonia', description: 'In Danielas Handpan Big Band entwickelst du Patterns, Zusammenspiel und Bühnenerfahrung. Unverbindliches Schnuppertreffen anfragen.', label: 'Big Band' },
+  '/workshops': { title: 'Handpan-Workshops in Berlin | Klangfonia', description: 'Handpan-Workshops für Einsteiger und Fortgeschrittene: Klang, Technik, Rhythmus und eigener musikalischer Ausdruck mit Daniela Schneider.', label: 'Workshops' },
+  '/yoga': { title: 'Live-Handpan für Yoga & Retreats in Berlin | Klangfonia', description: 'Live-Handpan mit Daniela Schneider für Yoga, Retreats und Meditation – feinfühlige Musik für Bewegung, Atem und stille Momente.', label: 'Retreats' },
+  '/live': { title: 'Handpan-Live-Musik in Berlin | Daniela Schneider', description: 'Handpan-Live-Musik für Konzerte, Feiern und besondere Momente. Daniela Schneider spielt solo oder mit weiteren Musiker:innen – passend zum Anlass.', label: 'Musik' },
   '/ueber-daniela/intention': { title: 'Daniela Schneiders musikalische Intention | Klangfonia', description: 'Daniela Schneider verbindet Handpan-Musik, Rhythmus und Feingefühl zu berührenden Klangerlebnissen und schafft musikalische Verbindung in Berlin.', label: 'Meine Intention' },
   '/ueber-daniela/geschichte': { title: 'Daniela Schneider – musikalischer Weg | Klangfonia', description: 'Erfahre mehr über Daniela Schneiders musikalischen Weg, ihre Ausbildung und ihre langjährige Erfahrung als Percussionistin und Handpan-Musikerin in Berlin.', label: 'Meine Geschichte' },
-  '/kontakt': { title: 'Handpan in Berlin-Neukölln anfragen | Klangfonia', description: 'Kontaktiere Daniela Schneider in Berlin-Neukölln zu Handpan-Unterricht, Big Band, Workshops, Yoga-Begleitung oder Live-Musik und erzähle von deiner Idee.', label: 'Kontakt' },
+  '/kontakt': { title: 'Handpan in Berlin anfragen | Klangfonia', description: 'Kontaktiere Daniela Schneider zu Handpan-Unterricht, Big Band, Workshops, Yoga-Begleitung oder Live-Musik und erzähle von deiner Idee.', label: 'Kontakt' },
 };
 
 export function serializeJsonLd(value: unknown): string {
@@ -36,7 +36,7 @@ export function structuredData(input: {
       jobTitle: 'Handpan-Musikerin und Lernbegleiterin',
       knowsAbout: ['Handpan', 'Handpan-Unterricht', 'Handpan-Workshops', 'Live-Musik'],
       workLocation: {
-        '@type': 'Place', name: 'Berlin-Neukölln',
+        '@type': 'Place', name: 'Berlin',
         address: { '@type': 'PostalAddress', addressLocality: 'Berlin', addressRegion: 'Berlin', addressCountry: 'DE' },
       },
       ...(sameAs.length ? { sameAs } : {}),

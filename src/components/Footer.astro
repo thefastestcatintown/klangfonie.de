@@ -17,11 +17,11 @@ const optimizedFooterLogo = await getImage({ src: footerLogo, width: 480, format
     <div>
       <a class="footer-brand" href={withBase('/')} aria-label="Klangfonia – Startseite">
         <svg class="footer-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1262 1065" role="img" aria-labelledby="footer-logo-title">
-          <title id="footer-logo-title">Klangfonia – Daniela Schneider, Handpan in Berlin-Neukölln</title>
+          <title id="footer-logo-title">Klangfonia – Daniela Schneider, Handpan in Berlin</title>
           <image href={optimizedFooterLogo.src} width="1477" height="1065" />
         </svg>
       </a>
-      <p class="footer-location">Handpan in {settings.location || 'Berlin-Neukölln'}</p>
+      <p class="footer-location">Handpan in Berlin</p>
     </div>
     {hasContact && <div class="footer-contact">
       {settings.email && <a href={`mailto:${settings.email}`}>{settings.email}</a>}
