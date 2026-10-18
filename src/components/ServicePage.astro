@@ -11,7 +11,7 @@ interface Props {
   service: Service;
   title?: string;
   contentHeading?: string;
-  intro: string;
+  intro?: string;
   bullets: string[];
   fallbackBody: string[];
   closingBody?: string[];
@@ -25,7 +25,7 @@ const image = imageUrl(service.image, 1200);
 ---
 <BaseLayout image={image}>
   <section class="page-hero">
-    <div class="container page-hero__inner"><h1>{title || service.headline}</h1><p class="lead">{intro}</p></div>
+    <div class="container page-hero__inner"><h1>{title || service.headline}</h1>{intro && <p class="lead">{intro}</p>}</div>
   </section>
   <section class="section">
     <div class="container rich-layout">
