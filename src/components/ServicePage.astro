@@ -14,11 +14,12 @@ interface Props {
   intro: string;
   bullets: string[];
   fallbackBody: string[];
+  closingBody?: string[];
   fallbackImage?: ImageMetadata;
   fallbackImageAlt?: string;
   note?: string;
 }
-const { service, title, contentHeading, intro, bullets, fallbackBody, fallbackImage, fallbackImageAlt = service.title, note } = Astro.props;
+const { service, title, contentHeading, intro, bullets, fallbackBody, closingBody = [], fallbackImage, fallbackImageAlt = service.title, note } = Astro.props;
 const image = imageUrl(service.image, 1200);
 ---
 <BaseLayout image={image}>
@@ -39,6 +40,7 @@ const image = imageUrl(service.image, 1200);
         {contentHeading && <h2>{contentHeading}</h2>}
         <RichText value={service.body} fallback={fallbackBody} />
         <ul class="service-list">{bullets.map((bullet) => <li>{bullet}</li>)}</ul>
+        {closingBody.length > 0 && <div class="prose closing-copy">{closingBody.map((paragraph) => <p>{paragraph}</p>)}</div>}
         {note && <p class="highlight">{note}</p>}
         <div class="action"><Button href={service.ctaUrl}>{service.ctaLabel}</Button></div>
       </div>
@@ -50,5 +52,6 @@ const image = imageUrl(service.image, 1200);
   h2 + :global(.prose) { margin-top: 1rem; }
   .service-list li { position: relative; padding: 0.85rem 0 0.85rem 1.4rem; border-bottom: 1px solid var(--color-sand); color: var(--color-ink); }
   .service-list li::before { content: '↗'; position: absolute; left: 0; color: var(--color-clay); }
+  .closing-copy { margin-top: 2rem; }
   .action { margin-top: 2rem; }
 </style>
