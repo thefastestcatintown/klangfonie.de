@@ -6,13 +6,17 @@ import VideoSection from '../components/VideoSection.astro';
 import DecorativeHeading from '../components/DecorativeHeading.astro';
 import liveImage from '../assets/images/sample-live-handpan.png';
 import { getFeaturedVideo, getService, imageUrl } from '../lib/sanity';
+import { localizePath, type Language } from '../lib/i18n';
+interface Props { lang?: Language; }
+const { lang = 'de' } = Astro.props;
+const english = lang === 'en';
 const [service, video] = await Promise.all([getService('Live'), getFeaturedVideo()]);
 const image = imageUrl(service.image, 1200);
 ---
-<BaseLayout image={image}>
+<BaseLayout image={image} lang={lang}>
   <section class="page-hero">
     <div class="container page-hero__inner">
-      <DecorativeHeading level="h1" class="page-title" text="Handpan Musik für besondere Räume" />
+      <DecorativeHeading level="h1" class="page-title" text={english ? 'Handpan music for special spaces' : 'Handpan Musik für besondere Räume'} />
     </div>
   </section>
 
@@ -20,22 +24,22 @@ const image = imageUrl(service.image, 1200);
     <div class="container rich-layout">
       <div>
         {image ? (
-          <div class="feature-image"><img src={image} alt={service.image?.alt || service.title} width="1200" /></div>
+          <div class="feature-image"><img src={image} alt={english ? 'Live handpan performance at an atmospheric concert' : (service.image?.alt || service.title)} width="1200" /></div>
         ) : (
-          <div class="feature-image"><Image src={liveImage} alt="Live-Auftritt mit Handpan bei einem stimmungsvollen Konzert" width={1200} /></div>
+          <div class="feature-image"><Image src={liveImage} alt={english ? 'Live handpan performance at an atmospheric concert' : 'Live-Auftritt mit Handpan bei einem stimmungsvollen Konzert'} width={1200} /></div>
         )}
       </div>
       <div>
         <div class="prose">
-          <p>Der sphärische Klang der Handpan weckt meine Spielfreude und animiert mich melodische Linien mit pulsierenden Rhythmen, und treibenden Grooves in Form zu bringen oder einfach zu improvisieren. Sanfte, meditative Passagen wechseln sich mit lebendigen, kraftvollen Momenten ab. Aus wenigen Tönen entstehen weit schwingende Klangbilder, die zum Lauschen, Träumen und Eintauchen einladen.</p>
-          <p>Meine Eigenkompositionen erzählen eigene Geschichten. Sie nehmen euch mit auf Reisen zu fernen Landschaften und Kulturen oder öffnen Räume für Bilder, Gefühle und innere Welten. Ich schenke euch Einblicke in die Gedanken und den Humor hinter meiner Musik.</p>
-          <p>Mein Soloprogramm ist eine musikalische Reise zwischen sphärischen Melodien, erdigen Grooves, archaischen Rhythmen und meditativer Klangfülle – mal ruhig und schwebend, mal voller Energie und Lebensfreude.</p>
-          <p>Meine Handpan-Musik kann für verschiedenste Anlässe gebucht werden: für Yogastunden, Retreats und Klangevents, in Wellnessorten, bei Trauerfeiern sowie für Privatkonzerte, Geburtstage und persönliche Feierlichkeiten. Dabei gestalte ich den musikalischen Raum achtsam, einfühlsam und passend zum jeweiligen Anlass.</p>
+          <p>{english ? 'The ethereal sound of the handpan awakens my joy of playing and inspires me to shape melodic lines with pulsating rhythms and driving grooves, or simply to improvise. Gentle, meditative passages alternate with vivid, powerful moments. From just a few notes, expansive soundscapes emerge that invite you to listen, dream and immerse yourself.' : 'Der sphärische Klang der Handpan weckt meine Spielfreude und animiert mich melodische Linien mit pulsierenden Rhythmen, und treibenden Grooves in Form zu bringen oder einfach zu improvisieren. Sanfte, meditative Passagen wechseln sich mit lebendigen, kraftvollen Momenten ab. Aus wenigen Tönen entstehen weit schwingende Klangbilder, die zum Lauschen, Träumen und Eintauchen einladen.'}</p>
+          <p>{english ? 'My original compositions tell stories of their own. They take you on journeys to distant landscapes and cultures or open spaces for images, feelings and inner worlds. I share glimpses of the thoughts and humour behind my music.' : 'Meine Eigenkompositionen erzählen eigene Geschichten. Sie nehmen euch mit auf Reisen zu fernen Landschaften und Kulturen oder öffnen Räume für Bilder, Gefühle und innere Welten. Ich schenke euch Einblicke in die Gedanken und den Humor hinter meiner Musik.'}</p>
+          <p>{english ? 'My solo programme is a musical journey between ethereal melodies, earthy grooves, archaic rhythms and meditative richness of sound – sometimes calm and floating, sometimes full of energy and joy.' : 'Mein Soloprogramm ist eine musikalische Reise zwischen sphärischen Melodien, erdigen Grooves, archaischen Rhythmen und meditativer Klangfülle – mal ruhig und schwebend, mal voller Energie und Lebensfreude.'}</p>
+          <p>{english ? 'My handpan music can be booked for a wide range of occasions: yoga classes, retreats and sound events, wellness spaces, funerals, private concerts, birthdays and personal celebrations. I shape the musical space with care and sensitivity, always in tune with the occasion.' : 'Meine Handpan-Musik kann für verschiedenste Anlässe gebucht werden: für Yogastunden, Retreats und Klangevents, in Wellnessorten, bei Trauerfeiern sowie für Privatkonzerte, Geburtstage und persönliche Feierlichkeiten. Dabei gestalte ich den musikalischen Raum achtsam, einfühlsam und passend zum jeweiligen Anlass.'}</p>
         </div>
-        <Button href={service.ctaUrl}>Live-Musik anfragen</Button>
+        <Button href={localizePath('/kontakt?interesse=live', lang)}>{english ? 'Enquire about live music' : 'Live-Musik anfragen'}</Button>
       </div>
     </div>
   </section>
 
-  <VideoSection video={video} text="Lehn dich gern zurück und lausche." />
+  <VideoSection video={video} lang={lang} text={english ? 'Make yourself comfortable and have a listen.' : 'Lehn dich gern zurück und lausche.'} />
 </BaseLayout>

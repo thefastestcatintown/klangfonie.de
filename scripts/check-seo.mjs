@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
-import { pageMetadata } from '../src/lib/seo.ts';
+import { pageMetadata, pageMetadataEn } from '../src/lib/seo.ts';
 
 const output = process.argv[2] ?? 'dist';
 const read = path => readFileSync(`${output}/${path}`, 'utf8');
@@ -16,7 +16,11 @@ const titles = new Set();
 const descriptions = new Set();
 const pages = new Map();
 let home;
-for (const route of Object.keys(pageMetadata)) {
+const metadataRoutes = [
+  ...Object.keys(pageMetadata),
+  ...Object.keys(pageMetadataEn).map(route => route === '/' ? '/en' : `/en${route}`),
+];
+for (const route of metadataRoutes) {
   const html = read(route === '/' ? 'index.html' : `${route.slice(1)}/index.html`);
   pages.set(route, html);
   const title = decode(html.match(/<title>(.*?)<\/title>/)?.[1] ?? '');
@@ -84,8 +88,8 @@ for (const [route, html] of pages) {
     }
   }
 }
-assert.equal(sitemap.size, Object.keys(pageMetadata).length, 'Only indexable pages belong in sitemap');
-for (const path of ['404.html', 'impressum/index.html', 'datenschutz/index.html']) {
+assert.equal(sitemap.size, metadataRoutes.length, 'Only indexable pages belong in sitemap');
+for (const path of ['404.html', 'impressum/index.html', 'datenschutz/index.html', 'en/impressum/index.html', 'en/datenschutz/index.html']) {
   assert.ok(meta(read(path), 'robots').includes('noindex'), path);
 }
 assert.ok(read('robots.txt').includes(`Sitemap: ${home}sitemap-index.xml`));

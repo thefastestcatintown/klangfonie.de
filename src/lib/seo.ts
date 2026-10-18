@@ -1,4 +1,5 @@
 import type { SiteSettings } from './types';
+import type { Language } from './i18n';
 
 export const brandName = 'Klangfonia';
 export const pageMetadata: Record<string, { title: string; description: string; label: string }> = {
@@ -13,6 +14,18 @@ export const pageMetadata: Record<string, { title: string; description: string; 
   '/kontakt': { title: 'Handpan in Berlin anfragen | Klangfonia', description: 'Kontaktiere Daniela Schneider zu Handpan-Unterricht, Big Band, Workshops, Yoga-Begleitung oder Live-Musik und erzähle von deiner Idee.', label: 'Kontakt' },
 };
 
+export const pageMetadataEn: Record<string, { title: string; description: string; label: string }> = {
+  '/': { title: 'Learn handpan in Berlin | Klangfonia', description: 'Klangfonia with Daniela Schneider: personal handpan guidance, workshops, a big band and live music for retreats and special occasions.', label: 'Home' },
+  '/unterricht': { title: 'Handpan lessons in Berlin | Klangfonia', description: 'Personal handpan guidance with Daniela Schneider for beginners and advanced players, at your own pace.', label: 'One-to-one guidance' },
+  '/ensemble': { title: 'Join a Handpan Big Band in Berlin | Klangfonia', description: 'Develop patterns, ensemble playing and stage experience in Daniela’s Handpan Big Band. Ask for a no-obligation trial session.', label: 'Big Band' },
+  '/workshops': { title: 'Handpan workshops in Berlin | Klangfonia', description: 'Handpan workshops for beginners and advanced players: sound, technique, rhythm and your own musical expression.', label: 'Workshops' },
+  '/yoga': { title: 'Live handpan for retreats in Berlin | Klangfonia', description: 'Live handpan and body percussion with Daniela Schneider for retreats, movement, mindfulness and shared musical experiences.', label: 'Retreats' },
+  '/live': { title: 'Live handpan music in Berlin | Daniela Schneider', description: 'Live handpan music for concerts, celebrations and special moments, sensitively shaped to suit each occasion.', label: 'Music' },
+  '/ueber-daniela/intention': { title: 'Daniela Schneider’s musical intention | Klangfonia', description: 'Daniela Schneider combines handpan music, rhythm and sensitivity to create atmospheric experiences that connect people.', label: 'My intention' },
+  '/ueber-daniela/geschichte': { title: 'Daniela Schneider – musical journey | Klangfonia', description: 'Learn about Daniela Schneider’s musical path, training and many years of experience as a percussionist and handpan musician.', label: 'My story' },
+  '/kontakt': { title: 'Enquire about handpan in Berlin | Klangfonia', description: 'Contact Daniela Schneider about handpan lessons, the Big Band, workshops, retreat music or live performances.', label: 'Contact' },
+};
+
 export function serializeJsonLd(value: unknown): string {
   // CMS values must not be able to close the script element.
   return JSON.stringify(value).replace(/</g, '\\u003c');
@@ -20,9 +33,11 @@ export function serializeJsonLd(value: unknown): string {
 
 export function structuredData(input: {
   canonical: string; home: string; about: string; image: string;
-  title: string; description: string; route: string; settings: SiteSettings;
+  title: string; description: string; route: string; settings: SiteSettings; language?: Language;
 }) {
-  const { canonical, home, about, image, title, description, route, settings } = input;
+  const { canonical, home, about, image, title, description, route, settings, language = 'de' } = input;
+  const inLanguage = language === 'en' ? 'en' : 'de-DE';
+  const metadata = language === 'en' ? pageMetadataEn : pageMetadata;
   const personId = `${about}#person`;
   const websiteId = `${home}#website`;
   const sameAs = [settings.instagram, settings.youtube].filter((value): value is string => {
@@ -30,11 +45,11 @@ export function structuredData(input: {
     try { return new URL(value).protocol === 'https:'; } catch { return false; }
   });
   const graph: Record<string, unknown>[] = [
-    { '@type': 'WebSite', '@id': websiteId, url: home, name: brandName, inLanguage: 'de-DE', creator: { '@id': personId } },
+    { '@type': 'WebSite', '@id': websiteId, url: home, name: brandName, inLanguage, creator: { '@id': personId } },
     {
       '@type': 'Person', '@id': personId, name: 'Daniela Schneider', url: about,
-      jobTitle: 'Handpan-Musikerin und Lernbegleiterin',
-      knowsAbout: ['Handpan', 'Handpan-Unterricht', 'Handpan-Workshops', 'Live-Musik'],
+      jobTitle: language === 'en' ? 'Handpan musician and teacher' : 'Handpan-Musikerin und Lernbegleiterin',
+      knowsAbout: language === 'en' ? ['Handpan', 'Handpan lessons', 'Handpan workshops', 'Live music'] : ['Handpan', 'Handpan-Unterricht', 'Handpan-Workshops', 'Live-Musik'],
       workLocation: {
         '@type': 'Place', name: 'Berlin',
         address: { '@type': 'PostalAddress', addressLocality: 'Berlin', addressRegion: 'Berlin', addressCountry: 'DE' },
@@ -43,7 +58,7 @@ export function structuredData(input: {
     },
     {
       '@type': route.startsWith('/ueber-daniela') ? 'ProfilePage' : 'WebPage', '@id': `${canonical}#webpage`,
-      url: canonical, name: title, description, inLanguage: 'de-DE', isPartOf: { '@id': websiteId },
+      url: canonical, name: title, description, inLanguage, isPartOf: { '@id': websiteId },
       about: { '@id': personId }, ...(route.startsWith('/ueber-daniela') ? { mainEntity: { '@id': personId } } : {}),
       primaryImageOfPage: { '@type': 'ImageObject', url: image },
       ...(route !== '/' ? { breadcrumb: { '@id': `${canonical}#breadcrumb` } } : {}),
@@ -51,8 +66,8 @@ export function structuredData(input: {
   ];
   if (route !== '/') graph.push({
     '@type': 'BreadcrumbList', '@id': `${canonical}#breadcrumb`, itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Startseite', item: home },
-      { '@type': 'ListItem', position: 2, name: pageMetadata[route]?.label ?? title, item: canonical },
+      { '@type': 'ListItem', position: 1, name: language === 'en' ? 'Home' : 'Startseite', item: home },
+      { '@type': 'ListItem', position: 2, name: metadata[route]?.label ?? title, item: canonical },
     ],
   });
   return { '@context': 'https://schema.org', '@graph': graph };

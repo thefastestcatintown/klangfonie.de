@@ -1,11 +1,20 @@
 ---
 import type { Video } from '../lib/types';
 import { youtubeEmbedUrl } from '../lib/youtube';
-import { withBase } from '../lib/urls';
+import { languageFromPath, localizePath, type Language } from '../lib/i18n';
 import DecorativeHeading from './DecorativeHeading.astro';
-interface Props { video: Video | null; headline?: string; text: string; }
-const { video, headline, text } = Astro.props;
+interface Props { video: Video | null; headline?: string; text: string; lang?: Language; }
+const { video, headline, text, lang = languageFromPath(Astro.url.pathname) } = Astro.props;
 const embedUrl = youtubeEmbedUrl(video?.youtubeUrl);
+const copy = lang === 'en'
+  ? {
+      consent: 'By loading the video, you agree that a connection to YouTube may be established and data may be transferred to Google.',
+      load: 'Load video from YouTube', privacy: 'More about privacy', placeholder: 'Klangfonia will soon be heard here.', studio: 'The video can be added in Sanity Studio.',
+    }
+  : {
+      consent: 'Mit dem Laden des Videos stimmst du zu, dass eine Verbindung zu YouTube hergestellt und Daten an Google übertragen werden können.',
+      load: 'Video von YouTube laden', privacy: 'Mehr zum Datenschutz', placeholder: 'Hier klingt bald Klangfonia.', studio: 'Video lässt sich im Sanity Studio hinterlegen.',
+    };
 ---
 <section class="section video-section" id="musik">
   <div class="container">
@@ -19,15 +28,15 @@ const embedUrl = youtubeEmbedUrl(video?.youtubeUrl);
           <span class="play" aria-hidden="true">▶</span>
           <div class="video-consent__copy">
             <strong>{video?.title || 'Klangfonia Video'}</strong>
-            <p>Mit dem Laden des Videos stimmst du zu, dass eine Verbindung zu YouTube hergestellt und Daten an Google übertragen werden können.</p>
-            <button type="button" data-video-load>Video von YouTube laden</button>
-            <a href={withBase('/datenschutz')}>Mehr zum Datenschutz</a>
+            <p>{copy.consent}</p>
+            <button type="button" data-video-load>{copy.load}</button>
+            <a href={localizePath('/datenschutz', lang)}>{copy.privacy}</a>
           </div>
         </div>
       ) : (
         <div class="video-placeholder">
           <span class="play" aria-hidden="true">▶</span>
-          <div><strong>Hier klingt bald Klangfonia.</strong><small>Video lässt sich im Sanity Studio hinterlegen.</small></div>
+          <div><strong>{copy.placeholder}</strong><small>{copy.studio}</small></div>
         </div>
       )}
     </div>

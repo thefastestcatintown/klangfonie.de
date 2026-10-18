@@ -52,6 +52,9 @@ export interface Testimonial {
   name: string;
   sourceType?: 'Schüler:in' | 'Veranstalter:in' | 'Yogalehrer:in' | 'Sonstige Person';
   context?: string;
+  quoteEn?: string;
+  nameEn?: string;
+  contextEn?: string;
 }
 
 export interface Video {
@@ -79,5 +82,8 @@ export interface Event {
   image?: SanityImage;
   description: string;
   externalUrl?: string;
+  titleEn?: string;
+  locationEn?: string;
+  descriptionEn?: string;
 }
 import type { PortableTextBlock } from '@portabletext/types';

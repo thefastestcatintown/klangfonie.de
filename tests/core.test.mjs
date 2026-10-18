@@ -4,6 +4,7 @@ import { withBase, routePath, canonicalUrl } from '../src/lib/urls.ts';
 import { formatEventDate } from '../src/lib/dates.ts';
 import { youtubeEmbedUrl } from '../src/lib/youtube.ts';
 import { serializeJsonLd, structuredData } from '../src/lib/seo.ts';
+import { contentPath, languageFromPath, languageRoute } from '../src/lib/i18n.ts';
 
 test('deployment URLs preserve queries, fragments and files without duplicating base paths', () => {
   assert.equal(withBase('/unterricht', '/'), '/unterricht/');
@@ -19,6 +20,15 @@ test('deployment URLs preserve queries, fragments and files without duplicating 
   assert.equal(canonicalUrl('/vorschau/kontakt?interesse=ensemble#form', 'https://example.org', '/vorschau/'), 'https://example.org/vorschau/kontakt/');
 });
 
+test('language routes keep the same page, query and fragment across DE and EN', () => {
+  assert.equal(languageFromPath('/klangfonie.de/en/live/', '/klangfonie.de/'), 'en');
+  assert.equal(languageFromPath('/klangfonie.de/live/', '/klangfonie.de/'), 'de');
+  assert.equal(contentPath('/klangfonie.de/en/kontakt/?interesse=live', '/klangfonie.de/'), '/kontakt');
+  assert.equal(languageRoute('/kontakt?interesse=live#formular', 'en'), '/en/kontakt?interesse=live#formular');
+  assert.equal(languageRoute('/en/workshops', 'de'), '/workshops');
+  assert.equal(languageRoute('/', 'en'), '/en');
+});
+
 test('event dates use Berlin time, including DST and a range crossing midnight', () => {
   assert.equal(formatEventDate('2026-07-01T17:00:00Z'), '1. Juli 2026 · 19:00 Uhr');
   assert.equal(formatEventDate('2026-01-01T17:00:00Z', '2026-01-01T19:00:00Z'), '1. Januar 2026 · 18:00–20:00 Uhr');
@@ -27,6 +37,7 @@ test('event dates use Berlin time, including DST and a range crossing midnight',
   assert.match(midnight, /2\. Juli 2026/);
   assert.match(midnight, /23:30/);
   assert.match(midnight, /00:30/);
+  assert.equal(formatEventDate('2026-11-14T18:00:00Z', undefined, 'en'), '14 November 2026 · 19:00');
 });
 
 test('YouTube accepts supported video URLs, rejects lookalike hosts and malformed IDs', () => {

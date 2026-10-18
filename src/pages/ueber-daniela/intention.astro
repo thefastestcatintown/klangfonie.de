@@ -1,5 +1,8 @@
 ---
 import AboutDetailPage from '../../components/AboutDetailPage.astro';
-import { intentionCopy } from '../../lib/about-content';
+import { intentionCopy, intentionCopyEn } from '../../lib/about-content';
+import type { Language } from '../../lib/i18n';
+interface Props { lang?: Language; }
+const { lang = 'de' } = Astro.props;
 ---
-<AboutDetailPage title="Meine Intention" paragraphs={intentionCopy} />
+<AboutDetailPage lang={lang} title={lang === 'en' ? 'My intention' : 'Meine Intention'} paragraphs={lang === 'en' ? intentionCopyEn : intentionCopy} />

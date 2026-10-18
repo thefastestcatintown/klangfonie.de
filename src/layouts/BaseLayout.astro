@@ -5,17 +5,19 @@ import Footer from '../components/Footer.astro';
 import profil1 from '../assets/images/profil1.png';
 import handpanLogo from '../assets/images/logo-transparent.png';
 import { getSettings } from '../lib/sanity';
-import { withBase, canonicalUrl, routePath } from '../lib/urls';
-import { brandName, pageMetadata, serializeJsonLd, structuredData } from '../lib/seo';
+import { withBase, canonicalUrl } from '../lib/urls';
+import { contentPath, languageFromPath, languageRoute, type Language } from '../lib/i18n';
+import { brandName, pageMetadata, pageMetadataEn, serializeJsonLd, structuredData } from '../lib/seo';
 import '@fontsource/great-vibes/latin-400.css';
 import '../styles/global.css';
 
-interface Props { title?: string; description?: string; image?: string; noindex?: boolean; }
+interface Props { title?: string; description?: string; image?: string; noindex?: boolean; lang?: Language; }
 const settings = await getSettings();
 const defaultSocialImage = await getImage({ src: profil1, width: 1200, height: 630, fit: 'cover', position: 'center', format: 'webp', quality: 85 });
 const favicon = await getImage({ src: handpanLogo, width: 96, height: 96, fit: 'contain', format: 'png' });
-const route = routePath(Astro.url.pathname);
-const metadata = pageMetadata[route];
+const language = Astro.props.lang ?? languageFromPath(Astro.url.pathname);
+const route = contentPath(Astro.url.pathname);
+const metadata = (language === 'en' ? pageMetadataEn : pageMetadata)[route];
 const defaultTitle = settings.defaultSeoTitle.replaceAll('Klangfonie', brandName);
 const {
   title = metadata?.title ?? defaultTitle,
@@ -25,13 +27,17 @@ const {
 } = Astro.props;
 const site = Astro.site ?? new URL('https://klangfonie.de');
 const canonical = canonicalUrl(Astro.url.pathname, site);
+const germanCanonical = canonicalUrl(languageRoute(route, 'de'), site);
+const englishCanonical = canonicalUrl(languageRoute(route, 'en'), site);
 const ogImage = new URL(withBase(image), site).href;
-const schema = structuredData({ canonical, home: canonicalUrl('/', site), about: canonicalUrl('/ueber-daniela/intention', site), image: ogImage, title, description, route, settings });
+const schema = structuredData({ canonical, home: canonicalUrl(languageRoute('/', language), site), about: canonicalUrl(languageRoute('/ueber-daniela/intention', language), site), image: ogImage, title, description, route, settings, language });
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION?.trim();
+const socialImageAlt = language === 'en' ? 'Daniela Schneider – handpan, coaching and music' : 'Daniela Schneider – Handpan, Coaching und Musik';
+const skipLabel = language === 'en' ? 'Skip to content' : 'Zum Inhalt springen';
 
 ---
 <!doctype html>
-<html lang="de">
+<html lang={language}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -40,26 +46,29 @@ const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION?.
     <meta name="description" content={description} />
     {googleSiteVerification && <meta name="google-site-verification" content={googleSiteVerification} />}
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="de-DE" href={germanCanonical} />
+    <link rel="alternate" hreflang="en" href={englishCanonical} />
+    <link rel="alternate" hreflang="x-default" href={germanCanonical} />
     <link rel="sitemap" type="application/xml" href={withBase('/sitemap-index.xml')} />
     <link rel="icon" type="image/png" href={withBase(favicon.src)} />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="de_DE" />
+    <meta property="og:locale" content={language === 'en' ? 'en_GB' : 'de_DE'} />
     <meta property="og:site_name" content={brandName} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:image:alt" content="Daniela Schneider – Handpan, Coaching und Musik" />
+    <meta property="og:image:alt" content={socialImageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
-    <meta name="twitter:image:alt" content="Daniela Schneider – Handpan, Coaching und Musik" />
+    <meta name="twitter:image:alt" content={socialImageAlt} />
     <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
-    {!noindex && <script type="application/ld+json" set:html={serializeJsonLd(schema)} />}
+    {!noindex && <script is:inline type="application/ld+json" set:html={serializeJsonLd(schema)} />}
   </head>
   <body>
-    <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+    <a class="skip-link" href="#main-content">{skipLabel}</a>
     <Header />
     <main id="main-content"><slot /></main>
     <Footer settings={settings} />

@@ -2,10 +2,15 @@
 import { getImage } from 'astro:assets';
 import footerLogo from '../assets/images/logo-footer-transparent.png';
 import type { SiteSettings } from '../lib/types';
-import { withBase } from '../lib/urls';
-import { footerLinks } from '../lib/navigation';
+import { languageFromPath, localizePath } from '../lib/i18n';
+import { navigationFor } from '../lib/navigation';
 interface Props { settings: SiteSettings; }
 const { settings } = Astro.props;
+const language = languageFromPath(Astro.url.pathname);
+const { footerLinks } = navigationFor(language);
+const copy = language === 'en'
+  ? { home: 'Klangfonia – Home', logo: 'Klangfonia – Daniela Schneider, handpan music', legal: 'Legal notice', privacy: 'Privacy' }
+  : { home: 'Klangfonia – Startseite', logo: 'Klangfonia – Daniela Schneider, Handpan-Musik', legal: 'Impressum', privacy: 'Datenschutz' };
 const year = new Date().getFullYear();
 const hasContact = Boolean(settings.email || settings.phone);
 const footerColumns = 1 + Number(hasContact);
@@ -15,9 +20,9 @@ const optimizedFooterLogo = await getImage({ src: footerLogo, width: 480, format
 <footer class="footer">
   <div class="container footer-grid" style={`--footer-columns: ${footerColumns}`}>
     <div>
-      <a class="footer-brand" href={withBase('/')} aria-label="Klangfonia – Startseite">
+      <a class="footer-brand" href={localizePath('/', language)} aria-label={copy.home}>
         <svg class="footer-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1262 1065" role="img" aria-labelledby="footer-logo-title">
-          <title id="footer-logo-title">Klangfonia – Daniela Schneider, Handpan-Musik</title>
+          <title id="footer-logo-title">{copy.logo}</title>
           <image href={optimizedFooterLogo.src} width="1477" height="1065" />
         </svg>
       </a>
@@ -27,7 +32,7 @@ const optimizedFooterLogo = await getImage({ src: footerLogo, width: 480, format
       {settings.phone && <a href={`tel:${settings.phone.replace(/\s/g, '')}`}>{settings.phone}</a>}
     </div>}
     <div>
-      {footerLinks.map((item) => <a href={withBase(item.href)}>{item.label}</a>)}
+      {footerLinks.map((item) => <a href={localizePath(item.href, language)}>{item.label}</a>)}
     </div>
   </div>
   <div class="container footer-bottom">
@@ -52,7 +57,7 @@ const optimizedFooterLogo = await getImage({ src: footerLogo, width: 480, format
       ))}
     </div>
     <span>© {year} Klangfonia</span>
-    <div class="footer-legal"><a href={withBase('/impressum')}>Impressum</a><a href={withBase('/datenschutz')}>Datenschutz</a></div>
+    <div class="footer-legal"><a href={localizePath('/impressum', language)}>{copy.legal}</a><a href={localizePath('/datenschutz', language)}>{copy.privacy}</a></div>
   </div>
 </footer>
 

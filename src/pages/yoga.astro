@@ -2,22 +2,37 @@
 import ServicePage from '../components/ServicePage.astro';
 import yogaImage from '../assets/images/sample-yoga-handpan.png';
 import { getService } from '../lib/sanity';
+import type { Language } from '../lib/i18n';
+interface Props { lang?: Language; }
+const { lang = 'de' } = Astro.props;
+const english = lang === 'en';
 const service = await getService('Yoga');
 ---
 <ServicePage
   service={service}
-  title="Musik erleben. Rhythmus spüren. Gemeinschaft fühlen."
+  lang={lang}
+  title={english ? 'Experience music. Feel rhythm. Share connection.' : 'Musik erleben. Rhythmus spüren. Gemeinschaft fühlen.'}
   fallbackImage={yogaImage}
-  fallbackImageAlt="Kupferfarbene Handpan in einem hellen Yogaraum"
-  ctaLabel="Retreat anfragen"
-  fallbackBody={[
+  fallbackImageAlt={english ? 'Copper-coloured handpan in a bright retreat space' : 'Kupferfarbene Handpan in einem hellen Yogaraum'}
+  ctaLabel={english ? 'Enquire about a retreat' : 'Retreat anfragen'}
+  ctaUrl="/kontakt?interesse=yoga"
+  fallbackBody={english ? [
+    'Immerse yourself in the world of handpan sounds, carried by rhythm in motion. In my retreats, handpan music and shared body percussion come together – an inspiring combination of mindfulness, musical experience and collective expression.',
+  ] : [
     'Tauche ein in die Welt der Handpansounds getragen von Rhythmus in Bewegung. In meinen Retreats begegnen sich Handpanmusik und gemeinsame Bodypercussion – eine inspirierende Verbindung aus Achtsamkeit, musikalischem Erleben und gemeinschaftlichem Ausdruck.',
   ]}
-  bullets={[
+  bullets={english ? [
+    'Handpan: Immerse yourself in ethereal sounds and let their depth move you.',
+    'Body percussion: Experience movement and rhythm with your whole body, feel alive and find a shared flow.',
+  ] : [
     'Handpan: In sphärische Klänge eintauchen und sich von ihrer Tiefe berühren lassen.',
     'Bodypercussion: Bewegung und Rhythmus mit dem ganzen Körper erfahren, Lebendigkeit spüren und gemeinsam in den Flow kommen.',
   ]}
-  closingBody={[
+  closingBody={english ? [
+    'Whether in quiet moments or powerful ensemble playing, space opens up for new experiences, musical vitality and connection.',
+    'You do not need any musical experience. All you need is an openness to handpan sounds, rhythm in motion and meeting others.',
+    'Carried by music. Together in rhythm. Connected in the moment.',
+  ] : [
     'Ob in stillen Momenten oder im kraftvollen Zusammenspiel – es entsteht Raum für neue Erfahrungen, musikalische Lebendigkeit und Verbundenheit.',
     'Du brauchst keine musikalischen Vorkenntnisse. Alles, was du mitbringst, ist die Offenheit, dich auf die Handpansounds, Rhythmus in Bewegung und Begegnung einzulassen.',
     'Getragen von der Musik. Gemeinsam im Rhythmus. Verbunden im Augenblick.',

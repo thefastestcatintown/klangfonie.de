@@ -3,8 +3,10 @@ import SectionHeading from './SectionHeading.astro';
 import TestimonialCard from './TestimonialCard.astro';
 import { getTestimonials } from '../lib/sanity';
 import type { Testimonial } from '../lib/types';
+import { languageFromPath } from '../lib/i18n';
 
 const testimonials = await getTestimonials();
+const language = languageFromPath(Astro.url.pathname);
 
 const examples: Testimonial[] = [
   {
@@ -27,33 +29,79 @@ const examples: Testimonial[] = [
   },
 ];
 
-const cards = [
-  ...testimonials.map((testimonial) => ({ testimonial, isExample: false })),
-  ...examples.map((testimonial) => ({ testimonial, isExample: true })),
-].slice(0, 3);
+const englishExamples: Testimonial[] = [
+  {
+    quote: 'I had never played an instrument before. Daniela explains things calmly and clearly, so after only a short time I felt confident enough to try my own rhythms.',
+    name: 'Example testimonial',
+    sourceType: 'Schüler:in',
+    context: 'One-to-one guidance',
+  },
+  {
+    quote: 'The workshop had a wonderfully relaxed atmosphere. I could explore the many sounds of the handpan without pressure and took home plenty of ideas for my own practice.',
+    name: 'Example testimonial',
+    sourceType: 'Schüler:in',
+    context: 'Beginner workshop',
+  },
+  {
+    quote: 'Daniela combines clear guidance with plenty of space for your own musical intuition. My playing has become freer and more confident as a result.',
+    name: 'Example testimonial',
+    sourceType: 'Schüler:in',
+    context: 'Handpan lessons',
+  },
+];
+
+const englishTestimonials = testimonials
+  .filter((testimonial) => testimonial.quoteEn)
+  .map((testimonial) => ({
+    ...testimonial,
+    quote: testimonial.quoteEn as string,
+    name: testimonial.nameEn || testimonial.name,
+    context: testimonial.contextEn || testimonial.context,
+  }));
+
+const cards = language === 'en'
+  ? [
+      ...englishTestimonials.map((testimonial) => ({ testimonial, isExample: false })),
+      ...englishExamples.map((testimonial) => ({ testimonial, isExample: true })),
+    ].slice(0, 3)
+  : [
+      ...testimonials.map((testimonial) => ({ testimonial, isExample: false })),
+      ...examples.map((testimonial) => ({ testimonial, isExample: true })),
+    ].slice(0, 3);
 
 const hasExamples = cards.some(({ isExample }) => isExample);
+const copy = language === 'en'
+  ? {
+      title: 'Student voices',
+      text: 'Personal experiences from lessons and workshops.',
+      note: 'The texts marked “Example” demonstrate the intended presentation and will be replaced with approved original testimonials before the official launch.',
+    }
+  : {
+      title: 'Schülerstimmen',
+      text: 'Persönliche Erfahrungen aus Unterricht und Workshops.',
+      note: 'Die als „Beispiel“ gekennzeichneten Texte zeigen vorerst die geplante Darstellung und werden vor dem offiziellen Start durch freigegebene Originalstimmen ersetzt.',
+    };
 ---
 
 <section class="section testimonials" aria-labelledby="schuelerstimmen">
   <div class="container">
     <div id="schuelerstimmen">
       <SectionHeading
-        title="Schülerstimmen"
-        text="Persönliche Erfahrungen aus Unterricht und Workshops."
+        title={copy.title}
+        text={copy.text}
         align="center"
       />
     </div>
 
     <div class="testimonials__grid">
       {cards.map(({ testimonial, isExample }) => (
-        <TestimonialCard testimonial={testimonial} isExample={isExample} />
+        <TestimonialCard testimonial={testimonial} isExample={isExample} lang={language} />
       ))}
     </div>
 
     {hasExamples && (
       <p class="testimonials__note">
-        Die als „Beispiel“ gekennzeichneten Texte zeigen vorerst die geplante Darstellung und werden vor dem offiziellen Start durch freigegebene Originalstimmen ersetzt.
+        {copy.note}
       </p>
     )}
   </div>

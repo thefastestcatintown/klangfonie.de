@@ -2,7 +2,14 @@
 import { getEvents, imageUrl } from '../lib/sanity';
 import { formatEventDate } from '../lib/dates';
 import DecorativeHeading from './DecorativeHeading.astro';
-const events = await getEvents();
+import { languageFromPath } from '../lib/i18n';
+import { localizeEvent } from '../lib/event-translations';
+const rawEvents = await getEvents();
+const language = languageFromPath(Astro.url.pathname);
+const events = rawEvents.map((event) => localizeEvent(event, language));
+const copy = language === 'en'
+  ? { heading: 'Concerts & events', more: 'Find out more', empty: 'New concert dates will be published here.' }
+  : { heading: 'Konzerte & Termine', more: 'Mehr erfahren', empty: 'Neue Konzerttermine werden hier veröffentlicht.' };
 const sanityProjectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID;
 const sanityDataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
 
@@ -13,15 +20,16 @@ const sanityDataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
     data-events-section
     data-project-id={sanityProjectId}
     data-dataset={sanityDataset}
+    data-language={language}
   >
     <div class="container">
-      <DecorativeHeading level="h2" class="page-title" text="Konzerte & Termine" />
+      <DecorativeHeading level="h2" class="page-title" text={copy.heading} />
       <div class="events" data-events-list aria-live="polite">
         {events.length > 0 ? events.map((event) => {
           const eventImage = imageUrl(event.image, 640, 426);
           return (
             <article>
-              <time datetime={event.date}>{formatEventDate(event.date, event.endDate)}</time>
+              <time datetime={event.date}>{formatEventDate(event.date, event.endDate, language)}</time>
               <div class:list={['event-details', { 'has-image': eventImage }]}>
                 {eventImage && <img class="event-image" src={eventImage} alt={event.image?.alt || event.title} width="640" height="426" loading="lazy" />}
                 <div>
@@ -30,11 +38,11 @@ const sanityDataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
                   <p>{event.description}</p>
                 </div>
               </div>
-              {event.externalUrl && <a href={event.externalUrl} target="_blank" rel="noreferrer">Mehr erfahren ↗</a>}
+              {event.externalUrl && <a href={event.externalUrl} target="_blank" rel="noreferrer">{copy.more} ↗</a>}
             </article>
           );
         }) : (
-          <p class="events-empty">Neue Konzerttermine werden hier veröffentlicht.</p>
+          <p class="events-empty">{copy.empty}</p>
         )}
       </div>
     </div>

@@ -6,6 +6,7 @@ export const event = defineType({
   type: 'document',
   fields: [
     defineField({ name: 'title', title: 'Titel', type: 'string', validation: (rule) => rule.required() }),
+    defineField({ name: 'titleEn', title: 'Titel (Englisch, optional)', type: 'string' }),
     defineField({ name: 'date', title: 'Beginn (Datum und Uhrzeit)', type: 'datetime', validation: (rule) => rule.required() }),
     defineField({
       name: 'endDate',
@@ -19,6 +20,7 @@ export const event = defineType({
         }),
     }),
     defineField({ name: 'location', title: 'Ort', type: 'string', validation: (rule) => rule.required() }),
+    defineField({ name: 'locationEn', title: 'Ort (Englisch, optional)', type: 'string' }),
     defineField({
       name: 'image',
       title: 'Veranstaltungsbild (optional)',
@@ -35,6 +37,7 @@ export const event = defineType({
       ],
     }),
     defineField({ name: 'description', title: 'Beschreibung', type: 'text', rows: 4, validation: (rule) => rule.required() }),
+    defineField({ name: 'descriptionEn', title: 'Beschreibung (Englisch, optional)', type: 'text', rows: 4 }),
     defineField({ name: 'externalUrl', title: 'Externer Link (optional)', type: 'url' }),
   ],
   orderings: [{ title: 'Datum', name: 'dateAsc', by: [{ field: 'date', direction: 'asc' }] }],

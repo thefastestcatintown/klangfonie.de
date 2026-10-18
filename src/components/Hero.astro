@@ -2,10 +2,13 @@
 import { Image } from 'astro:assets';
 import profil1 from '../assets/images/profil1-portrait-ohne-bank.png';
 import type { HomePage } from '../lib/types';
+import type { Language } from '../lib/i18n';
 import DecorativeHeading from './DecorativeHeading.astro';
 
-interface Props { content: HomePage; }
-const { content } = Astro.props;
+interface Props { content: HomePage; lang?: Language; }
+const { content, lang = 'de' } = Astro.props;
+const imageAlt = lang === 'en' ? 'Daniela Schneider playing a handpan on a woodland path' : 'Daniela Schneider spielt Handpan auf einem Waldweg';
+const caption = lang === 'en' ? 'Handpan · Music · Connection' : 'Handpan · Musik · Begegnung';
 ---
 <section class="hero">
   <div class="container hero-grid">
@@ -14,8 +17,8 @@ const { content } = Astro.props;
       <p class="lead">{content.heroText}</p>
     </div>
     <figure class="hero-visual reveal">
-      <Image src={profil1} alt="Daniela Schneider spielt Handpan auf einem Waldweg" widths={[480, 720, 800, 1200, 1600, 1774]} sizes="(min-width: 84rem) 1280px, (min-width: 48rem) calc(100vw - 4rem), calc(100vw - 2rem)" quality={72} loading="eager" fetchpriority="high" />
-      <figcaption><strong>Daniela Schneider</strong><span>Handpan · Musik · Begegnung</span></figcaption>
+      <Image src={profil1} alt={imageAlt} widths={[480, 720, 800, 1200, 1600, 1774]} sizes="(min-width: 84rem) 1280px, (min-width: 48rem) calc(100vw - 4rem), calc(100vw - 2rem)" quality={72} loading="eager" fetchpriority="high" />
+      <figcaption><strong>Daniela Schneider</strong><span>{caption}</span></figcaption>
     </figure>
   </div>
 </section>

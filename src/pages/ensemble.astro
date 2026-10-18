@@ -5,36 +5,40 @@ import CoachingHero from '../components/CoachingHero.astro';
 import Button from '../components/Button.astro';
 import '../styles/coaching.css';
 import ensembleImage from '../assets/images/sample-handpan-ensemble.png';
+import { localizePath, type Language } from '../lib/i18n';
+interface Props { lang?: Language; }
+const { lang = 'de' } = Astro.props;
+const english = lang === 'en';
 ---
 
-<BaseLayout>
+<BaseLayout lang={lang}>
   <div class="coaching-page">
-  <CoachingHero title="Handpan Big Band in Berlin" intro="Gemeinsam Handpan spielen, eigene Ideen einbringen und als Big Band wachsen – vom ersten Schnuppertreffen bis auf die Bühne." />
+  <CoachingHero lang={lang} title="Handpan Big Band in Berlin" intro={english ? 'Play the handpan together, contribute your own ideas and grow as a big band – from your first trial session all the way to the stage.' : 'Gemeinsam Handpan spielen, eigene Ideen einbringen und als Big Band wachsen – vom ersten Schnuppertreffen bis auf die Bühne.'} />
 
   <section class="section" id="ensemble">
     <div class="container">
-      <div class="ensemble-image"><Image src={ensembleImage} alt="Drei Menschen musizieren gemeinsam auf Handpans" width={1600} /></div>
+      <div class="ensemble-image"><Image src={ensembleImage} alt={english ? 'Three people making music together on handpans' : 'Drei Menschen musizieren gemeinsam auf Handpans'} width={1600} /></div>
 
       <div class="ensemble-points">
         <article class="coaching-card">
-          <h2>Begegnung, Austausch und gemeinsames Musizieren</h2>
-          <p>Wenn du Lust hast, dich regelmäßig mit anderen Handpan-Artists zu treffen, gemeinsam Musik zu entwickeln, deine eigenen Ideen einzubringen und dich inspirieren zu lassen, bist du herzlich willkommen. Zum Kennenlernen kannst du gerne zunächst ein unverbindliches Schnuppertreffen vereinbaren.</p>
-          <p>Gemeinsam entwickeln wir ein abwechslungsreiches Auftrittsprogramm, in dem sowohl ein- und mehrstimmige Patterns als auch Solostücke ihren Platz finden. Dabei geht es nicht nur darum, gemeinsam zu spielen, sondern auch darum, musikalisch miteinander zu wachsen und unsere unterschiedlichen Ideen und Spielweisen zu einem gemeinsamen Klangbild zu verbinden.</p>
+          <h2>{english ? 'Connection, exchange and making music together' : 'Begegnung, Austausch und gemeinsames Musizieren'}</h2>
+          <p>{english ? 'If you would like to meet other handpan artists regularly, develop music together, contribute your own ideas and be inspired, you are warmly welcome. You can begin with a no-obligation trial session to get to know the group.' : 'Wenn du Lust hast, dich regelmäßig mit anderen Handpan-Artists zu treffen, gemeinsam Musik zu entwickeln, deine eigenen Ideen einzubringen und dich inspirieren zu lassen, bist du herzlich willkommen. Zum Kennenlernen kannst du gerne zunächst ein unverbindliches Schnuppertreffen vereinbaren.'}</p>
+          <p>{english ? 'Together, we develop a varied performance programme with space for both single- and multi-voice patterns as well as solo pieces. It is not only about playing together, but also about growing musically and bringing our different ideas and playing styles into one shared sound.' : 'Gemeinsam entwickeln wir ein abwechslungsreiches Auftrittsprogramm, in dem sowohl ein- und mehrstimmige Patterns als auch Solostücke ihren Platz finden. Dabei geht es nicht nur darum, gemeinsam zu spielen, sondern auch darum, musikalisch miteinander zu wachsen und unsere unterschiedlichen Ideen und Spielweisen zu einem gemeinsamen Klangbild zu verbinden.'}</p>
         </article>
         <article class="coaching-card">
-          <h2>Rhythmus, Timing und musikalischer Flow</h2>
-          <p>Beim Warm-up mit Bodypercussion nähern wir uns spielerisch den rhythmischen Figuren der Patterns an und trainieren dabei Koordination, Timing und Körpergefühl. Das zunächst langsame Übertragen auf die Handpan, die schrittweise Wiederholung einzelner Takte im Loop und das meditative Eingrooven in einen stabilen Beat spielen dabei eine zentrale Rolle.</p>
-          <p>Die Stücke werden gefilmt und ich notiere sie sowohl in Zahlenschrift als auch mit Notennamen und klassischer Notenschrift. So können wir musikalische Ideen festhalten, weiterentwickeln und auch nach und nach zu einem gemeinsamen Repertoire ausbauen.</p>
-          <p>Im kreativen Prozess erfährst du, wie elegante Übergänge zwischen Strophe und Refrain entstehen und wie sich durch progressive Variationen der Melodie-Patterns ein musikalischer Spannungsbogen entwickeln lässt. Wir experimentieren mit Dynamik, Zusammenspiel und Ausdruck und entdecken dabei, wie aus einzelnen Patterns ein lebendiges gemeinsames Stück entsteht.</p>
+          <h2>{english ? 'Rhythm, timing and musical flow' : 'Rhythmus, Timing und musikalischer Flow'}</h2>
+          <p>{english ? 'In our body-percussion warm-up, we explore the rhythmic shapes of the patterns through play while training coordination, timing and body awareness. Slowly transferring them to the handpan, repeating individual bars in a loop and settling meditatively into a steady beat all play a central role.' : 'Beim Warm-up mit Bodypercussion nähern wir uns spielerisch den rhythmischen Figuren der Patterns an und trainieren dabei Koordination, Timing und Körpergefühl. Das zunächst langsame Übertragen auf die Handpan, die schrittweise Wiederholung einzelner Takte im Loop und das meditative Eingrooven in einen stabilen Beat spielen dabei eine zentrale Rolle.'}</p>
+          <p>{english ? 'The pieces are filmed and I write them down using numbers, note names and standard notation. This lets us capture and develop musical ideas and gradually build a shared repertoire.' : 'Die Stücke werden gefilmt und ich notiere sie sowohl in Zahlenschrift als auch mit Notennamen und klassischer Notenschrift. So können wir musikalische Ideen festhalten, weiterentwickeln und auch nach und nach zu einem gemeinsamen Repertoire ausbauen.'}</p>
+          <p>{english ? 'During the creative process, you discover how elegant transitions between verse and chorus emerge and how progressive variations of melodic patterns can create a musical arc. We experiment with dynamics, ensemble playing and expression, discovering how individual patterns become a living piece of music.' : 'Im kreativen Prozess erfährst du, wie elegante Übergänge zwischen Strophe und Refrain entstehen und wie sich durch progressive Variationen der Melodie-Patterns ein musikalischer Spannungsbogen entwickeln lässt. Wir experimentieren mit Dynamik, Zusammenspiel und Ausdruck und entdecken dabei, wie aus einzelnen Patterns ein lebendiges gemeinsames Stück entsteht.'}</p>
         </article>
         <article class="coaching-card">
-          <h2>Von dem Probenraum auf die Bühne</h2>
-          <p>Ein weiterer wichtiger Bestandteil ist die Bühnenerfahrung. Die gemeinsam erarbeiteten Stücke tragen wir vom Proberaum auf die Bühne. Dabei kannst du Erfahrungen mit dem gemeinsamen Auftreten sammeln, Sicherheit on stage gewinnen und erleben, wie sich unsere Musik im Zusammenspiel mit einem Publikum entfaltet.</p>
-          <p>Ob du bereits Bühnenerfahrung mitbringst oder deine ersten Schritte in diese Richtung machen möchtest – beides ist willkommen. Im Mittelpunkt steht die Freude am gemeinsamen Musizieren und die Bereitschaft, sich aufeinander einzulassen.</p>
-          <p>Wenn dich das anspricht, melde dich gerne! Ich/wir freuen uns über Verstärkung, neue musikalische Impulse und vor allem auf viele schöne gemeinsame Momente mit der Handpan.</p>
+          <h2>{english ? 'From the rehearsal room to the stage' : 'Von dem Probenraum auf die Bühne'}</h2>
+          <p>{english ? 'Stage experience is another important part of the project. We take the pieces we develop together from the rehearsal room onto the stage. You can gain experience performing as a group, grow in confidence on stage and feel how our music unfolds in dialogue with an audience.' : 'Ein weiterer wichtiger Bestandteil ist die Bühnenerfahrung. Die gemeinsam erarbeiteten Stücke tragen wir vom Proberaum auf die Bühne. Dabei kannst du Erfahrungen mit dem gemeinsamen Auftreten sammeln, Sicherheit on stage gewinnen und erleben, wie sich unsere Musik im Zusammenspiel mit einem Publikum entfaltet.'}</p>
+          <p>{english ? 'Whether you already have stage experience or want to take your first steps in this direction, both are welcome. The focus is on the joy of making music together and being open to one another.' : 'Ob du bereits Bühnenerfahrung mitbringst oder deine ersten Schritte in diese Richtung machen möchtest – beides ist willkommen. Im Mittelpunkt steht die Freude am gemeinsamen Musizieren und die Bereitschaft, sich aufeinander einzulassen.'}</p>
+          <p>{english ? 'If this speaks to you, get in touch. We look forward to new members, fresh musical ideas and, above all, many wonderful shared moments with the handpan.' : 'Wenn dich das anspricht, melde dich gerne! Ich/wir freuen uns über Verstärkung, neue musikalische Impulse und vor allem auf viele schöne gemeinsame Momente mit der Handpan.'}</p>
         </article>
       </div>
-      <div class="ensemble-action"><Button href="/kontakt?interesse=ensemble">Schnuppertreffen anfragen</Button></div>
+      <div class="ensemble-action"><Button href={localizePath('/kontakt?interesse=ensemble', lang)}>{english ? 'Ask about a trial session' : 'Schnuppertreffen anfragen'}</Button></div>
     </div>
   </section>
 

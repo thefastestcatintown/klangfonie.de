@@ -1,37 +1,43 @@
 ---
 import BrandLogo from './BrandLogo.astro';
-import { withBase, routePath } from '../lib/urls';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { contentPath, languageFromPath, localizePath } from '../lib/i18n';
 
-import { aboutLinks as aboutItems, coachingLinks as coachingItems, navigationLinks } from '../lib/navigation';
-const pathname = routePath(Astro.url.pathname);
-const coachingLinks = coachingItems.map((item) => ({ ...item, href: withBase(item.href) }));
-const aboutLinks = aboutItems.map((item) => ({ ...item, href: withBase(item.href) }));
-const navigation = navigationLinks.map((item) => ({ ...item, href: withBase(item.href) }));
+import { navigationFor } from '../lib/navigation';
+const language = languageFromPath(Astro.url.pathname);
+const pathname = contentPath(Astro.url.pathname);
+const items = navigationFor(language);
+const coachingLinks = items.coachingLinks.map((item) => ({ ...item, href: localizePath(item.href, language) }));
+const aboutLinks = items.aboutLinks.map((item) => ({ ...item, href: localizePath(item.href, language) }));
+const navigation = items.navigationLinks.map((item) => ({ ...item, href: localizePath(item.href, language) }));
+const copy = language === 'en'
+  ? { home: 'Klangfonia – Home', openMenu: 'Open menu', mainNav: 'Main navigation', about: 'About me' }
+  : { home: 'Klangfonia – Startseite', openMenu: 'Menü öffnen', mainNav: 'Hauptnavigation', about: 'Über mich' };
 ---
 <header class="site-header" data-header>
   <div class="header-inner container">
-    <a class="brand" href={withBase('/')} aria-label="Klangfonia – Startseite">
+    <a class="brand" href={localizePath('/', language)} aria-label={copy.home}>
       <BrandLogo />
     </a>
     <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-navigation" data-menu-button>
-      <span class="sr-only">Menü öffnen</span><i></i><i></i>
+      <span class="sr-only">{copy.openMenu}</span><i></i><i></i>
     </button>
-    <nav class="navigation" id="main-navigation" aria-label="Hauptnavigation" data-navigation>
-      <details class:list={['dropdown-menu', { 'is-current': coachingLinks.some((item) => pathname === routePath(item.href)) }]} data-submenu>
+    <nav class="navigation" id="main-navigation" aria-label={copy.mainNav} data-navigation>
+      <details class:list={['dropdown-menu', { 'is-current': coachingLinks.some((item) => pathname === contentPath(item.href)) }]} data-submenu>
         <summary>Coaching</summary>
         <ul class="submenu">
-          {coachingLinks.map((item) => <li><a href={item.href} aria-current={pathname === routePath(item.href) ? 'page' : undefined}>{item.label}</a></li>)}
+          {coachingLinks.map((item) => <li><a href={item.href} aria-current={pathname === contentPath(item.href) ? 'page' : undefined}>{item.label}</a></li>)}
         </ul>
       </details>
       {navigation.map((item) => item.href.includes('/ueber-daniela/') ? (
         <details class:list={['dropdown-menu', 'dropdown-menu--about', { 'is-current': pathname.startsWith('/ueber-daniela') }]} data-submenu>
-          <summary>Über mich</summary>
+          <summary>{copy.about}</summary>
           <ul class="submenu">
-            {aboutLinks.map((aboutItem) => <li><a href={aboutItem.href} aria-current={pathname === routePath(aboutItem.href) ? 'page' : undefined}>{aboutItem.label}</a></li>)}
+            {aboutLinks.map((aboutItem) => <li><a href={aboutItem.href} aria-current={pathname === contentPath(aboutItem.href) ? 'page' : undefined}>{aboutItem.label}</a></li>)}
           </ul>
         </details>
-      ) : <a href={item.href} aria-current={!item.href.includes('#') && pathname === routePath(item.href) ? 'page' : undefined}>{item.label}</a>)}
-
+      ) : <a href={item.href} aria-current={!item.href.includes('#') && pathname === contentPath(item.href) ? 'page' : undefined}>{item.label}</a>)}
+      <div class="language-switch"><LanguageSwitcher /></div>
     </nav>
   </div>
 </header>
@@ -106,7 +112,7 @@ const navigation = navigationLinks.map((item) => ({ ...item, href: withBase(item
   .header-inner { display: flex; min-height: var(--header-height); align-items: center; justify-content: space-between; padding-block: 0.25rem; }
   .brand { --brand-scale: 0.7; display: inline-flex; align-items: center; gap: 0.75rem; flex-shrink: 0; color: var(--color-ink); font-family: var(--font-display); font-size: 1.7rem; letter-spacing: -0.025em; text-decoration: none; }
 
-  .navigation { display: flex; align-items: center; gap: clamp(1rem, 2.2vw, 2rem); }
+  .navigation { display: flex; align-items: center; gap: clamp(0.8rem, 1.7vw, 1.55rem); }
   .navigation > a { padding-block: 0.65rem; position: relative; color: var(--color-ink); font-size: 0.85rem; font-weight: 700; text-decoration: none; }
   .navigation > a::after, .dropdown-menu summary::after {
     content: ''; position: absolute; right: 0; bottom: 0; left: 0; height: 0.3rem; pointer-events: none;
@@ -145,6 +151,7 @@ const navigation = navigationLinks.map((item) => ({ ...item, href: withBase(item
     .submenu { position: static; width: auto; margin: 0.5rem 1rem 1rem; padding: 0 0 0 0.75rem; border: 0; border-left: 1px solid var(--color-sand); border-radius: 0; background: transparent; box-shadow: none; }
     .submenu::before { display: none; }
     .submenu a { font-size: 1rem; }
+    .language-switch { display: flex; justify-content: center; margin-top: 1.5rem; }
 
   }
   @media (max-width: 24rem) {

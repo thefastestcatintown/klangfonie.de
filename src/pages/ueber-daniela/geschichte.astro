@@ -1,6 +1,28 @@
 ---
 import AboutDetailPage from '../../components/AboutDetailPage.astro';
 import { fallbackAbout } from '../../lib/fallbacks';
-import { storyCopy } from '../../lib/about-content';
+import { storyCopy, storyCopyEn } from '../../lib/about-content';
+import type { Language } from '../../lib/i18n';
+interface Props { lang?: Language; }
+const { lang = 'de' } = Astro.props;
+const milestonesEn = fallbackAbout.milestones?.map((item) => ({
+  ...item,
+  year: item.year?.replace('Seit ', 'Since '),
+  text: ({
+    'Handpanartist und Handpan-Coach, Berlin': 'Handpan artist and handpan coach, Berlin',
+    'Soz.-päd. in der Behindertenhilfe, Berlin': 'Social worker in disability support, Berlin',
+    'Dipl. Sozialarbeit/Sozialpädagogik, Alice-Salomon-Hochschule, Berlin': 'Degree in Social Work/Social Education, Alice Salomon University, Berlin',
+    'Erzieherin in der Behindertenhilfe, Nürnberg und Berlin': 'Educator in disability support, Nuremberg and Berlin',
+    'Staatlich anerkannte Erzieherin, Städt. Fachakademie für Sozialpädagogik, Nürnberg': 'State-certified educator, Municipal Academy for Social Education, Nuremberg',
+  } as Record<string, string>)[item.text] ?? item.text.replace('Vor-Dipl. Klassisches Schlagwerk und Elementare Musikpädagogik am Meistersinger-Konservatorium, heute Hochschule für Musik, bei:', 'Pre-diploma in classical percussion and elementary music education at the Meistersinger Conservatory, now the University of Music, with:'),
+  details: item.details?.map((detail) => detail
+    .replace('Wohnheimleitung, pädagogische Fachleitung, sozialpädagogischer Begleitdienst etc.', 'Residential home management, educational team leadership, social support services, etc.')
+    .replace('Lehrer für klassisches Schlagwerk', 'teacher of classical percussion')
+    .replace('Schlagzeugdozent, insbesondere für Drumset und Jazz', 'percussion lecturer, particularly drum set and jazz')
+    .replace('Dozent für Pauken und Schlagzeug', 'lecturer in timpani and percussion')
+    .replace('Dozent für Vibraphon', 'vibraphone lecturer')
+    .replace('Dozentin der Elementaren Musikpädagogik', 'lecturer in elementary music education')
+    .replace('Dozent der Elementaren Musikpädagogik', 'lecturer in elementary music education')),
+}));
 ---
-<AboutDetailPage title="Meine Geschichte" paragraphs={storyCopy} milestones={fallbackAbout.milestones} />
+<AboutDetailPage lang={lang} title={lang === 'en' ? 'My story' : 'Meine Geschichte'} paragraphs={lang === 'en' ? storyCopyEn : storyCopy} milestones={lang === 'en' ? milestonesEn : fallbackAbout.milestones} />

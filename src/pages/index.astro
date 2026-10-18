@@ -5,29 +5,34 @@ import EventsSection from '../components/EventsSection.astro';
 import TestimonialsSection from '../components/TestimonialsSection.astro';
 import DecorativeHeading from '../components/DecorativeHeading.astro';
 import { getHome } from '../lib/sanity';
+import { localizePath, type Language } from '../lib/i18n';
 
 const home = await getHome();
+interface Props { lang?: Language; }
+const { lang = 'de' } = Astro.props;
+const english = lang === 'en';
 const intro = {
   ...home,
-  heroText: 'Handpan entdecken, gemeinsam wachsen und Musik erleben – mit Daniela Schneider in Berlin.',
-  primaryCtaLabel: 'Lernbegleitung entdecken',
-  primaryCtaUrl: '/unterricht',
-  secondaryCtaLabel: 'Musik hören',
-  secondaryCtaUrl: '/live#musik',
+  heroHeadline: english ? 'Sound that connects.' : home.heroHeadline,
+  heroText: english ? 'Discover the handpan, grow together and experience music with Daniela Schneider in Berlin.' : 'Handpan entdecken, gemeinsam wachsen und Musik erleben – mit Daniela Schneider in Berlin.',
+  primaryCtaLabel: english ? 'Discover one-to-one guidance' : 'Lernbegleitung entdecken',
+  primaryCtaUrl: localizePath('/unterricht', lang),
+  secondaryCtaLabel: english ? 'Listen to music' : 'Musik hören',
+  secondaryCtaUrl: localizePath('/live#musik', lang),
 };
 ---
-<BaseLayout>
+<BaseLayout lang={lang}>
   <div class="home-content">
-    <Hero content={intro} />
+    <Hero content={intro} lang={lang} />
     <section class="section local-intro" aria-labelledby="handpan-berlin">
       <div class="container local-intro__grid">
         <div>
-          <p class="local-intro__eyebrow">Handpan · Coaching · Musik</p>
-          <DecorativeHeading level="h2" id="handpan-berlin" text="Handpan lernen und gemeinsam Musik erleben" />
+          <p class="local-intro__eyebrow">Handpan · Coaching · {english ? 'Music' : 'Musik'}</p>
+          <DecorativeHeading level="h2" id="handpan-berlin" text={english ? 'Learn handpan and experience music together' : 'Handpan lernen und gemeinsam Musik erleben'} />
         </div>
         <div class="local-intro__copy">
-          <p>Bei Klangfonia findest du einen persönlichen Zugang zur Handpan – unabhängig davon, ob du zum ersten Mal spielst oder deine musikalischen Ideen weiterentwickeln möchtest.</p>
-          <p>Daniela Schneider begleitet dich im Einzelunterricht, in Workshops und beim gemeinsamen Spiel in der Handpan Big Band. Für Yoga, Retreats, Konzerte und besondere Anlässe kannst du sie außerdem als Live-Musikerin anfragen.</p>
+          <p>{english ? 'At Klangfonia, you can find your own personal way into the handpan – whether you are playing for the first time or want to develop your musical ideas further.' : 'Bei Klangfonia findest du einen persönlichen Zugang zur Handpan – unabhängig davon, ob du zum ersten Mal spielst oder deine musikalischen Ideen weiterentwickeln möchtest.'}</p>
+          <p>{english ? 'Daniela Schneider supports you through one-to-one lessons, workshops and playing together in the Handpan Big Band. You can also book her as a live musician for retreats, concerts and special occasions.' : 'Daniela Schneider begleitet dich im Einzelunterricht, in Workshops und beim gemeinsamen Spiel in der Handpan Big Band. Für Yoga, Retreats, Konzerte und besondere Anlässe kannst du sie außerdem als Live-Musikerin anfragen.'}</p>
         </div>
       </div>
     </section>

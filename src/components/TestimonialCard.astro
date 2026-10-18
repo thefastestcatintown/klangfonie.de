@@ -1,16 +1,18 @@
 ---
 import type { Testimonial } from '../lib/types';
-interface Props { testimonial: Testimonial; isExample?: boolean; }
-const { testimonial, isExample = false } = Astro.props;
+import type { Language } from '../lib/i18n';
+interface Props { testimonial: Testimonial; isExample?: boolean; lang?: Language; }
+const { testimonial, isExample = false, lang = 'de' } = Astro.props;
+const sourceType = lang === 'en' && testimonial.sourceType === 'Schüler:in' ? 'Student' : testimonial.sourceType;
 ---
 <figure class="testimonial">
-  {isExample && <span class="example-label">Beispiel</span>}
+  {isExample && <span class="example-label">{lang === 'en' ? 'Example' : 'Beispiel'}</span>}
   <span class="quote-mark" aria-hidden="true">“</span>
-  <blockquote>„{testimonial.quote}“</blockquote>
+  <blockquote>{lang === 'en' ? `“${testimonial.quote}”` : `„${testimonial.quote}“`}</blockquote>
   <figcaption>
     <strong>{testimonial.name}</strong>
-    {(testimonial.sourceType || testimonial.context) && (
-      <span>{[testimonial.sourceType, testimonial.context].filter(Boolean).join(' · ')}</span>
+    {(sourceType || testimonial.context) && (
+      <span>{[sourceType, testimonial.context].filter(Boolean).join(' · ')}</span>
     )}
   </figcaption>
 </figure>

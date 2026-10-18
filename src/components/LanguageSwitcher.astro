@@ -1,0 +1,62 @@
+---
+import { contentPath, languageFromPath, localizePath } from '../lib/i18n';
+
+const language = languageFromPath(Astro.url.pathname);
+const currentPath = contentPath(Astro.url.pathname);
+const currentTarget = `${currentPath}${Astro.url.search}`;
+const label = language === 'en' ? 'Choose language' : 'Sprache wählen';
+---
+
+<nav class="language-switcher" aria-label={label}>
+  {(['de', 'en'] as const).map((nextLanguage) => (
+    <a
+      href={localizePath(currentTarget, nextLanguage)}
+      hreflang={nextLanguage === 'de' ? 'de-DE' : 'en'}
+      lang={nextLanguage}
+      aria-label={nextLanguage === 'de' ? 'Deutsch' : 'English'}
+      aria-current={language === nextLanguage ? 'true' : undefined}
+      data-language-link
+    >
+      {nextLanguage}
+    </a>
+  ))}
+</nav>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('[data-language-link]').forEach((link) => {
+    link.addEventListener('click', () => {
+      if (window.location.search) link.search = window.location.search;
+      if (window.location.hash) link.hash = window.location.hash;
+    });
+  });
+</script>
+
+<style>
+  .language-switcher {
+    display: inline-flex;
+    flex-shrink: 0;
+    gap: 0.125rem;
+    padding: 0.125rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-white);
+  }
+  a {
+    display: inline-flex;
+    min-width: 2.35rem;
+    min-height: 1.75rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.55rem;
+    border-radius: 999px;
+    color: var(--color-steel);
+    font-size: 0.68rem;
+    font-weight: 800;
+    line-height: 1;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background 180ms ease, color 180ms ease;
+  }
+  a:hover { color: var(--color-ink); }
+  a[aria-current='true'] { background: var(--color-clay); color: var(--color-white); }
+</style>

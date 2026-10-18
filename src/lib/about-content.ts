@@ -8,3 +8,14 @@ export const storyCopy = [
   'Die Freude am gemeinsamen Musizieren begleitet mich seit meiner Kindheit. Mein musikalischer Weg führte mich über das Studium des klassischen Schlagwerks und der Elementaren Musikpädagogik an der Hochschule für Musik in Nürnberg auf deutschlandweite Bühnen mit unterschiedlichen Bandprojekten – von Jazz, Rock und Pop bis hin zur akustischen Salonmusik.',
   'Aus jahrzehntelanger musikalischer Erfahrung schöpfe ich heute die Vielfalt und Ausdruckskraft meiner Handpan-Musik.',
 ];
+
+export const intentionCopyEn = [
+  'I want to touch people through music, awaken emotions and create special moments that stay in the memory. To me, handpan music is more than sound – it is energy, expression and a language that connects people.',
+  'As a percussionist and handpan musician, I combine rhythm, sensitivity and passion to create atmospheric and melodic sound experiences – sometimes gentle and deep, sometimes powerful and alive. I follow my sense of the moment and the magic that arises when resonant melodies reach people at their core.',
+  'Music is my language. Rhythm is my passion. Connection is my intention.',
+];
+
+export const storyCopyEn = [
+  'The joy of making music with others has accompanied me since childhood. My musical path led from studying classical percussion and elementary music education at the Nuremberg University of Music to stages throughout Germany with a variety of band projects – from jazz, rock and pop to acoustic salon music.',
+  'Today, I draw the diversity and expressive power of my handpan music from decades of musical experience.',
+];

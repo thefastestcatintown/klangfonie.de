@@ -6,6 +6,7 @@ export const testimonial = defineType({
   type: 'document',
   fields: [
     defineField({ name: 'quote', title: 'Zitat', type: 'text', rows: 4, validation: (rule) => rule.required() }),
+    defineField({ name: 'quoteEn', title: 'Zitat (Englisch, optional)', type: 'text', rows: 4 }),
     defineField({
       name: 'sourceType',
       title: 'Stimme von',
@@ -22,7 +23,9 @@ export const testimonial = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({ name: 'name', title: 'Name oder Bezeichnung', description: 'Zum Beispiel „Anna“ oder „Christopher Eschenbecher“', type: 'string', validation: (rule) => rule.required() }),
+    defineField({ name: 'nameEn', title: 'Name oder Bezeichnung (Englisch, optional)', type: 'string' }),
     defineField({ name: 'context', title: 'Angebot oder Anlass (optional)', description: 'Zum Beispiel „Lernbegleitung“ oder „Yoga-Retreat“', type: 'string' }),
+    defineField({ name: 'contextEn', title: 'Angebot oder Anlass (Englisch, optional)', type: 'string' }),
     defineField({ name: 'sortOrder', title: 'Reihenfolge', type: 'number', initialValue: 10 }),
   ],
   orderings: [{ title: 'Reihenfolge', name: 'sortOrderAsc', by: [{ field: 'sortOrder', direction: 'asc' }] }],

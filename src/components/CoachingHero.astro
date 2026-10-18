@@ -1,18 +1,19 @@
 ---
-import { coachingLinks } from '../lib/navigation';
-import { routePath, withBase } from '../lib/urls';
+import { navigationFor } from '../lib/navigation';
+import { contentPath, languageFromPath, localizePath, type Language } from '../lib/i18n';
 import DecorativeHeading from './DecorativeHeading.astro';
-interface Props { title: string; intro: string; }
-const { title, intro } = Astro.props;
-const current = routePath(Astro.url.pathname);
+interface Props { title: string; intro: string; lang?: Language; }
+const { title, intro, lang = languageFromPath(Astro.url.pathname) } = Astro.props;
+const current = contentPath(Astro.url.pathname);
+const { coachingLinks } = navigationFor(lang);
 ---
 <section class="page-hero coaching-hero">
   <div class="container page-hero__inner">
     <p class="coaching-eyebrow">Handpan · Coaching</p>
     <DecorativeHeading level="h1" class="page-title" text={title} />
     <p class="lead">{intro}</p>
-    <nav class="coaching-tabs" aria-label="Coaching-Angebote">
-      {coachingLinks.map(({ href, label }) => <a href={withBase(href)} aria-current={current === href ? 'page' : undefined}>{label}</a>)}
+    <nav class="coaching-tabs" aria-label={lang === 'en' ? 'Coaching services' : 'Coaching-Angebote'}>
+      {coachingLinks.map(({ href, label }) => <a href={localizePath(href, lang)} aria-current={current === href ? 'page' : undefined}>{label}</a>)}
     </nav>
   </div>
 </section>

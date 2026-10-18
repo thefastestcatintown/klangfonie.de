@@ -1,4 +1,5 @@
 import { formatEventDate } from '../lib/dates';
+import { localizeEvent } from '../lib/event-translations';
 
 type PublicEvent = {
   _id: string;
@@ -8,17 +9,21 @@ type PublicEvent = {
   location: string;
   imageUrl?: string;
   imageAlt?: string;
-  description?: string;
+  description: string;
   externalUrl?: string;
+  titleEn?: string;
+  locationEn?: string;
+  descriptionEn?: string;
 };
 
 const section = document.querySelector<HTMLElement>('[data-events-section]');
 const list = section?.querySelector<HTMLElement>('[data-events-list]');
 const projectId = section?.dataset.projectId || '';
 const dataset = section?.dataset.dataset || '';
+const language = section?.dataset.language === 'en' ? 'en' : 'de';
 
 if (section && list && /^[a-z0-9-]+$/.test(projectId) && /^[a-z0-9_-]+$/.test(dataset)) {
-  const query = '*[_type == "event" && date >= now()] | order(date asc){_id,title,date,endDate,location,description,externalUrl,"imageUrl":image.asset->url,"imageAlt":coalesce(image.alt,title)}';
+  const query = '*[_type == "event" && date >= now()] | order(date asc){_id,title,titleEn,date,endDate,location,locationEn,description,descriptionEn,externalUrl,"imageUrl":image.asset->url,"imageAlt":coalesce(image.alt,title)}';
   const endpoint = `https://${projectId}.apicdn.sanity.io/v2026-03-01/data/query/${dataset}?query=${encodeURIComponent(query)}`;
 
   fetch(endpoint)
@@ -28,7 +33,8 @@ if (section && list && /^[a-z0-9-]+$/.test(projectId) && /^[a-z0-9_-]+$/.test(da
     })
     .then(({ result }) => {
       if (!Array.isArray(result)) return;
-      list.replaceChildren(...(result.length > 0 ? result.map(createEvent) : [createEmptyState()]));
+      const events = result.map((event) => localizeEvent(event, language));
+      list.replaceChildren(...(events.length > 0 ? events.map(createEvent) : [createEmptyState()]));
     })
     .catch(() => {
       // Die beim Build erzeugte Terminliste bleibt als verlässlicher Fallback stehen.
@@ -44,7 +50,7 @@ function createEvent(event: PublicEvent): HTMLElement {
   const location = document.createElement('p');
 
   time.dateTime = event.date;
-  time.textContent = formatEventDate(event.date, event.endDate);
+  time.textContent = formatEventDate(event.date, event.endDate, language);
   title.textContent = event.title;
   location.className = 'event-location';
   location.textContent = event.location;
@@ -91,7 +97,7 @@ function createEvent(event: PublicEvent): HTMLElement {
         link.href = externalUrl.href;
         link.target = '_blank';
         link.rel = 'noreferrer';
-        link.textContent = 'Mehr erfahren ↗';
+        link.textContent = language === 'en' ? 'Find out more ↗' : 'Mehr erfahren ↗';
         article.append(link);
       }
     } catch {
@@ -105,7 +111,7 @@ function createEvent(event: PublicEvent): HTMLElement {
 function createEmptyState(): HTMLElement {
   const empty = document.createElement('p');
   empty.className = 'events-empty';
-  empty.textContent = 'Neue Konzerttermine werden hier veröffentlicht.';
+  empty.textContent = language === 'en' ? 'New concert dates will be published here.' : 'Neue Konzerttermine werden hier veröffentlicht.';
   return empty;
 }
 

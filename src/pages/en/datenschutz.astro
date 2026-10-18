@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import DecorativeHeading from '../../components/DecorativeHeading.astro';
+import { getSettings } from '../../lib/sanity';
+
+const settings = await getSettings();
+---
+<BaseLayout lang="en" title="Privacy policy – Klangfonia" description="Privacy information for the Klangfonia website." noindex>
+  <section class="page-hero"><div class="container page-hero__inner"><DecorativeHeading level="h1" class="page-title" text="Privacy policy" /></div></section>
+  <section class="section"><div class="container--small prose">
+    <p>This privacy policy explains which personal data is processed when you visit this website or contact us.</p>
+
+    <h2>1. Controller</h2>
+    <address class="legal-address">
+      <strong>Daniela Schneider</strong><br />
+      Netzestr. 12<br />
+      12051 Berlin<br />
+      Germany
+    </address>
+    {settings.email && <p>Email: <a href={`mailto:${settings.email}`}>{settings.email}</a></p>}
+
+    <h2>2. Hosting with GitHub Pages</h2>
+    <p>This website is provided as a static website through GitHub Pages. The provider is GitHub, Inc., USA. When the website is accessed, GitHub processes technically necessary connection data. This may include the IP address, date and time of access, requested file, amount of data transferred, referrer URL, browser type and operating system. GitHub states that IP addresses from visits to GitHub Pages websites are logged and stored for security purposes.</p>
+    <p>Processing is based on Article 6(1)(f) GDPR. The legitimate interest is the secure, stable and economical provision of the website. Where data is processed in the USA, the safeguards used by the provider for international data transfers apply.</p>
+    <p>Further information: <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection" target="_blank" rel="noreferrer">Data collection by GitHub Pages</a> and the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noreferrer">GitHub Privacy Statement</a>.</p>
+
+    <h2>3. Content and images provided through Sanity</h2>
+    <p>Some content, current events and images are provided through the Sanity content management system. The providers are Sanity AS, Norway, and Sanity US Inc., USA. When such content is requested, the browser connects to Sanity’s API or CDN servers. The IP address, time of the request, browser and device information and the requested resource may be processed.</p>
+    <p>Processing is based on Article 6(1)(f) GDPR. The legitimate interest is the reliable and up-to-date provision of website content. Sanity states that it uses appropriate safeguards, such as standard contractual clauses, for transfers outside the EEA.</p>
+    <p>Further information: <a href="https://www.sanity.io/legal/privacy" target="_blank" rel="noreferrer">Sanity Privacy Policy</a>.</p>
+
+    <h2>4. Contact form and Formspree</h2>
+    <p>The contact form uses Formspree, Inc., USA. When the form is submitted, the information entered is transmitted directly to Formspree and forwarded as an enquiry. The processed data includes your name, email address, selected interest and message, together with technically necessary connection data such as the IP address.</p>
+    <p>The data is processed in order to handle the enquiry and communicate with you. The legal basis is Article 6(1)(b) GDPR where the enquiry relates to a contract or pre-contractual measures, and otherwise Article 6(1)(f) GDPR based on the legitimate interest in answering enquiries. A person responsible for technical or organisational support may also receive the enquiry. Formspree may process data in the USA.</p>
+    <p>The information is deleted once the enquiry has been fully dealt with, unless statutory retention obligations or legitimate interests require continued storage.</p>
+    <p>Further information: <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noreferrer">Formspree Privacy Policy</a>.</p>
+
+    <h2>5. YouTube videos</h2>
+    <p>A YouTube video can be embedded on the music page. The provider for users in the European Economic Area is Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Ireland. The video is embedded using the <code>youtube-nocookie.com</code> domain and is loaded only after you click the “Load video from YouTube” button.</p>
+    <p>Only after this click is a connection to YouTube established. The IP address, browser and device information and information about the page visited may be transmitted to Google. Google may store or access further information on the device and associate the data with a Google account if you are signed in. Processing in the USA is possible.</p>
+    <p>The legal basis is the consent granted before loading in accordance with Article 6(1)(a) GDPR and, where information is stored on or read from the device, Section 25(1) TDDDG. Consent is voluntary. Without a click, no connection to YouTube is established. Consent can be withdrawn for the future, in particular by reloading the page; transmissions that have already taken place remain unaffected.</p>
+    <p>Further information: <a href="https://policies.google.com/privacy?hl=en" target="_blank" rel="noreferrer">Google Privacy Policy</a>.</p>
+
+    <h2>6. Cookies and audience measurement</h2>
+    <p>This website itself does not use analytics or marketing services and does not set its own non-essential cookies. Google or YouTube may use cookies or comparable technologies only after a YouTube video has deliberately been loaded.</p>
+
+    <h2>7. External links</h2>
+    <p>Links to external websites establish a connection to the respective provider only when they are clicked. The provider is responsible for data processing on that website.</p>
+
+    <h2>8. Storage period</h2>
+    <p>Personal data is stored only for as long as necessary for the relevant purpose. It is then deleted unless statutory retention obligations, the establishment or defence of legal claims or other lawful reasons require continued storage. There is only limited influence over the retention periods of independently responsible providers such as GitHub, Sanity, Formspree or Google.</p>
+
+    <h2>9. Rights of data subjects</h2>
+    <p>Subject to the statutory requirements, data subjects have the right to access, rectification, erasure, restriction of processing and data portability. There is also a right to object to processing based on Article 6(1)(f) GDPR and to withdraw consent at any time with effect for the future.</p>
+    <p>To exercise these rights, contact the controller named above.</p>
+
+    <h2>10. Right to lodge a complaint</h2>
+    <p>You have the right to lodge a complaint with a data protection supervisory authority. The following authority is particularly responsible for the controller:</p>
+    <address class="legal-address">
+      Berlin Commissioner for Data Protection and Freedom of Information<br />
+      Alt-Moabit 59–61<br />
+      10555 Berlin<br />
+      Email: <a href="mailto:mailbox@datenschutz-berlin.de">mailbox@datenschutz-berlin.de</a><br />
+      <a href="https://www.datenschutz-berlin.de/" target="_blank" rel="noreferrer">www.datenschutz-berlin.de</a>
+    </address>
+
+    <h2>11. Encryption</h2>
+    <p>The website is transmitted in encrypted form via HTTPS. This is intended to protect transmitted data from being read by third parties.</p>
+
+    <h2>12. Current version</h2>
+    <p>This privacy policy will be updated if the website, the services used or the legal requirements change.</p>
+    <p><strong>Last updated: October 2026</strong></p>
+  </div></section>
+</BaseLayout>
+
+<style>
+  .legal-address { font-style: normal; }
+  code { padding: 0.08em 0.3em; border-radius: 0.25rem; background: var(--color-linen); font-size: 0.92em; }
+</style>

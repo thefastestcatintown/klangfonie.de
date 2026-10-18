@@ -7,6 +7,7 @@ import DecorativeHeading from './DecorativeHeading.astro';
 import RichText from './RichText.astro';
 import type { Service } from '../lib/types';
 import { imageUrl } from '../lib/sanity';
+import { localizePath, type Language } from '../lib/i18n';
 
 interface Props {
   service: Service;
@@ -20,32 +21,34 @@ interface Props {
   fallbackImageAlt?: string;
   note?: string;
   ctaLabel?: string;
+  ctaUrl?: string;
+  lang?: Language;
 }
-const { service, title, contentHeading, intro, bullets, fallbackBody, closingBody = [], fallbackImage, fallbackImageAlt = service.title, note, ctaLabel } = Astro.props;
+const { service, title, contentHeading, intro, bullets, fallbackBody, closingBody = [], fallbackImage, fallbackImageAlt = service.title, note, ctaLabel, ctaUrl, lang = 'de' } = Astro.props;
 const image = imageUrl(service.image, 1200);
 const pageTitle = title || service.headline;
 ---
-<BaseLayout image={image}>
+<BaseLayout image={image} lang={lang}>
   <section class="page-hero">
     <div class="container page-hero__inner"><DecorativeHeading level="h1" class="page-title" text={pageTitle} />{intro && <p class="lead">{intro}</p>}</div>
   </section>
   <section class="section">
     <div class="container rich-layout">
       <aside>
-        {image ? <div class="feature-image"><img src={image} alt={service.image?.alt || service.title} width="1200" /></div> : fallbackImage ? (
+        {image ? <div class="feature-image"><img src={image} alt={lang === 'en' ? fallbackImageAlt : (service.image?.alt || service.title)} width="1200" /></div> : fallbackImage ? (
           <div class="feature-image"><Image src={fallbackImage} alt={fallbackImageAlt} width={1200} /></div>
         ) : (
-          <div class="image-placeholder"><span>Bild kann im Sanity Studio ergänzt werden.</span></div>
+          <div class="image-placeholder"><span>{lang === 'en' ? 'An image can be added in Sanity Studio.' : 'Bild kann im Sanity Studio ergänzt werden.'}</span></div>
         )}
-        {(service.duration || service.priceInfo) && <div class="meta-row">{service.duration && <span class="meta-chip">Dauer: {service.duration}</span>}{service.priceInfo && <span class="meta-chip">{service.priceInfo}</span>}</div>}
+        {(service.duration || service.priceInfo) && <div class="meta-row">{service.duration && <span class="meta-chip">{lang === 'en' ? 'Duration' : 'Dauer'}: {service.duration}</span>}{service.priceInfo && <span class="meta-chip">{service.priceInfo}</span>}</div>}
       </aside>
       <div>
         {contentHeading && <DecorativeHeading level="h2" text={contentHeading} />}
-        <RichText value={service.body} fallback={fallbackBody} />
+        <RichText value={lang === 'en' ? undefined : service.body} fallback={fallbackBody} />
         <ul class="service-list">{bullets.map((bullet) => <li>{bullet}</li>)}</ul>
         {closingBody.length > 0 && <div class="prose closing-copy">{closingBody.map((paragraph) => <p>{paragraph}</p>)}</div>}
         {note && <p class="highlight">{note}</p>}
-        <div class="action"><Button href={service.ctaUrl}>{ctaLabel || service.ctaLabel}</Button></div>
+        <div class="action"><Button href={localizePath(ctaUrl || service.ctaUrl, lang)}>{ctaLabel || service.ctaLabel}</Button></div>
       </div>
     </div>
   </section>
