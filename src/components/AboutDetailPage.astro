@@ -21,7 +21,7 @@ const portrait = await getImage({ src: profil2, width: 1200, format: 'webp' });
 ---
 <BaseLayout image={portrait.src}>
   <section class="page-hero">
-    <div class="container page-hero__inner"><DecorativeHeading level="h1" text={title} /></div>
+    <div class="container page-hero__inner"><DecorativeHeading level="h1" class="page-title" text={title} /></div>
   </section>
   <section class="section">
     <div class="container rich-layout">

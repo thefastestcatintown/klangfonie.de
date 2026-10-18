@@ -15,7 +15,7 @@ const sanityDataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
     data-dataset={sanityDataset}
   >
     <div class="container">
-      <DecorativeHeading level="h2" text="Konzerte & Termine" />
+      <DecorativeHeading level="h2" class="page-title" text="Konzerte & Termine" />
       <div class="events" data-events-list aria-live="polite">
         {events.length > 0 ? events.map((event) => {
           const eventImage = imageUrl(event.image, 640, 426);

@@ -87,7 +87,7 @@ p { margin: 0; }
 .page-hero { position: relative; overflow: hidden; padding: var(--hero-space) 0; border-bottom: 1px solid rgb(38 53 47 / 0.08); background: radial-gradient(ellipse at 100% 0%, rgb(185 157 117 / 0.12), transparent 55%), linear-gradient(135deg, var(--color-white), var(--color-linen)); }
 .page-hero::after { content: ''; position: absolute; right: -8rem; bottom: -13rem; width: 27rem; height: 27rem; border: 1px solid rgb(165 93 58 / 0.1); border-radius: 50%; pointer-events: none; }
 .page-hero__inner { position: relative; z-index: 1; max-width: var(--container); }
-.page-hero h1 { max-width: 24ch; font-size: clamp(2.2rem, 4.5vw, 4rem); text-wrap: balance; }
+.page-title { max-width: 24ch; font-size: clamp(2.2rem, 4.5vw, 4rem); text-wrap: balance; }
 .page-hero .lead { max-width: 48rem; margin-top: 0.75rem; }
 .grid-2 { display: grid; gap: var(--layout-gap); align-items: center; }
 .rich-layout { display: grid; gap: var(--layout-gap); align-items: start; }

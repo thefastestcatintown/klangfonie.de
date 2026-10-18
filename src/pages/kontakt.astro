@@ -6,7 +6,7 @@ const settings = await getSettings();
 const formEndpoint = import.meta.env.PUBLIC_CONTACT_FORM_ENDPOINT?.trim();
 ---
 <BaseLayout>
-  <section class="page-hero"><div class="container page-hero__inner"><DecorativeHeading level="h1" text="Handpan in Berlin anfragen" /><p class="lead">Ob Handpan-Unterricht, Workshop oder Live-Musik: Ein paar Zeilen genügen für den Anfang. Ich melde mich persönlich bei dir zurück.</p></div></section>
+  <section class="page-hero"><div class="container page-hero__inner"><DecorativeHeading level="h1" class="page-title" text="Handpan in Berlin anfragen" /><p class="lead">Ob Handpan-Unterricht, Workshop oder Live-Musik: Ein paar Zeilen genügen für den Anfang. Ich melde mich persönlich bei dir zurück.</p></div></section>
   <section class="section"><div class="container contact-grid">
     <aside>
       <DecorativeHeading level="h2" text={settings.email ? 'Lieber per E-Mail?' : 'Deine Anfrage'} />
