@@ -9,7 +9,7 @@ const embedUrl = youtubeEmbedUrl(video?.youtubeUrl);
 <section class="section video-section" id="musik">
   <div class="container">
     <div class="video-intro">
-      {headline ? <h2>{headline}</h2> : <h2 class="sr-only">Musik hören</h2>}
+      {headline && <h2>{headline}</h2>}
       <p class="lead">{text}</p>
     </div>
     <div class="video-frame">

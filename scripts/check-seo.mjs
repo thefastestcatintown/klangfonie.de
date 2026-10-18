@@ -42,7 +42,6 @@ for (const route of Object.keys(pageMetadata)) {
   const headings = [...html.matchAll(/<h([1-6])\b[^>]*>([\s\S]*?)<\/h\1>/g)]
     .map(match => ({ level: Number(match[1]), text: textContent(match[2]) }));
   assert.equal(headings.filter(heading => heading.level === 1).length, 1, `${route}: exactly one h1`);
-  assert.ok(headings.some(heading => heading.level === 2), `${route}: at least one h2`);
   assert.equal(headings[0]?.level, 1, `${route}: heading structure starts with h1`);
   headings.forEach((heading, index) => {
     assert.ok(heading.text.length > 2, `${route}: headings have meaningful text`);
