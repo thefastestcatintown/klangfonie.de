@@ -4,7 +4,7 @@ export const fallbackSettings: SiteSettings = {
   siteTitle: 'Klangfonia',
   defaultSeoTitle: 'Klangfonia – Handpan, Musik & Begegnung',
   defaultSeoDescription: 'Handpanunterricht und feinfühlige Live-Musik für Yoga, Events und besondere Momente mit Daniela Schneider.',
-  email: '',
+  email: 'handpan@mail.de',
   location: 'Berlin',
 };
 
