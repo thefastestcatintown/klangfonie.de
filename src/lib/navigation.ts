@@ -4,6 +4,11 @@ export const coachingLinks = [
   { href: '/workshops', label: 'Workshops' },
 ];
 
+export const aboutLinks = [
+  { href: '/ueber-daniela#intention', label: 'Meine Intention' },
+  { href: '/ueber-daniela#geschichte', label: 'Meine Geschichte' },
+];
+
 export const navigationLinks = [
   { href: '/yoga', label: 'Retreats' },
   { href: '/live', label: 'Musik' },

@@ -21,15 +21,15 @@ const story = [
 <BaseLayout image={portrait.src}>
   <section class="page-hero"><div class="container page-hero__inner"><h1>{about.headline}</h1>{about.intro && <p class="lead">{about.intro}</p>}</div></section>
   <div class="container location-note"><p>Danielas Handpan-Angebote sind in Berlin-Neukölln zuhause.</p></div>
-  <section class="section" id="geschichte"><div class="container rich-layout">
+  <section class="section"><div class="container rich-layout">
     <div class="portrait"><Image src={profil2} alt="Daniela Schneider spielt Handpan unter einem Baum" widths={[480, 800, 1200, 1662]} sizes="(min-width: 84rem) 505px, (min-width: 48rem) 42vw, calc(100vw - 2rem)" /></div>
     <div>
       {hasCmsBody ? <RichText value={about.body} /> : <>
-        <div class="about-section">
+        <div class="about-section" id="intention">
           <h2>Meine Intention</h2>
           <div class="prose">{intention.map((paragraph) => <p>{paragraph}</p>)}</div>
         </div>
-        <div class="about-section">
+        <div class="about-section" id="geschichte">
           <h2>Meine Geschichte</h2>
           <div class="prose">{story.map((paragraph) => <p>{paragraph}</p>)}</div>
         </div>

@@ -2,9 +2,10 @@
 import BrandLogo from './BrandLogo.astro';
 import { withBase, routePath } from '../lib/urls';
 
-import { coachingLinks as coachingItems, navigationLinks } from '../lib/navigation';
+import { aboutLinks as aboutItems, coachingLinks as coachingItems, navigationLinks } from '../lib/navigation';
 const pathname = routePath(Astro.url.pathname);
 const coachingLinks = coachingItems.map((item) => ({ ...item, href: withBase(item.href) }));
+const aboutLinks = aboutItems.map((item) => ({ ...item, href: withBase(item.href) }));
 const navigation = navigationLinks.map((item) => ({ ...item, href: withBase(item.href) }));
 ---
 <header class="site-header" data-header>
@@ -16,13 +17,20 @@ const navigation = navigationLinks.map((item) => ({ ...item, href: withBase(item
       <span class="sr-only">Menü öffnen</span><i></i><i></i>
     </button>
     <nav class="navigation" id="main-navigation" aria-label="Hauptnavigation" data-navigation>
-      <details class:list={['coaching-menu', { 'is-current': coachingLinks.some((item) => pathname === routePath(item.href)) }]} data-coaching-menu>
-        <summary>Coaching <span class="chevron" aria-hidden="true">⌄</span></summary>
+      <details class:list={['dropdown-menu', { 'is-current': coachingLinks.some((item) => pathname === routePath(item.href)) }]} data-submenu>
+        <summary>Coaching</summary>
         <ul class="submenu">
           {coachingLinks.map((item) => <li><a href={item.href} aria-current={pathname === routePath(item.href) ? 'page' : undefined}>{item.label}</a></li>)}
         </ul>
       </details>
-      {navigation.map((item) => <a href={item.href} aria-current={!item.href.includes('#') && pathname === routePath(item.href) ? 'page' : undefined}>{item.label}</a>)}
+      {navigation.map((item) => item.href.includes('/ueber-daniela/') ? (
+        <details class:list={['dropdown-menu', { 'is-current': pathname === '/ueber-daniela' }]} data-submenu>
+          <summary>Über mich</summary>
+          <ul class="submenu">
+            {aboutLinks.map((aboutItem) => <li><a href={aboutItem.href}>{aboutItem.label}</a></li>)}
+          </ul>
+        </details>
+      ) : <a href={item.href} aria-current={!item.href.includes('#') && pathname === routePath(item.href) ? 'page' : undefined}>{item.label}</a>)}
 
     </nav>
   </div>
@@ -30,23 +38,46 @@ const navigation = navigationLinks.map((item) => ({ ...item, href: withBase(item
 <script>
   const button = document.querySelector<HTMLElement>('[data-menu-button]');
   const navigation = document.querySelector<HTMLElement>('[data-navigation]');
-  const coaching = document.querySelector<HTMLDetailsElement>('[data-coaching-menu]');
+  const submenus = [...document.querySelectorAll<HTMLDetailsElement>('[data-submenu]')];
+  const desktopHover = window.matchMedia('(min-width: 60rem) and (hover: hover) and (pointer: fine)');
+  const closeSubmenus = (except?: HTMLDetailsElement) => {
+    submenus.forEach((submenu) => { if (submenu !== except) submenu.open = false; });
+  };
   const closeMenu = () => {
     button?.setAttribute('aria-expanded', 'false');
     document.body.classList.remove('menu-open');
-    if (coaching) coaching.open = false;
+    closeSubmenus();
   };
   document.addEventListener('click', (event) => {
-    if (event.target instanceof Node && !coaching?.contains(event.target) && coaching) coaching.open = false;
+    const target = event.target;
+    if (target instanceof Node && !submenus.some((submenu) => submenu.contains(target))) closeSubmenus();
   });
-  coaching?.addEventListener('focusout', (event) => {
-    if (!(event.relatedTarget instanceof Node) || !coaching.contains(event.relatedTarget)) coaching.open = false;
+  submenus.forEach((submenu) => {
+    submenu.addEventListener('mouseenter', () => {
+      if (!desktopHover.matches) return;
+      closeSubmenus(submenu);
+      submenu.open = true;
+    });
+    submenu.addEventListener('mouseleave', () => {
+      if (desktopHover.matches) submenu.open = false;
+    });
+    submenu.addEventListener('focusin', () => {
+      closeSubmenus(submenu);
+      submenu.open = true;
+    });
+    submenu.addEventListener('focusout', (event) => {
+      if (!(event.relatedTarget instanceof Node) || !submenu.contains(event.relatedTarget)) submenu.open = false;
+    });
+    submenu.querySelector('summary')?.addEventListener('click', (event) => {
+      if (desktopHover.matches) event.preventDefault();
+    });
   });
   document.addEventListener('keydown', (event) => {
     if (event.key !== 'Escape') return;
-    if (coaching?.open) {
-      coaching.open = false;
-      coaching.querySelector('summary')?.focus();
+    const openSubmenu = submenus.find((submenu) => submenu.open);
+    if (openSubmenu) {
+      openSubmenu.open = false;
+      openSubmenu.querySelector('summary')?.focus();
     } else if (button?.getAttribute('aria-expanded') === 'true') {
       closeMenu();
       button.focus();
@@ -77,7 +108,7 @@ const navigation = navigationLinks.map((item) => ({ ...item, href: withBase(item
 
   .navigation { display: flex; align-items: center; gap: clamp(1rem, 2.2vw, 2rem); }
   .navigation > a { padding-block: 0.65rem; position: relative; color: var(--color-ink); font-size: 0.85rem; font-weight: 700; text-decoration: none; }
-  .navigation > a::after, .coaching-menu summary::after {
+  .navigation > a::after, .dropdown-menu summary::after {
     content: ''; position: absolute; right: 0; bottom: 0; left: 0; height: 0.3rem; pointer-events: none;
     background:
       radial-gradient(circle, var(--color-clay) 65%, transparent 75%) center / 0.3rem 0.3rem no-repeat,
@@ -85,14 +116,13 @@ const navigation = navigationLinks.map((item) => ({ ...item, href: withBase(item
       linear-gradient(var(--color-clay), var(--color-clay)) right center / calc(50% - 0.35rem) 1px no-repeat;
     opacity: 0; transform: scaleX(0.75); transition: opacity 180ms ease, transform 180ms ease;
   }
-  .navigation > a:hover::after, .navigation > a[aria-current]::after, .coaching-menu.is-current summary::after, .coaching-menu summary:hover::after { opacity: 1; transform: scaleX(1); }
-  .coaching-menu { position: relative; }
-  .coaching-menu summary { padding-block: 0.65rem; position: relative; display: flex; align-items: center; gap: 0.45rem; color: var(--color-ink); font-size: 0.85rem; font-weight: 700; cursor: pointer; list-style: none; }
-  .coaching-menu summary::-webkit-details-marker { display: none; }
-  .coaching-menu.is-current summary, .coaching-menu summary:hover { color: var(--color-clay); }
-  .chevron { transition: transform 180ms ease; }
-  .coaching-menu[open] .chevron { transform: rotate(180deg); }
-  .submenu { position: absolute; top: calc(100% + 1rem); left: -1rem; width: 18rem; margin: 0; padding: 0.5rem; list-style: none; border: 1px solid var(--color-border); border-radius: 0.8rem; background: var(--color-white); box-shadow: var(--shadow-soft); }
+  .navigation > a:hover::after, .navigation > a[aria-current]::after, .dropdown-menu.is-current summary::after, .dropdown-menu summary:hover::after { opacity: 1; transform: scaleX(1); }
+  .dropdown-menu { position: relative; }
+  .dropdown-menu summary { padding-block: 0.65rem; position: relative; display: flex; align-items: center; color: var(--color-ink); font-size: 0.85rem; font-weight: 700; cursor: pointer; list-style: none; }
+  .dropdown-menu summary::-webkit-details-marker { display: none; }
+  .dropdown-menu.is-current summary, .dropdown-menu summary:hover { color: var(--color-clay); }
+  .submenu { position: absolute; top: calc(100% + 0.5rem); left: -1rem; width: 18rem; margin: 0; padding: 0.5rem; list-style: none; border: 1px solid var(--color-border); border-radius: 0.8rem; background: var(--color-white); box-shadow: var(--shadow-soft); }
+  .submenu::before { content: ''; position: absolute; right: 0; bottom: 100%; left: 0; height: 0.6rem; }
   .submenu a { display: block; padding: 0.8rem; border-radius: 0.4rem; color: var(--color-ink); font-size: 0.85rem; text-decoration: none; }
   .submenu a:hover, .submenu a:focus-visible, .submenu a[aria-current='page'] { background: var(--color-linen); }
 
@@ -109,10 +139,10 @@ const navigation = navigationLinks.map((item) => ({ ...item, href: withBase(item
     .menu-button[aria-expanded='true'] i:last-of-type { transform: translateY(-0.2rem) rotate(-45deg); }
     .navigation { position: fixed; inset: var(--header-height) 0 auto; display: none; height: calc(100dvh - var(--header-height)); overflow-y: auto; align-items: stretch; flex-direction: column; gap: 0; padding: 2rem 1rem; background: var(--color-linen); }
     .menu-button[aria-expanded='true'] + .navigation { display: flex; }
-    .navigation > a, .coaching-menu summary { padding: 1rem; border-bottom: 1px solid rgb(36 55 70 / 0.14); font-family: var(--font-display); font-size: 1.65rem; font-weight: 400; }
-    .coaching-menu summary { justify-content: space-between; }
-    .navigation > a::after, .coaching-menu summary::after { left: 1rem; right: auto; bottom: 0.35rem; width: 5rem; }
+    .navigation > a, .dropdown-menu summary { padding: 1rem; border-bottom: 1px solid rgb(36 55 70 / 0.14); font-family: var(--font-display); font-size: 1.65rem; font-weight: 400; }
+    .navigation > a::after, .dropdown-menu summary::after { left: 1rem; right: auto; bottom: 0.35rem; width: 5rem; }
     .submenu { position: static; width: auto; margin: 0.5rem 1rem 1rem; padding: 0 0 0 0.75rem; border: 0; border-left: 1px solid var(--color-sand); border-radius: 0; background: transparent; box-shadow: none; }
+    .submenu::before { display: none; }
     .submenu a { font-size: 1rem; }
 
   }
@@ -123,7 +153,7 @@ const navigation = navigationLinks.map((item) => ({ ...item, href: withBase(item
 
   }
   @media (prefers-reduced-motion: no-preference) {
-    .coaching-menu[open] .submenu { animation: menu-appear 180ms ease-out; }
+    .dropdown-menu[open] .submenu { animation: menu-appear 180ms ease-out; }
     @keyframes menu-appear { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
   }
 </style>
