@@ -2,14 +2,15 @@
 import type { Video } from '../lib/types';
 import { youtubeEmbedUrl } from '../lib/youtube';
 import { withBase } from '../lib/urls';
-interface Props { video: Video | null; headline: string; text: string; }
+interface Props { video: Video | null; headline?: string; text: string; }
 const { video, headline, text } = Astro.props;
 const embedUrl = youtubeEmbedUrl(video?.youtubeUrl);
 ---
 <section class="section video-section" id="musik">
   <div class="container">
     <div class="video-intro">
-      <h2>{headline}</h2><p class="lead">{text}</p>
+      {headline && <h2>{headline}</h2>}
+      <p class="lead">{text}</p>
     </div>
     <div class="video-frame">
       {embedUrl ? (
