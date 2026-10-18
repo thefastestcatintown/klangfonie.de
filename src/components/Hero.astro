@@ -1,22 +1,16 @@
 ---
 import { Image } from 'astro:assets';
 import profil1 from '../assets/images/profil1-portrait-ohne-bank.png';
-import Button from './Button.astro';
 import type { HomePage } from '../lib/types';
 
 interface Props { content: HomePage; }
 const { content } = Astro.props;
-const primaryCtaLabel = content.primaryCtaUrl.includes('/unterricht') ? 'Lernbegleitung entdecken' : content.primaryCtaLabel;
 ---
 <section class="hero">
   <div class="container hero-grid">
     <div class="hero-copy reveal">
       <h1>{content.heroHeadline}</h1>
       <p class="lead">{content.heroText}</p>
-      <div class="hero-actions">
-        <Button href={content.primaryCtaUrl}>{primaryCtaLabel}</Button>
-        <Button href={content.secondaryCtaUrl} variant="secondary">{content.secondaryCtaLabel}</Button>
-      </div>
     </div>
     <figure class="hero-visual reveal">
       <Image src={profil1} alt="Daniela Schneider spielt Handpan auf einem Waldweg" widths={[480, 720, 800, 1200, 1600, 1774]} sizes="(min-width: 84rem) 1280px, (min-width: 48rem) calc(100vw - 4rem), calc(100vw - 2rem)" quality={72} loading="eager" fetchpriority="high" />
@@ -30,7 +24,6 @@ const primaryCtaLabel = content.primaryCtaUrl.includes('/unterricht') ? 'Lernbeg
   .hero-copy { width: 100%; padding-bottom: 1rem; }
   h1 { font-size: clamp(2.5rem, 4.2vw, 3.75rem); max-width: 24ch; text-wrap: balance; }
   .lead { max-width: 42rem; margin-top: 0.75rem; }
-  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
   .hero-visual { order: -1; position: relative; width: 100%; margin: 0; }
   .hero-visual :global(img) { width: 100%; height: auto; aspect-ratio: 2 / 1; border-radius: var(--radius-lg); object-fit: cover; box-shadow: var(--shadow-soft); }
   figcaption { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.4rem 1.25rem; margin-top: 1rem; padding-left: 1rem; border-left: 1px solid var(--color-clay); color: var(--color-ink); line-height: 1.5; }
@@ -38,12 +31,9 @@ const primaryCtaLabel = content.primaryCtaUrl.includes('/unterricht') ? 'Lernbeg
   figcaption span { color: var(--color-steel); font-size: 0.8rem; font-weight: 400; letter-spacing: 0.04em; }
   @media (min-width: 64rem) {
     .hero-copy { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); column-gap: var(--layout-gap); align-items: center; }
-    h1 { grid-row: span 2; }
     .lead { margin-top: 0; }
-    .hero-actions { margin-top: 1.25rem; }
   }
   @media (max-width: 40rem) {
-    .hero-actions { align-items: stretch; flex-direction: column; }
     .hero-visual :global(img) { aspect-ratio: 3 / 2; object-position: 30% center; }
     figcaption { align-items: flex-start; flex-direction: column; gap: 0.15rem; margin-top: 0.85rem; }
   }
