@@ -67,7 +67,7 @@ export interface AboutPage {
   intro: string;
   portrait?: SanityImage;
   body?: PortableTextBlock[];
-  milestones?: Array<{ year?: string; text: string }>;
+  milestones?: Array<{ year?: string; text: string; details?: string[] }>;
 }
 
 export interface Event {

@@ -39,9 +39,44 @@ export const fallbackServices: Service[] = [
 ];
 
 export const fallbackAbout: AboutPage = {
-  headline: 'Musik entsteht für mich im Zuhören.',
-  intro: 'Ich bin Daniela Schneider, Handpan-Spielerin und Musikerin. An der Handpan fasziniert mich, wie Rhythmus und Melodie unmittelbar zusammenfinden – und aus wenigen Tönen ein ganzer Klangraum entsteht.',
-  milestones: [],
+  headline: 'Daniela Schneider',
+  intro: '',
+  milestones: [
+    {
+      year: 'Seit 2019',
+      text: 'Handpanartist und Handpan-Coach, Berlin',
+    },
+    {
+      year: 'Seit 2007',
+      text: 'Soz.-päd. in der Behindertenhilfe, Berlin',
+      details: ['Wohnheimleitung, pädagogische Fachleitung, sozialpädagogischer Begleitdienst etc.'],
+    },
+    {
+      year: '2007',
+      text: 'Dipl. Sozialarbeit/Sozialpädagogik, Alice-Salomon-Hochschule, Berlin',
+    },
+    {
+      year: '1995',
+      text: 'Vor-Dipl. Klassisches Schlagwerk und Elementare Musikpädagogik am Meistersinger-Konservatorium, heute Hochschule für Musik, bei:',
+      details: [
+        'Prof. Hermann Schwander – Lehrer für klassisches Schlagwerk',
+        'Hans-Günter Brodmann – Schlagzeugdozent, insbesondere für Drumset und Jazz',
+        'Roland Schmidt – Dozent für Pauken und Schlagzeug',
+        'Bill Molenhof – Dozent für Vibraphon',
+        'Vroni Priesner – Dozentin der Elementaren Musikpädagogik',
+        'Prof. Doris Hamann – Dozentin der Elementaren Musikpädagogik',
+        'Michael Salb – Dozent der Elementaren Musikpädagogik',
+      ],
+    },
+    {
+      year: '1991 – 2007',
+      text: 'Erzieherin in der Behindertenhilfe, Nürnberg und Berlin',
+    },
+    {
+      year: '1991',
+      text: 'Staatlich anerkannte Erzieherin, Städt. Fachakademie für Sozialpädagogik, Nürnberg',
+    },
+  ],
 };
 
 export const fallbackVideo: Video = {

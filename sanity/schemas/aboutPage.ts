@@ -11,11 +11,12 @@ export const aboutPage = defineType({
     defineField({ name: 'body', title: 'Haupttext', type: 'blockContent' }),
     defineField({
       name: 'milestones',
-      title: 'Musikalische Stationen (optional)',
+      title: 'Stationen (optional)',
       type: 'array',
       of: [defineArrayMember({ type: 'object', fields: [
         { name: 'year', title: 'Jahr / Zeitraum', type: 'string' },
         { name: 'text', title: 'Station', type: 'string', validation: (rule) => rule.required() },
+        { name: 'details', title: 'Details (optional)', type: 'array', of: [{ type: 'string' }] },
       ], preview: { select: { title: 'text', subtitle: 'year' } } })],
     }),
   ],
