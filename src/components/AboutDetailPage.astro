@@ -2,6 +2,7 @@
 import { Image, getImage } from 'astro:assets';
 import profil2 from '../assets/images/profil2.png';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import DecorativeHeading from './DecorativeHeading.astro';
 
 interface Milestone {
   year?: string;
@@ -20,7 +21,7 @@ const portrait = await getImage({ src: profil2, width: 1200, format: 'webp' });
 ---
 <BaseLayout image={portrait.src}>
   <section class="page-hero">
-    <div class="container page-hero__inner"><h1>{title}</h1></div>
+    <div class="container page-hero__inner"><DecorativeHeading level="h1" text={title} /></div>
   </section>
   <section class="section">
     <div class="container rich-layout">

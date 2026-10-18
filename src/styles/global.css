@@ -69,15 +69,8 @@ a { color: inherit; text-decoration-thickness: 0.08em; text-underline-offset: 0.
 .section--linen { background: var(--color-linen); }
 .section--ink { background: var(--color-ink); color: var(--color-white); }
 h1, h2, h3 { margin: 0; color: var(--color-ink); font-family: var(--font-display); font-weight: 400; letter-spacing: -0.025em; line-height: 1.02; }
-/* The calligraphic initials extend below the baseline and need a full line box. */
+/* Calligraphic initials use a full line box; their individual spacing is handled by DecorativeHeading. */
 h1, h2 { line-height: 1.4; padding-block: 0.12em 0.25em; overflow-wrap: anywhere; }
-h1::first-letter, h2::first-letter {
-  color: var(--color-clay);
-  font-family: var(--font-accent);
-  font-size: 1.24em;
-  letter-spacing: 0.045em;
-  line-height: 1.5;
-}
 h1 { font-size: clamp(2.6rem, 4.8vw, 4.5rem); }
 h2 { font-size: clamp(2rem, 3.2vw, 3rem); }
 h3 { font-size: clamp(1.4rem, 2vw, 1.85rem); line-height: 1.14; }

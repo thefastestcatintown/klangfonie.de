@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
 import VideoSection from '../components/VideoSection.astro';
+import DecorativeHeading from '../components/DecorativeHeading.astro';
 import liveImage from '../assets/images/sample-live-handpan.png';
 import { getFeaturedVideo, getService, imageUrl } from '../lib/sanity';
 const [service, video] = await Promise.all([getService('Live'), getFeaturedVideo()]);
@@ -11,7 +12,7 @@ const image = imageUrl(service.image, 1200);
 <BaseLayout image={image}>
   <section class="page-hero">
     <div class="container page-hero__inner">
-      <h1>Handpan-Musik für besondere Räume</h1>
+      <DecorativeHeading level="h1" text="Handpan-Musik für besondere Räume" />
       <p class="lead">Daniela Schneider entführt das Publikum in eine besondere Klangwelt, in der Rhythmus und Melodie miteinander verschmelzen. Im Mittelpunkt steht die Handpan mit ihren warmen, facettenreichen Klängen und perkussiven Effekten. Daraus entsteht eine Musik, die zugleich erdig und schwebend, kraftvoll und feinfühlig wirkt.</p>
     </div>
   </section>

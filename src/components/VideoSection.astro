@@ -2,6 +2,7 @@
 import type { Video } from '../lib/types';
 import { youtubeEmbedUrl } from '../lib/youtube';
 import { withBase } from '../lib/urls';
+import DecorativeHeading from './DecorativeHeading.astro';
 interface Props { video: Video | null; headline?: string; text: string; }
 const { video, headline, text } = Astro.props;
 const embedUrl = youtubeEmbedUrl(video?.youtubeUrl);
@@ -9,7 +10,7 @@ const embedUrl = youtubeEmbedUrl(video?.youtubeUrl);
 <section class="section video-section" id="musik">
   <div class="container">
     <div class="video-intro">
-      {headline && <h2>{headline}</h2>}
+      {headline && <DecorativeHeading level="h2" text={headline} />}
       <p class="lead">{text}</p>
     </div>
     <div class="video-frame">
@@ -59,7 +60,7 @@ const embedUrl = youtubeEmbedUrl(video?.youtubeUrl);
   .video-section { border-block: 1px solid var(--color-border); background: radial-gradient(ellipse at 100% 0%, rgb(185 157 117 / 0.12), transparent 60%), linear-gradient(135deg, var(--color-white), var(--color-linen)); color: var(--color-ink); }
   .video-intro { max-width: 47rem; }
   .video-intro::before { content: ''; display: block; width: 3rem; height: 1px; margin-bottom: 1.25rem; background: var(--color-clay); }
-  h2 { color: var(--color-ink); }
+  .video-intro :global(h2) { color: var(--color-ink); }
   .lead { margin-top: 0.75rem; color: var(--color-steel); }
   .video-frame { position: relative; overflow: hidden; width: 100%; max-width: 48rem; aspect-ratio: 16 / 9; margin: 1.5rem auto 0; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-linen); box-shadow: var(--shadow-soft); }
   :global(.video-player) { position: absolute; inset: 0; display: block; width: 100%; height: 100%; border: 0; }

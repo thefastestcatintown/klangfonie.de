@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import EventsSection from '../components/EventsSection.astro';
+import DecorativeHeading from '../components/DecorativeHeading.astro';
 import { getHome } from '../lib/sanity';
 
 const home = await getHome();
@@ -21,7 +22,7 @@ const intro = {
       <div class="container local-intro__grid">
         <div>
           <p class="local-intro__eyebrow">Handpan · Coaching · Musik</p>
-          <h2 id="handpan-berlin">Handpan lernen und gemeinsam Musik erleben</h2>
+          <DecorativeHeading level="h2" id="handpan-berlin" text="Handpan lernen und gemeinsam Musik erleben" />
         </div>
         <div class="local-intro__copy">
           <p>Bei Klangfonia findest du einen persönlichen Zugang zur Handpan – unabhängig davon, ob du zum ersten Mal spielst oder deine musikalischen Ideen weiterentwickeln möchtest.</p>
@@ -38,7 +39,7 @@ const intro = {
   .local-intro { background: var(--color-white); }
   .local-intro__grid { display: grid; gap: var(--layout-gap); align-items: start; }
   .local-intro__eyebrow { margin-bottom: 0.75rem; color: var(--color-clay-dark); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; }
-  .local-intro h2 { max-width: 18ch; font-size: clamp(2rem, 4vw, 3.5rem); }
+  .local-intro :global(h2) { max-width: 18ch; font-size: clamp(2rem, 4vw, 3.5rem); }
   .local-intro__copy { max-width: 43rem; }
   .local-intro__copy > p + p { margin-top: 1rem; }
   @media (min-width: 52rem) { .local-intro__grid { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); } }

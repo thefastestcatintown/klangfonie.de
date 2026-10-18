@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import profil1 from '../assets/images/profil1-portrait-ohne-bank.png';
 import type { HomePage } from '../lib/types';
+import DecorativeHeading from './DecorativeHeading.astro';
 
 interface Props { content: HomePage; }
 const { content } = Astro.props;
@@ -9,7 +10,7 @@ const { content } = Astro.props;
 <section class="hero">
   <div class="container hero-grid">
     <div class="hero-copy reveal">
-      <h1>{content.heroHeadline}</h1>
+      <DecorativeHeading level="h1" text={content.heroHeadline} />
       <p class="lead">{content.heroText}</p>
     </div>
     <figure class="hero-visual reveal">
@@ -22,7 +23,7 @@ const { content } = Astro.props;
   .hero { padding: clamp(1rem, 2vw, 2rem) 0 clamp(2rem, 4vw, 3.5rem); background: var(--color-linen); border-bottom: 1px solid var(--color-border); }
   .hero-grid { display: flex; flex-direction: column; gap: clamp(2rem, 4vw, 3.5rem); }
   .hero-copy { width: 100%; padding-bottom: 1rem; }
-  h1 { font-size: clamp(2.5rem, 4.2vw, 3.75rem); max-width: 24ch; text-wrap: balance; }
+  :global(h1) { font-size: clamp(2.5rem, 4.2vw, 3.75rem); max-width: 24ch; text-wrap: balance; }
   .lead { max-width: 42rem; margin-top: 0.75rem; }
   .hero-visual { order: -1; position: relative; width: 100%; margin: 0; }
   .hero-visual :global(img) { width: 100%; height: auto; aspect-ratio: 2 / 1; border-radius: var(--radius-lg); object-fit: cover; box-shadow: var(--shadow-soft); }
