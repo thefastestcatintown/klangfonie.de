@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import profil1 from '../assets/images/profil1-portrait-ohne-bank.png';
+import profil1 from '../assets/images/profil1-portrait-realistisch-v2.png';
 import type { HomePage } from '../lib/types';
 import type { Language } from '../lib/i18n';
 import DecorativeHeading from './DecorativeHeading.astro';
@@ -40,5 +40,11 @@ const caption = lang === 'en' ? 'Handpan · Music · Connection' : 'Handpan · M
   @media (max-width: 40rem) {
     .hero-visual :global(img) { aspect-ratio: 3 / 2; object-position: 30% center; }
     figcaption { align-items: flex-start; flex-direction: column; gap: 0.15rem; margin-top: 0.85rem; }
+  }
+  @media (min-width: 60rem) and (max-height: 56rem) {
+    .hero { padding-block: 1rem 2.25rem; }
+    :global(h1) { font-size: clamp(2.5rem, 3.7vw, 3.35rem); }
+    .hero-visual :global(img) { aspect-ratio: 2.35 / 1; }
+    figcaption { margin-top: 0.75rem; }
   }
 </style>

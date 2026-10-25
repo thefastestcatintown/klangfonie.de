@@ -7,7 +7,6 @@ const sourceType = lang === 'en' && testimonial.sourceType === 'Schüler:in' ? '
 ---
 <figure class="testimonial">
   {isExample && <span class="example-label">{lang === 'en' ? 'Example' : 'Beispiel'}</span>}
-  <span class="quote-mark" aria-hidden="true">“</span>
   <blockquote>{lang === 'en' ? `“${testimonial.quote}”` : `„${testimonial.quote}“`}</blockquote>
   <figcaption>
     <strong>{testimonial.name}</strong>
@@ -26,16 +25,6 @@ const sourceType = lang === 'en' && testimonial.sourceType === 'Schüler:in' ? '
     border: 1px solid rgb(38 53 47 / 0.1);
     border-radius: var(--radius-lg);
     background: rgb(255 253 247 / 0.72);
-  }
-  .quote-mark {
-    position: absolute;
-    top: -1.6rem;
-    right: 1.25rem;
-    color: rgb(165 93 58 / 0.13);
-    font-family: var(--font-display);
-    font-size: clamp(9rem, 17vw, 14rem);
-    line-height: 1;
-    pointer-events: none;
   }
   .example-label {
     position: relative;
@@ -71,4 +60,9 @@ const sourceType = lang === 'en' && testimonial.sourceType === 'Schüler:in' ? '
   }
   strong { color: var(--color-ink); font-size: 0.9rem; }
   figcaption span { opacity: 0.85; }
+  @media (min-width: 60rem) and (max-height: 56rem) {
+    .testimonial { padding: 1.75rem; }
+    blockquote { font-size: 1.45rem; line-height: 1.34; }
+    figcaption { margin-top: 1.5rem; }
+  }
 </style>

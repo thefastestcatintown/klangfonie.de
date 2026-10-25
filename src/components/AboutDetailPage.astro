@@ -3,7 +3,9 @@ import { Image, getImage } from 'astro:assets';
 import profil2 from '../assets/images/profil2.png';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import DecorativeHeading from './DecorativeHeading.astro';
-import type { Language } from '../lib/i18n';
+import { contentPath, localizePath, type Language } from '../lib/i18n';
+import { navigationFor } from '../lib/navigation';
+import '../styles/coaching.css';
 
 interface Milestone {
   year?: string;
@@ -19,12 +21,21 @@ interface Props {
 }
 
 const { title, paragraphs, milestones = [], lang = 'de' } = Astro.props;
+const current = contentPath(Astro.url.pathname);
+const { aboutLinks } = navigationFor(lang);
 const portrait = await getImage({ src: profil2, width: 1200, format: 'webp' });
 const portraitAlt = lang === 'en' ? 'Daniela Schneider playing a handpan beneath a tree' : 'Daniela Schneider spielt Handpan unter einem Baum';
 ---
 <BaseLayout image={portrait.src} lang={lang}>
-  <section class="page-hero">
-    <div class="container page-hero__inner"><DecorativeHeading level="h1" class="page-title" text={title} /></div>
+  <section class="page-hero about-hero">
+    <div class="container page-hero__inner">
+      <DecorativeHeading level="h1" class="page-title" text={title} />
+      <nav class="coaching-tabs" aria-label={lang === 'en' ? 'About Daniela' : 'Über Daniela'}>
+        {aboutLinks.map(({ href, label }) => (
+          <a href={localizePath(href, lang)} aria-current={current === href ? 'page' : undefined}>{label}</a>
+        ))}
+      </nav>
+    </div>
   </section>
   <section class="section">
     <div class="container rich-layout">
@@ -49,6 +60,7 @@ const portraitAlt = lang === 'en' ? 'Daniela Schneider playing a handpan beneath
 </BaseLayout>
 
 <style>
+  .about-hero { padding-block: var(--hero-space) 0; }
   .portrait { position: sticky; top: 9rem; overflow: hidden; aspect-ratio: 3 / 4; padding: 0; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-sage-soft); }
   .prose { display: grid; gap: 1rem; }
   .portrait :global(img) { width: 100%; height: 100%; border-radius: var(--radius-lg); object-fit: cover; object-position: 28% center; box-shadow: var(--shadow-soft); }

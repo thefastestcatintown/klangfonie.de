@@ -18,4 +18,8 @@ import DecorativeHeading from './DecorativeHeading.astro';
   .contact-inner > div:last-child { max-width: 37rem; }
   .contact-inner p { margin-bottom: 1.75rem; font-size: 1.08rem; }
   @media (min-width: 48rem) { .contact-inner { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 60rem) and (max-height: 56rem) {
+    .contact-inner { gap: 1.75rem; padding: 2rem; border-radius: 1.5rem; }
+    .contact-inner p { margin-bottom: 1.25rem; font-size: 1rem; }
+  }
 </style>

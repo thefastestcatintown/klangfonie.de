@@ -113,7 +113,7 @@ const copy = language === 'en'
   .brand { --brand-scale: 0.7; display: inline-flex; align-items: center; gap: 0.75rem; flex-shrink: 0; color: var(--color-ink); font-family: var(--font-display); font-size: 1.7rem; letter-spacing: -0.025em; text-decoration: none; }
 
   .navigation { display: flex; align-items: center; gap: clamp(0.8rem, 1.7vw, 1.55rem); }
-  .navigation > a { padding-block: 0.65rem; position: relative; color: var(--color-ink); font-size: 0.85rem; font-weight: 700; text-decoration: none; }
+  .navigation > a { padding: 0.65rem 0.35rem; position: relative; border-radius: 0.45rem; color: var(--color-ink); font-size: 0.85rem; font-weight: 700; text-decoration: none; transition: background 160ms ease, color 160ms ease; }
   .navigation > a::after, .dropdown-menu summary::after {
     content: ''; position: absolute; right: 0; bottom: 0; left: 0; height: 0.3rem; pointer-events: none;
     background:
@@ -122,16 +122,19 @@ const copy = language === 'en'
       linear-gradient(var(--color-clay), var(--color-clay)) right center / calc(50% - 0.35rem) 1px no-repeat;
     opacity: 0; transform: scaleX(0.75); transition: opacity 180ms ease, transform 180ms ease;
   }
-  .navigation > a:hover::after, .navigation > a[aria-current]::after, .dropdown-menu.is-current summary::after, .dropdown-menu summary:hover::after { opacity: 1; transform: scaleX(1); }
+  .navigation > a[aria-current]::after, .dropdown-menu.is-current summary::after { opacity: 1; transform: scaleX(1); }
+  .navigation > a[aria-current], .dropdown-menu.is-current summary { color: var(--color-clay-dark); }
+  .navigation > a:not([aria-current]):hover, .dropdown-menu:not(.is-current) summary:hover, .dropdown-menu:not(.is-current)[open] summary { background: rgb(155 96 62 / 0.08); color: var(--color-clay); }
   .dropdown-menu { position: relative; }
-  .dropdown-menu summary { padding-block: 0.65rem; position: relative; display: flex; align-items: center; color: var(--color-ink); font-size: 0.85rem; font-weight: 700; cursor: pointer; list-style: none; }
+  .dropdown-menu summary { padding: 0.65rem 0.35rem; position: relative; display: flex; align-items: center; border-radius: 0.45rem; color: var(--color-ink); font-size: 0.85rem; font-weight: 700; cursor: pointer; list-style: none; transition: background 160ms ease, color 160ms ease; }
   .dropdown-menu summary::-webkit-details-marker { display: none; }
-  .dropdown-menu.is-current summary, .dropdown-menu summary:hover { color: var(--color-clay); }
-  .submenu { position: absolute; z-index: 1; top: calc(100% + 0.5rem); left: -1rem; width: 18rem; max-width: calc(100vw - 2rem); margin: 0; padding: 0.5rem; list-style: none; border: 1px solid var(--color-border); border-radius: 0.8rem; background: var(--color-white); box-shadow: var(--shadow-soft); }
+  .submenu { position: absolute; z-index: 1; top: calc(100% + 0.5rem); left: -1rem; display: grid; width: 18rem; max-width: calc(100vw - 2rem); gap: 0.4rem; margin: 0; padding: 0.65rem; list-style: none; border: 1px solid var(--color-border); border-radius: 0.8rem; background: var(--color-white); box-shadow: var(--shadow-soft); }
   .dropdown-menu--about .submenu { right: -1rem; left: auto; }
   .submenu::before { content: ''; position: absolute; right: 0; bottom: 100%; left: 0; height: 0.6rem; }
-  .submenu a { display: block; padding: 0.8rem; border-radius: 0.4rem; color: var(--color-ink); font-size: 0.85rem; text-decoration: none; }
-  .submenu a:hover, .submenu a:focus-visible, .submenu a[aria-current='page'] { background: var(--color-linen); }
+  .submenu a { display: block; padding: 0.72rem 0.9rem; border-radius: 0.55rem; color: var(--color-ink); font-size: 0.85rem; text-decoration: none; transition: background 160ms ease, color 160ms ease, box-shadow 160ms ease, transform 160ms ease; }
+  .submenu a:hover, .submenu a:focus-visible { background: rgb(155 96 62 / 0.07); color: var(--color-clay-dark); transform: translateX(0.18rem); }
+  .submenu a[aria-current='page'] { background: rgb(155 96 62 / 0.1); color: var(--color-clay-dark); font-weight: 700; box-shadow: inset 3px 0 var(--color-clay); }
+  .submenu a[aria-current='page']:hover, .submenu a[aria-current='page']:focus-visible { transform: none; }
 
   .menu-button { display: none; width: 2.8rem; height: 2.8rem; border: 1px solid rgb(38 53 47 / 0.15); border-radius: 50%; background: transparent; }
   .menu-button i { display: block; width: 1.5rem; height: 1px; margin: 0.4rem auto; background: var(--color-ink); transition: transform 180ms ease; }
@@ -159,6 +162,9 @@ const copy = language === 'en'
     .header-inner { padding-block: 0.25rem; }
     .brand { gap: 0.3rem; font-size: 1.3rem; }
 
+  }
+  @media (min-width: 60rem) and (max-height: 56rem) {
+    .site-header { --header-height: 5.5rem; }
   }
   @media (prefers-reduced-motion: no-preference) {
     .dropdown-menu[open] .submenu { animation: menu-appear 180ms ease-out; }

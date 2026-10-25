@@ -12,7 +12,7 @@ const copy = language === 'en'
   ? { home: 'Klangfonia – Home', logo: 'Klangfonia – Daniela Schneider, handpan music', legal: 'Legal notice', privacy: 'Privacy' }
   : { home: 'Klangfonia – Startseite', logo: 'Klangfonia – Daniela Schneider, Handpan-Musik', legal: 'Impressum', privacy: 'Datenschutz' };
 const year = new Date().getFullYear();
-const hasContact = Boolean(settings.email || settings.phone);
+const hasContact = Boolean(settings.phone);
 const footerColumns = 1 + Number(hasContact);
 const socials = ['Instagram', 'YouTube'];
 const optimizedFooterLogo = await getImage({ src: footerLogo, width: 480, format: 'webp', quality: 82 });
@@ -28,7 +28,6 @@ const optimizedFooterLogo = await getImage({ src: footerLogo, width: 480, format
       </a>
     </div>
     {hasContact && <div class="footer-contact">
-      {settings.email && <a href={`mailto:${settings.email}`}>{settings.email}</a>}
       {settings.phone && <a href={`tel:${settings.phone.replace(/\s/g, '')}`}>{settings.phone}</a>}
     </div>}
     <div>
@@ -77,6 +76,11 @@ const optimizedFooterLogo = await getImage({ src: footerLogo, width: 480, format
   .footer-contact { gap: 0.5rem; }
   @media (min-width: 60rem) {
     .footer-grid { grid-template-columns: minmax(0, 1.6fr) repeat(var(--footer-columns), minmax(0, 1fr)); }
+  }
+  @media (min-width: 60rem) and (max-height: 56rem) {
+    .footer { padding-block: 2.5rem 1.25rem; }
+    .footer-logo { width: 10.5rem; }
+    .footer-bottom { margin-top: 1.75rem; }
   }
   @media (max-width: 32rem) { .footer-brand { font-size: 1.65rem; }  .footer-bottom { grid-template-columns: auto 1fr; } .footer-legal { grid-column: 1 / -1; justify-content: flex-start; } }
 </style>
