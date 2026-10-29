@@ -45,6 +45,7 @@ const image = imageUrl(service.image, 1200);
           {(english ? ['Rhythm and timing', 'Touch and tone', 'Grooves and patterns', 'Melody and dynamics', 'Coordination', 'Transitions and variations', 'Free playing and improvisation', 'Composition and arrangement'] : ['Rhythmus und Timing', 'Anschlagtechnik und Klang', 'Grooves und Patterns', 'Melodie und Dynamik', 'Koordination', 'Übergänge und Variationen', 'Freies Spiel und Improvisation', 'Komposition und Arrangement']).map((topic) => <li>{topic}</li>)}
         </ul>
         <div class="action"><Button href={localizePath('/kontakt?interesse=unterricht', lang)}>{english ? 'Enquire about guidance' : 'Lernbegleitung anfragen'}</Button></div>
+        <p class="level-link">{english ? 'Not sure where you are starting from?' : 'Du bist dir noch nicht sicher, wo du gerade stehst?'} <a href={localizePath('/selbsteinschaetzung', lang)}>{english ? 'Assess your handpan level' : 'Schätze dein Handpan-Level ein'}</a></p>
       </div>
     </div>
   </section>
@@ -79,6 +80,8 @@ const image = imageUrl(service.image, 1200);
 
   .prose { margin-top: 1rem; }
   .action { margin-top: 2rem; }
+  .level-link { margin-top: 1.25rem; color: var(--color-steel); font-size: 0.92rem; }
+  .level-link a { color: var(--color-clay-dark); font-weight: 700; }
 
 
   @media (max-width: 38rem) { .topic-list { grid-template-columns: 1fr; } }

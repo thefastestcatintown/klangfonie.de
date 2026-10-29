@@ -38,3 +38,29 @@ const service = await getService('Yoga');
     'Getragen von der Musik. Gemeinsam im Rhythmus. Verbunden im Augenblick.',
   ]}
  />
+
+<section class="section partners-section" aria-labelledby="partners-title">
+  <div class="container">
+    <p class="partners-eyebrow">{english ? 'WORKING TOGETHER' : 'GEMEINSAM GESTALTEN'}</p>
+    <h2 id="partners-title">{english ? 'Retreat partners' : 'Kooperationspartner für Retreats'}</h2>
+    <p class="partners-intro">{english ? 'Examples of the kinds of partners who could shape a retreat with handpan and body percussion. These are placeholders, not current partners.' : 'Beispiele für mögliche Partner, mit denen Retreats mit Handpan und Bodypercussion entstehen können. Die Einträge sind Platzhalter und keine bestehenden Kooperationen.'}</p>
+    <div class="partner-grid">
+      <article class="partner-card"><span>01</span><h3>{english ? '[Yoga teacher / retreat host]' : '[Yoga-Leitung / Retreat-Veranstalter:in]'}</h3><p>{english ? 'Create a shared programme with movement, sound and rhythm.' : 'Ein gemeinsames Programm aus Bewegung, Klang und Rhythmus gestalten.'}</p></article>
+      <article class="partner-card"><span>02</span><h3>{english ? '[Retreat venue / seminar house]' : '[Retreat-Ort / Seminarhaus]'}</h3><p>{english ? 'Add live handpan music and body percussion to a retreat setting.' : 'Live-Handpan und Bodypercussion in einen Retreat-Rahmen einbetten.'}</p></article>
+      <article class="partner-card"><span>03</span><h3>{english ? '[Yoga studio / community]' : '[Yogastudio / Community]'}</h3><p>{english ? 'Offer a musical session or workshop for your community.' : 'Ein musikalisches Angebot oder einen Workshop für die eigene Community anbieten.'}</p></article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .partners-section { background: var(--color-linen); }
+  .partners-eyebrow { margin-bottom: 0.65rem; color: var(--color-clay-dark); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; }
+  .partners-section h2 { max-width: 20ch; }
+  .partners-intro { max-width: 48rem; margin-top: 0.65rem; color: var(--color-steel); }
+  .partner-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 2rem; }
+  .partner-card { min-width: 0; padding: 1.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-white); }
+  .partner-card > span { color: var(--color-clay); font-size: 0.8rem; }
+  .partner-card h3 { margin-top: 0.75rem; font-size: clamp(1.2rem, 2vw, 1.55rem); line-height: 1.25; overflow-wrap: anywhere; }
+  .partner-card p { margin-top: 0.65rem; color: var(--color-steel); }
+  @media (max-width: 48rem) { .partner-grid { grid-template-columns: 1fr; } }
+</style>

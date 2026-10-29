@@ -5,6 +5,7 @@ export const brandName = 'Klangfonia';
 export const pageMetadata: Record<string, { title: string; description: string; label: string }> = {
   '/': { title: 'Handpan lernen in Berlin | Klangfonia', description: 'Klangfonia mit Daniela Schneider: persönliche Lernbegleitung, Workshops, Big Band sowie Live-Musik für Yoga und besondere Anlässe.', label: 'Startseite' },
   '/unterricht': { title: 'Handpan-Unterricht in Berlin | Klangfonia', description: 'Persönliche Handpan-Lernbegleitung mit Daniela Schneider für Anfänger und Fortgeschrittene – in deinem eigenen Tempo.', label: 'Lernbegleitung 1:1' },
+  '/selbsteinschaetzung': { title: 'Handpan-Level einschätzen | Klangfonia', description: 'Finde mit einer kurzen Selbsteinschätzung heraus, wo du beim Handpan-Spiel stehst und was dein nächster Lernschritt sein könnte.', label: 'Level einschätzen' },
   '/ensemble': { title: 'Handpan Big Band in Berlin | Klangfonia', description: 'In Danielas Handpan Big Band entwickelst du Patterns, Zusammenspiel und Bühnenerfahrung. Unverbindliches Schnuppertreffen anfragen.', label: 'Big Band' },
   '/workshops': { title: 'Handpan-Workshops in Berlin | Klangfonia', description: 'Handpan-Workshops für Einsteiger und Fortgeschrittene: Klang, Technik, Rhythmus und eigener musikalischer Ausdruck mit Daniela Schneider.', label: 'Workshops' },
   '/yoga': { title: 'Live-Handpan für Yoga & Retreats in Berlin | Klangfonia', description: 'Live-Handpan mit Daniela Schneider für Yoga, Retreats und Meditation – feinfühlige Musik für Bewegung, Atem und stille Momente.', label: 'Retreats' },
@@ -17,6 +18,7 @@ export const pageMetadata: Record<string, { title: string; description: string; 
 export const pageMetadataEn: Record<string, { title: string; description: string; label: string }> = {
   '/': { title: 'Learn handpan in Berlin | Klangfonia', description: 'Klangfonia with Daniela Schneider: personal handpan guidance, workshops, a big band and live music for retreats and special occasions.', label: 'Home' },
   '/unterricht': { title: 'Handpan lessons in Berlin | Klangfonia', description: 'Personal handpan guidance with Daniela Schneider for beginners and advanced players, at your own pace.', label: 'One-to-one guidance' },
+  '/selbsteinschaetzung': { title: 'Assess your handpan level | Klangfonia', description: 'Use a short self-assessment to reflect on your handpan playing and find a possible next step.', label: 'Level self-assessment' },
   '/ensemble': { title: 'Join a Handpan Big Band in Berlin | Klangfonia', description: 'Develop patterns, ensemble playing and stage experience in Daniela’s Handpan Big Band. Ask for a no-obligation trial session.', label: 'Big Band' },
   '/workshops': { title: 'Handpan workshops in Berlin | Klangfonia', description: 'Handpan workshops for beginners and advanced players: sound, technique, rhythm and your own musical expression.', label: 'Workshops' },
   '/yoga': { title: 'Live handpan for retreats in Berlin | Klangfonia', description: 'Live handpan and body percussion with Daniela Schneider for retreats, movement, mindfulness and shared musical experiences.', label: 'Retreats' },
