@@ -107,7 +107,7 @@ Ist kein Endpoint gesetzt, fällt das Formular weiterhin auf die vorhandene E-Ma
 
 ## Automatisches Deployment zu Netcup
 
-`.github/workflows/deploy.yml` prüft, baut und überträgt die Website per FTPS nach Netcup. Der Workflow läuft bei einem Push auf `main`, manuell, über ein `repository_dispatch`-Ereignis namens `sanity-publish` und als Ausfallsicherung alle 15 Minuten. Fehlgeschlagene Läufe werden in GitHub Actions angezeigt und über die persönlichen GitHub-Benachrichtigungen gemeldet.
+`.github/workflows/deploy.yml` prüft, baut und überträgt die Website per FTP mit TLS-geschützter Anmeldung nach Netcup. Der Workflow läuft bei einem Push auf `main`, manuell, über ein `repository_dispatch`-Ereignis namens `sanity-publish` und als Ausfallsicherung alle sechs Stunden. Fehlgeschlagene Läufe werden in GitHub Actions angezeigt und über die persönlichen GitHub-Benachrichtigungen gemeldet. Ein Deployment-Manifest verhindert, dass unveränderte, gehashte Build-Dateien erneut übertragen werden.
 
 Benötigte Repository-Variablen:
 
@@ -124,7 +124,7 @@ Benötigte Repository-Secrets:
 - `NETCUP_FTP_USER`
 - `NETCUP_FTP_PASSWORD`
 
-Für eine sofortige Veröffentlichung kann Sanity unter **API → Webhooks** einen POST an `https://api.github.com/repos/thefastestcatintown/klangfonie.de/dispatches` senden. Der Request benötigt den JSON-Inhalt `{"event_type":"sanity-publish"}` sowie einen eigenen, nur für dieses Repository ausgestellten GitHub-Token im Header `Authorization: Bearer …`. Diesen Token nicht in Git oder in Sanity-Inhalte kopieren. Ohne diesen optionalen Webhook übernimmt der 15-Minuten-Zeitplan die Veröffentlichung.
+Für eine sofortige Veröffentlichung kann Sanity unter **API → Webhooks** einen POST an `https://api.github.com/repos/thefastestcatintown/klangfonie.de/dispatches` senden. Der Request benötigt den JSON-Inhalt `{"event_type":"sanity-publish"}` sowie einen eigenen, nur für dieses Repository ausgestellten GitHub-Token im Header `Authorization: Bearer …`. Diesen Token nicht in Git oder in Sanity-Inhalte kopieren. Ohne diesen optionalen Webhook übernimmt der Sechs-Stunden-Zeitplan die Veröffentlichung.
 
 ## Vor dem Livegang
 
