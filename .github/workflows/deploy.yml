@@ -59,12 +59,20 @@ jobs:
           upload_group() {
             local group="$1"
             local -a args
+            local upload_count=0
             args=(--parallel --parallel-immediate --parallel-max 2 --silent --show-error --fail --retry 5 --retry-delay 2 --retry-all-errors --ftp-ssl-control --ftp-create-dirs --user "$NETCUP_FTP_USER:$NETCUP_FTP_PASSWORD")
             while IFS= read -r -d '' file; do
               relative_path="${file#dist/}"
+              if [[ "$group" == assets && "$relative_path" == _astro/* ]] && curl --silent --fail --head "$PUBLIC_SITE_URL/$relative_path" >/dev/null; then
+                continue
+              fi
               args+=(--upload-file "$file" "ftp://$NETCUP_FTP_HOST/$relative_path")
+              upload_count=$((upload_count + 1))
             done < <(if [[ "$group" == html ]]; then find dist -type f -name '*.html' -print0; else find dist -type f ! -name '*.html' -print0; fi)
-            curl "${args[@]}"
+            if (( upload_count > 0 )); then
+              curl "${args[@]}"
+            fi
+            echo "Uploaded $upload_count $group files."
           }
 
           # Public, versioned assets first; entry-point HTML last avoids mixed releases.
