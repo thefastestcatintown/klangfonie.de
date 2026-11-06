@@ -50,27 +50,26 @@ jobs:
           npm run build
           npm run check:seo
 
-      - name: Install secure FTP client
-        run: sudo apt-get update && sudo apt-get install --yes lftp
-
       - name: Upload site to Netcup
         env:
           NETCUP_FTP_HOST: ${{ secrets.NETCUP_FTP_HOST }}
           NETCUP_FTP_USER: ${{ secrets.NETCUP_FTP_USER }}
           NETCUP_FTP_PASSWORD: ${{ secrets.NETCUP_FTP_PASSWORD }}
         run: |
-          lftp -u "$NETCUP_FTP_USER,$NETCUP_FTP_PASSWORD" "$NETCUP_FTP_HOST" <<'LFTP'
-          set cmd:fail-exit true
-          set ftp:ssl-force true
-          # Netcup/Plesk protects authentication and commands with TLS, but this
-          # FTP account does not complete protected passive data connections.
-          # The transferred build artifacts are public website files.
-          set ftp:ssl-protect-data false
-          set ssl:verify-certificate true
-          set net:max-retries 3
-          mirror --reverse --delete --parallel=2 --verbose --exclude-glob .well-known/** dist/ /
-          bye
-          LFTP
+          upload_group() {
+            local group="$1"
+            local -a args
+            args=(--parallel --parallel-immediate --parallel-max 2 --silent --show-error --fail --retry 5 --retry-delay 2 --retry-all-errors --ftp-ssl-control --ftp-create-dirs --user "$NETCUP_FTP_USER:$NETCUP_FTP_PASSWORD")
+            while IFS= read -r -d '' file; do
+              relative_path="${file#dist/}"
+              args+=(--upload-file "$file" "ftp://$NETCUP_FTP_HOST/$relative_path")
+            done < <(if [[ "$group" == html ]]; then find dist -type f -name '*.html' -print0; else find dist -type f ! -name '*.html' -print0; fi)
+            curl "${args[@]}"
+          }
+
+          # Public, versioned assets first; entry-point HTML last avoids mixed releases.
+          upload_group assets
+          upload_group html
 
       - name: Deployment summary
         run: echo 'Klangfonia was built, checked and deployed to https://klangfonia.de.' >> "$GITHUB_STEP_SUMMARY"
