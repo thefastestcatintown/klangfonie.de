@@ -1,55 +1,47 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import DecorativeHeading from '../components/DecorativeHeading.astro';
-import { getSettings } from '../lib/sanity';
-import type { Language } from '../lib/i18n';
+import { getPageCopy, getSettings } from '../lib/sanity';
+import { defaultsFor } from '../content/page-copy-defaults';
+import { localizePath, type Language } from '../lib/i18n';
 interface Props { lang?: Language; }
 const { lang = 'de' } = Astro.props;
-const english = lang === 'en';
 const settings = await getSettings();
 const formEndpoint = import.meta.env.PUBLIC_CONTACT_FORM_ENDPOINT?.trim();
-const formCopy = english ? {
-  defaultInterest: 'Enquiry', greeting: 'Hello Daniela,', signoff: 'Best wishes', sending: 'Sending…', submit: 'Send message',
-  success: 'Thank you! Your message has been sent. I will get back to you personally.',
-  error: 'Your message could not be sent right now. Please try again or use the email address provided.',
-  prepared: 'The message has been prepared in your email programme. Please review it there and send it.',
-  copied: 'The enquiry has been copied. You can now paste it into an email or message.',
-} : {
-  defaultInterest: 'Anfrage', greeting: 'Hallo Daniela,', signoff: 'Viele Grüße', sending: 'Wird gesendet…', submit: 'Nachricht senden',
-  success: 'Vielen Dank! Deine Nachricht wurde gesendet. Ich melde mich persönlich bei dir zurück.',
-  error: 'Die Nachricht konnte gerade nicht gesendet werden. Bitte versuche es noch einmal oder nutze die angegebene E-Mail-Adresse.',
-  prepared: 'Die Nachricht wurde in deinem E-Mail-Programm vorbereitet. Bitte prüfe sie dort und sende sie ab.',
-  copied: 'Die Anfrage wurde kopiert. Du kannst sie nun in eine E-Mail oder Nachricht einfügen.',
-};
+const copy = await getPageCopy('contact', lang, defaultsFor('contact', lang));
+const formCopy = copy;
 ---
 <BaseLayout lang={lang}>
-  <section class="page-hero"><div class="container page-hero__inner"><DecorativeHeading level="h1" class="page-title" text={english ? 'Enquire about handpan in Berlin' : 'Handpan in Berlin anfragen'} /><p class="lead">{english ? 'Whether you are interested in handpan lessons, a workshop or live music, a few lines are enough to begin. I will get back to you personally.' : 'Ob Handpan-Unterricht, Workshop oder Live-Musik: Ein paar Zeilen genügen für den Anfang. Ich melde mich persönlich bei dir zurück.'}</p></div></section>
+  <section class="page-hero"><div class="container page-hero__inner"><DecorativeHeading level="h1" class="page-title" text={copy.title} /><p class="lead">{copy.intro}</p></div></section>
   <section class="section"><div class="container contact-grid">
     <aside>
-      <DecorativeHeading level="h2" text={settings.email ? (english ? 'Prefer email?' : 'Lieber per E-Mail?') : (english ? 'Your enquiry' : 'Deine Anfrage')} />
+      <DecorativeHeading level="h2" text={settings.email ? copy.emailHeading : copy.enquiryHeading} />
       {settings.email
         ? <a class="email" href={`mailto:${settings.email}`}>{settings.email}</a>
-        : <p class="intro">{english ? 'Tell me briefly how I can support you. You can then copy your enquiry with one click.' : 'Erzähl mir kurz, wobei ich dich begleiten darf. Deine Anfrage kannst du anschließend mit einem Klick kopieren.'}</p>}
+        : <p class="intro">{copy.noEmailIntro}</p>}
       {settings.phone && <a class="contact-line" href={`tel:${settings.phone.replace(/\s/g, '')}`}>{settings.phone}</a>}
-      {settings.email && <p class="note">{english ? 'You can use the form or email Daniela directly.' : 'Du kannst das Formular nutzen oder Daniela direkt eine E-Mail schreiben.'}</p>}
+      {settings.email && <p class="note">{copy.emailNote}</p>}
     </aside>
     <form class="contact-form" data-contact-form data-endpoint={formEndpoint || undefined} data-recipient={settings.email || undefined} data-copy={JSON.stringify(formCopy)} novalidate>
       <div class="field-row">
-        <label><span>Name</span><input type="text" name="name" autocomplete="name" required /></label>
-        <label><span>{english ? 'Email' : 'E-Mail'}</span><input type="email" name="email" autocomplete="email" required /></label>
+        <label><span>{copy.nameLabel}</span><input type="text" name="name" autocomplete="name" required /></label>
+        <label><span>{copy.emailLabel}</span><input type="email" name="email" autocomplete="email" required /></label>
       </div>
-      <label><span>{english ? 'What are you interested in?' : 'Wofür interessierst du dich?'}</span>
+      <label><span>{copy.interestLabel}</span>
         <select name="interest" required data-interest>
-          <option value="">{english ? 'Please select' : 'Bitte auswählen'}</option><option value="unterricht">{english ? 'One-to-one guidance' : 'Lernbegleitung 1:1'}</option><option value="ensemble">Big Band</option><option value="workshops">Handpan Workshops</option><option value="yoga">{english ? 'Retreat music' : 'Yoga-Begleitung'}</option><option value="live">{english ? 'Live music' : 'Live-Musik'}</option><option value="band">{english ? 'Band / concert' : 'Band / Konzert'}</option><option value="sonstiges">{english ? 'Other' : 'Sonstiges'}</option>
+          <option value="">{copy.selectLabel}</option><option value="unterricht">{copy.lessonsOption}</option><option value="ensemble">{copy.bandOption}</option><option value="workshops">{copy.workshopsOption}</option><option value="yoga">{copy.yogaOption}</option><option value="live">{copy.liveOption}</option><option value="band">{copy.concertOption}</option><option value="sonstiges">{copy.otherOption}</option>
         </select>
       </label>
-      <label><span>{english ? 'Message' : 'Nachricht'}</span><textarea name="message" rows="7" required placeholder={english ? 'What would you like to ask about?' : 'Was möchtest du gerne anfragen?'}></textarea></label>
-      <label class="honeypot" aria-hidden="true">{english ? 'Please leave blank' : 'Bitte nicht ausfüllen'}<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label>
-      <button type="submit"><span data-submit-label>{formEndpoint ? (english ? 'Send message' : 'Nachricht senden') : settings.email ? (english ? 'Prepare email' : 'E-Mail vorbereiten') : (english ? 'Copy enquiry' : 'Anfrage kopieren')}</span> <span aria-hidden="true">↗</span></button>
+      <label><span>{copy.messageLabel}</span><textarea name="message" rows="7" required placeholder={copy.messagePlaceholder}></textarea></label>
+      <label class="honeypot" aria-hidden="true">{copy.honeypotLabel}<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label>
+      <p class="privacy-note">
+        {lang === 'en' ? 'Your details are used only to process your enquiry. ' : 'Deine Angaben werden ausschließlich zur Bearbeitung deiner Anfrage verwendet. '}
+        <a href={localizePath('/datenschutz', lang)}>{lang === 'en' ? 'Privacy information' : 'Hinweise zum Datenschutz'}</a>
+      </p>
+      <button type="submit"><span data-submit-label>{formEndpoint ? copy.submit : settings.email ? copy.prepare : copy.copy}</span> <span aria-hidden="true">↗</span></button>
       <p class="form-status" role="status" aria-live="polite" tabindex="-1" data-form-status hidden></p>
     </form>
   </div></section>
-</BaseLayout>
 <script>
   const select = document.querySelector<HTMLSelectElement>('[data-interest]');
   const interest = new URLSearchParams(window.location.search).get('interesse');
@@ -133,6 +125,8 @@ const formCopy = english ? {
   .email { max-width: 100%; overflow-wrap: anywhere; }
   .contact-grid > * { min-width: 0; }
   .honeypot { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+  .privacy-note { margin: -0.35rem 0 0; color: var(--color-steel); font-size: 0.78rem; line-height: 1.55; }
+  .privacy-note a { color: var(--color-ink); text-decoration: underline; text-underline-offset: 0.2em; }
   .form-status { padding: 1rem; border-left: 3px solid var(--color-clay); background: var(--color-white); color: var(--color-steel); }.form-status[data-state='success'] { border-left-color: var(--color-ink); }.form-status[data-state='error'] { border-left-color: #a23b2a; color: #7d2e21; }.form-status a { color: var(--color-ink); font-weight: 700; }
   @media (min-width: 42rem) { .field-row { grid-template-columns: 1fr 1fr; } }
   @media (min-width: 52rem) { .contact-grid { grid-template-columns: 0.75fr 1.25fr; } }
@@ -143,3 +137,4 @@ const formCopy = english ? {
     .note { margin-top: 2rem; }
   }
 </style>
+</BaseLayout>

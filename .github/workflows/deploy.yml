@@ -1,43 +1,70 @@
-name: Deploy to GitHub Pages
+name: Build and deploy to Netcup
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
+  repository_dispatch:
+    types: [sanity-publish]
+  schedule:
+    # Fallback if a webhook delivery is delayed or unavailable.
+    - cron: '7,22,37,52 * * * *'
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
+  group: netcup-production
   cancel-in-progress: true
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PUBLIC_SANITY_PROJECT_ID: ${{ vars.PUBLIC_SANITY_PROJECT_ID }}
+      PUBLIC_SANITY_DATASET: ${{ vars.PUBLIC_SANITY_DATASET }}
+      PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
+      PUBLIC_BASE_PATH: ${{ vars.PUBLIC_BASE_PATH }}
+      PUBLIC_CONTACT_FORM_ENDPOINT: ${{ vars.PUBLIC_CONTACT_FORM_ENDPOINT }}
+      PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ vars.PUBLIC_GOOGLE_SITE_VERIFICATION }}
     steps:
-      - name: Checkout repository
+      - name: Check out repository
         uses: actions/checkout@v7
 
-      - name: Build and upload Astro site
-        uses: withastro/action@v6
-        env:
-          PUBLIC_SANITY_PROJECT_ID: ${{ vars.PUBLIC_SANITY_PROJECT_ID }}
-          PUBLIC_SANITY_DATASET: ${{ vars.PUBLIC_SANITY_DATASET }}
-          PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
-          PUBLIC_BASE_PATH: ${{ vars.PUBLIC_BASE_PATH }}
-          PUBLIC_CONTACT_FORM_ENDPOINT: ${{ vars.PUBLIC_CONTACT_FORM_ENDPOINT }}
-          PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ vars.PUBLIC_GOOGLE_SITE_VERIFICATION }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v5
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Test and build
+        run: |
+          npm test
+          npm run build
+          npm run check:seo
+
+      - name: Install secure FTP client
+        run: sudo apt-get update && sudo apt-get install --yes lftp
+
+      - name: Upload site to Netcup
+        env:
+          NETCUP_FTP_HOST: ${{ secrets.NETCUP_FTP_HOST }}
+          NETCUP_FTP_USER: ${{ secrets.NETCUP_FTP_USER }}
+          NETCUP_FTP_PASSWORD: ${{ secrets.NETCUP_FTP_PASSWORD }}
+        run: |
+          lftp -u "$NETCUP_FTP_USER,$NETCUP_FTP_PASSWORD" "$NETCUP_FTP_HOST" <<'LFTP'
+          set cmd:fail-exit true
+          set ftp:ssl-force true
+          set ftp:ssl-protect-data true
+          set ssl:verify-certificate true
+          set net:max-retries 3
+          mirror --reverse --delete --verbose --exclude-glob .well-known/** dist/ /
+          bye
+          LFTP
+
+      - name: Deployment summary
+        run: echo 'Klangfonia was built, checked and deployed to https://klangfonia.de.' >> "$GITHUB_STEP_SUMMARY"

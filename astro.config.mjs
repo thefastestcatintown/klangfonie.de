@@ -9,7 +9,7 @@ const projectId = env.PUBLIC_SANITY_PROJECT_ID || 'placeholder';
 const dataset = env.PUBLIC_SANITY_DATASET || 'production';
 
 export default defineConfig({
-  site: env.PUBLIC_SITE_URL || 'https://klangfonie.de',
+  site: env.PUBLIC_SITE_URL || 'https://klangfonia.de',
   base: env.PUBLIC_BASE_PATH || '/',
   output: 'static',
   trailingSlash: 'always',

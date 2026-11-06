@@ -4,9 +4,17 @@ export const testimonial = defineType({
   name: 'testimonial',
   title: 'Bewertungen & Stimmen',
   type: 'document',
+  description: 'Eine freigegebene Rückmeldung für die Startseite eintragen.',
+  fieldsets: [
+    {
+      name: 'english',
+      title: 'Englische Übersetzungen',
+      options: { collapsible: true, collapsed: true },
+    },
+  ],
   fields: [
     defineField({ name: 'quote', title: 'Zitat', type: 'text', rows: 4, validation: (rule) => rule.required() }),
-    defineField({ name: 'quoteEn', title: 'Zitat (Englisch, optional)', type: 'text', rows: 4 }),
+    defineField({ name: 'quoteEn', title: 'Zitat', type: 'text', rows: 4, fieldset: 'english' }),
     defineField({
       name: 'sourceType',
       title: 'Stimme von',
@@ -23,10 +31,10 @@ export const testimonial = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({ name: 'name', title: 'Name oder Bezeichnung', description: 'Zum Beispiel „Anna“ oder „Christopher Eschenbecher“', type: 'string', validation: (rule) => rule.required() }),
-    defineField({ name: 'nameEn', title: 'Name oder Bezeichnung (Englisch, optional)', type: 'string' }),
+    defineField({ name: 'nameEn', title: 'Name oder Bezeichnung', type: 'string', fieldset: 'english' }),
     defineField({ name: 'context', title: 'Angebot oder Anlass (optional)', description: 'Zum Beispiel „Lernbegleitung“ oder „Yoga-Retreat“', type: 'string' }),
-    defineField({ name: 'contextEn', title: 'Angebot oder Anlass (Englisch, optional)', type: 'string' }),
-    defineField({ name: 'sortOrder', title: 'Reihenfolge', type: 'number', initialValue: 10 }),
+    defineField({ name: 'contextEn', title: 'Angebot oder Anlass', type: 'string', fieldset: 'english' }),
+    defineField({ name: 'sortOrder', title: 'Reihenfolge', description: 'Kleinere Zahlen erscheinen weiter vorne.', type: 'number', initialValue: 10 }),
   ],
   orderings: [{ title: 'Reihenfolge', name: 'sortOrderAsc', by: [{ field: 'sortOrder', direction: 'asc' }] }],
   preview: {

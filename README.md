@@ -26,7 +26,7 @@ Der Befehl öffnet bei Bedarf den Sanity-Login und fragt nach dem Projekt. `--ba
 ```env
 PUBLIC_SANITY_PROJECT_ID=deine_project_id
 PUBLIC_SANITY_DATASET=production
-PUBLIC_SITE_URL=https://klangfonie.de
+PUBLIC_SITE_URL=https://klangfonia.de
 ```
 
 `.env` wird von Git ignoriert. Für die aktuell statische, nur veröffentlichte Inhalte lesende Website ist kein API-Token erforderlich.
@@ -48,19 +48,30 @@ npm run build
 npm run preview
 ```
 
-Astro erzeugt die Website statisch in `dist/`. Veröffentlichte CMS-Änderungen werden beim nächsten Build übernommen. Konzerttermine sind die Ausnahme: Die Live-Seite lädt sie zusätzlich direkt aus dem öffentlichen Sanity-Dataset, damit neue oder geänderte Termine ohne Git-Push sichtbar werden.
+Astro erzeugt die Website statisch in `dist/`. Veröffentlichte CMS-Änderungen werden durch den Netcup-Workflow automatisch übernommen. Konzerttermine lädt die Live-Seite zusätzlich direkt aus dem öffentlichen Sanity-Dataset, damit neue oder geänderte Termine schon vor dem nächsten Build sichtbar werden.
 
 ## CMS
 
-Daniela kann im Studio folgende Inhalte bearbeiten, ohne das Layout frei umbauen zu müssen:
+Das Studio ist nach den sichtbaren Website-Seiten gegliedert. Daniela wählt zuerst die
+gewünschte Seite und bearbeitet dort die zugehörigen Texte, Bilder oder Termine. Der
+frühere technische Sammelbereich **Seitentexte** und die separaten **Angebote** werden
+in der Hauptnavigation nicht mehr angezeigt. Technische Schlüssel und nicht verwendete
+Felder sind ausgeblendet; englische Übersetzungen sind standardmäßig eingeklappt.
 
-- Website-Einstellungen und Kontaktdaten
-- Hero und Einleitung der Startseite
-- Über-Daniela-Seite samt Rich Text und musikalischen Stationen
-- Angebote für Lernbegleitung, Yoga, Live und Band
-- echte Kundenstimmen
-- YouTube-Videos
-- kommende Termine
+Regelmäßig gepflegte Inhalte sind insbesondere:
+
+- Startseite und die einzelnen Angebotsseiten
+- Live-Musik, Musikvideo sowie Konzerte und Termine
+- Danielas Geschichte und Stationen
+- Bewertungen und Stimmen
+- Kontakt und Selbsteinschätzung
+
+Navigation, allgemeine Hinweise, Kontaktdaten und Suchmaschinenangaben liegen gesammelt
+unter **Weitere Einstellungen**.
+
+Impressum und Datenschutzerklärung bleiben bewusst codeverwaltet: Änderungen daran
+sollen zusammen mit einer rechtlichen Prüfung veröffentlicht werden und nicht wie
+gewöhnliche Marketingtexte versehentlich überschrieben werden.
 
 Die initial einzutragenden Inhalte stehen in [SANITY_CONTENT_SETUP.md](./SANITY_CONTENT_SETUP.md).
 
@@ -69,6 +80,7 @@ Die initial einzutragenden Inhalte stehen in [SANITY_CONTENT_SETUP.md](./SANITY_
 ```text
 sanity/schemas/       CMS-Schemas
 src/components/       wiederverwendbare Astro-Komponenten
+src/content/          sichere Text-Fallbacks für Sanity
 src/layouts/          globales Seitenlayout und SEO
 src/lib/              CMS-Abfragen, Typen und Fallbacks
 src/pages/            Seitenrouten
@@ -76,19 +88,43 @@ src/styles/           globale Gestaltung
 public/               statische Assets
 ```
 
-Die lokal eingebundenen Originalaufnahmen von Daniela dienen als hochwertiger Fallback. Über Sanity gepflegte Hero- und Porträtbilder ersetzen sie automatisch, sobald entsprechende CMS-Inhalte veröffentlicht sind.
+Die unveränderten Bildquellen liegen unter `src/assets/images/originals/`. Astro
+erzeugt daraus beim Build responsive WebP-Varianten; Sanity-Bilder werden über die
+Image API automatisch zugeschnitten und im geeigneten Browserformat ausgeliefert.
+Das frühere Startseitenbild bleibt als Original erhalten.
 
 ## Kontaktformular
 
 Das Formular ist vollständig gestaltet, validiert Eingaben im Browser und versendet sie per Formspree, sobald ein Formular-Endpoint konfiguriert ist. Ohne Endpoint nutzt es weiterhin die E-Mail-/Kopierfunktion als Rückfall.
 
-Für den echten Versand wird ein Formspree-Formular verwendet. Lege dort ein Formular mit der gewünschten Empfängeradresse an und hinterlege dessen Endpoint lokal in `.env` sowie für GitHub Pages als Repository-Variable `PUBLIC_CONTACT_FORM_ENDPOINT`:
+Für den echten Versand wird ein Formspree-Formular verwendet. Lege dort ein Formular mit der gewünschten Empfängeradresse an und hinterlege dessen Endpoint lokal in `.env` sowie als GitHub-Repository-Variable `PUBLIC_CONTACT_FORM_ENDPOINT`:
 
 ```env
 PUBLIC_CONTACT_FORM_ENDPOINT=https://formspree.io/f/DEINE_FORMULAR_ID
 ```
 
 Ist kein Endpoint gesetzt, fällt das Formular weiterhin auf die vorhandene E-Mail-/Kopierfunktion zurück. Die Empfängeradresse wird bei Formspree verwaltet und kann dort später ohne Codeänderung ausgetauscht werden.
+
+## Automatisches Deployment zu Netcup
+
+`.github/workflows/deploy.yml` prüft, baut und überträgt die Website per FTPS nach Netcup. Der Workflow läuft bei einem Push auf `main`, manuell, über ein `repository_dispatch`-Ereignis namens `sanity-publish` und als Ausfallsicherung alle 15 Minuten. Fehlgeschlagene Läufe werden in GitHub Actions angezeigt und über die persönlichen GitHub-Benachrichtigungen gemeldet.
+
+Benötigte Repository-Variablen:
+
+- `PUBLIC_SANITY_PROJECT_ID`
+- `PUBLIC_SANITY_DATASET`
+- `PUBLIC_SITE_URL`
+- `PUBLIC_BASE_PATH`
+- `PUBLIC_CONTACT_FORM_ENDPOINT`
+- optional `PUBLIC_GOOGLE_SITE_VERIFICATION`
+
+Benötigte Repository-Secrets:
+
+- `NETCUP_FTP_HOST`
+- `NETCUP_FTP_USER`
+- `NETCUP_FTP_PASSWORD`
+
+Für eine sofortige Veröffentlichung kann Sanity unter **API → Webhooks** einen POST an `https://api.github.com/repos/thefastestcatintown/klangfonie.de/dispatches` senden. Der Request benötigt den JSON-Inhalt `{"event_type":"sanity-publish"}` sowie einen eigenen, nur für dieses Repository ausgestellten GitHub-Token im Header `Authorization: Bearer …`. Diesen Token nicht in Git oder in Sanity-Inhalte kopieren. Ohne diesen optionalen Webhook übernimmt der 15-Minuten-Zeitplan die Veröffentlichung.
 
 ## Vor dem Livegang
 
@@ -117,4 +153,4 @@ npm run check:seo
 
 `check:seo` prüft den letzten Build: eindeutige Metadaten, Überschriftenhierarchie, Bildbeschreibungen, interne Links und Sprungziele, Canonical/Sitemap-Konsistenz, JSON-LD, Indexierungsregeln und robots.txt. Ein alternatives Build-Verzeichnis kann als Argument übergeben werden. Die Tests veröffentlichen die Website nicht und melden keine Sitemap bei Suchmaschinen an.
 
-Für die Bestätigung einer URL-Präfix-Property in Google Search Console kann optional `PUBLIC_GOOGLE_SITE_VERIFICATION` lokal und als GitHub-Repository-Variable gesetzt werden. Nach Anschluss der endgültigen Domain muss `PUBLIC_SITE_URL` auf `https://klangfonie.de` und `PUBLIC_BASE_PATH` auf `/` gesetzt werden; anschließend wird `https://klangfonie.de/sitemap-index.xml` in der Search Console eingereicht.
+Für die Bestätigung einer URL-Präfix-Property in Google Search Console kann optional `PUBLIC_GOOGLE_SITE_VERIFICATION` lokal und als GitHub-Repository-Variable gesetzt werden. Nach Anschluss der endgültigen Domain muss `PUBLIC_SITE_URL` auf `https://klangfonia.de` und `PUBLIC_BASE_PATH` auf `/` gesetzt werden; anschließend wird `https://klangfonia.de/sitemap-index.xml` in der Search Console eingereicht.

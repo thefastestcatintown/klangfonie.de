@@ -4,9 +4,17 @@ export const event = defineType({
   name: 'event',
   title: 'Konzerte & Termine',
   type: 'document',
+  description: 'Ein Konzert oder einen anderen öffentlichen Termin anlegen.',
+  fieldsets: [
+    {
+      name: 'english',
+      title: 'Englische Übersetzungen',
+      options: { collapsible: true, collapsed: true },
+    },
+  ],
   fields: [
     defineField({ name: 'title', title: 'Titel', type: 'string', validation: (rule) => rule.required() }),
-    defineField({ name: 'titleEn', title: 'Titel (Englisch, optional)', type: 'string' }),
+    defineField({ name: 'titleEn', title: 'Titel', type: 'string', fieldset: 'english' }),
     defineField({ name: 'date', title: 'Beginn (Datum und Uhrzeit)', type: 'datetime', validation: (rule) => rule.required() }),
     defineField({
       name: 'endDate',
@@ -20,7 +28,7 @@ export const event = defineType({
         }),
     }),
     defineField({ name: 'location', title: 'Ort', type: 'string', validation: (rule) => rule.required() }),
-    defineField({ name: 'locationEn', title: 'Ort (Englisch, optional)', type: 'string' }),
+    defineField({ name: 'locationEn', title: 'Ort', type: 'string', fieldset: 'english' }),
     defineField({
       name: 'image',
       title: 'Veranstaltungsbild (optional)',
@@ -29,15 +37,20 @@ export const event = defineType({
       fields: [
         defineField({
           name: 'alt',
-          title: 'Bildbeschreibung',
+          title: 'Bildbeschreibung (Deutsch)',
           type: 'string',
           description: 'Kurz beschreiben, was auf dem Bild zu sehen ist.',
           validation: (rule) => rule.required(),
         }),
+        defineField({
+          name: 'altEn',
+          title: 'Bildbeschreibung (Englisch, optional)',
+          type: 'string',
+        }),
       ],
     }),
     defineField({ name: 'description', title: 'Beschreibung', type: 'text', rows: 4, validation: (rule) => rule.required() }),
-    defineField({ name: 'descriptionEn', title: 'Beschreibung (Englisch, optional)', type: 'text', rows: 4 }),
+    defineField({ name: 'descriptionEn', title: 'Beschreibung', type: 'text', rows: 4, fieldset: 'english' }),
     defineField({ name: 'externalUrl', title: 'Externer Link (optional)', type: 'url' }),
   ],
   orderings: [{ title: 'Datum', name: 'dateAsc', by: [{ field: 'date', direction: 'asc' }] }],

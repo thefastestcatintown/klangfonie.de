@@ -11,13 +11,14 @@ export const fallbackSettings: SiteSettings = {
 export const fallbackHome: HomePage = {
   heroEyebrow: 'DANIELA SCHNEIDER · HANDPAN · MUSIK',
   heroHeadline: 'Klang, der verbindet.',
-  heroText: 'Ich verbinde persönliche Lernbegleitung an der Handpan, Live-Musik und feinfühlige Klangbegleitung für Yoga, besondere Momente und Menschen, die selbst ins Spielen eintauchen möchten.',
+  heroText: 'Handpan entdecken, gemeinsam wachsen und Musik erleben – mit Daniela Schneider in Berlin.',
   primaryCtaLabel: 'Lernbegleitung entdecken',
   primaryCtaUrl: '/unterricht',
   secondaryCtaLabel: 'Musik hören',
   secondaryCtaUrl: '#musik',
-  introHeadline: 'Erst hören. Dann weiterlesen.',
-  introText: 'Die Handpan muss man eigentlich nicht erklären. Man muss sie hören.',
+  introHeadline: 'Handpan lernen und gemeinsam Musik erleben',
+  introText: 'Bei Klangfonia findest du einen persönlichen Zugang zur Handpan – unabhängig davon, ob du zum ersten Mal spielst oder deine musikalischen Ideen weiterentwickeln möchtest.',
+  introText2: 'Daniela Schneider begleitet dich im Einzelunterricht, in Workshops und beim gemeinsamen Spiel in der Handpan Big Band. Für Yoga, Retreats, Konzerte und besondere Anlässe kannst du sie außerdem als Live-Musikerin anfragen.',
 };
 
 export const fallbackServices: Service[] = [

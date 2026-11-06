@@ -21,10 +21,12 @@ const list = section?.querySelector<HTMLElement>('[data-events-list]');
 const projectId = section?.dataset.projectId || '';
 const dataset = section?.dataset.dataset || '';
 const language = section?.dataset.language === 'en' ? 'en' : 'de';
+const moreLabel = section?.dataset.moreLabel || (language === 'en' ? 'Find out more' : 'Mehr erfahren');
+const emptyLabel = section?.dataset.emptyLabel || (language === 'en' ? 'New concert dates will be published here.' : 'Neue Konzerttermine werden hier veröffentlicht.');
 
 if (section && list && /^[a-z0-9-]+$/.test(projectId) && /^[a-z0-9_-]+$/.test(dataset)) {
-  const query = '*[_type == "event" && date >= now()] | order(date asc){_id,title,titleEn,date,endDate,location,locationEn,description,descriptionEn,externalUrl,"imageUrl":image.asset->url,"imageAlt":coalesce(image.alt,title)}';
-  const endpoint = `https://${projectId}.apicdn.sanity.io/v2026-03-01/data/query/${dataset}?query=${encodeURIComponent(query)}`;
+  const query = '*[_type == "event" && date >= now()] | order(date asc){_id,title,titleEn,date,endDate,location,locationEn,description,descriptionEn,externalUrl,"imageUrl":image.asset->url,"imageAlt":select($language == "en" => coalesce(image.altEn,image.alt,titleEn,title), coalesce(image.alt,title))}';
+  const endpoint = `https://${projectId}.apicdn.sanity.io/v2026-03-01/data/query/${dataset}?query=${encodeURIComponent(query)}&$language=${encodeURIComponent(JSON.stringify(language))}`;
 
   fetch(endpoint)
     .then((response) => {
@@ -71,6 +73,7 @@ function createEvent(event: PublicEvent): HTMLElement {
         image.width = 640;
         image.height = 426;
         image.loading = 'lazy';
+        image.decoding = 'async';
         details.classList.add('has-image');
         details.append(image);
       }
@@ -97,7 +100,7 @@ function createEvent(event: PublicEvent): HTMLElement {
         link.href = externalUrl.href;
         link.target = '_blank';
         link.rel = 'noreferrer';
-        link.textContent = language === 'en' ? 'Find out more ↗' : 'Mehr erfahren ↗';
+        link.textContent = `${moreLabel} ↗`;
         article.append(link);
       }
     } catch {
@@ -111,7 +114,7 @@ function createEvent(event: PublicEvent): HTMLElement {
 function createEmptyState(): HTMLElement {
   const empty = document.createElement('p');
   empty.className = 'events-empty';
-  empty.textContent = language === 'en' ? 'New concert dates will be published here.' : 'Neue Konzerttermine werden hier veröffentlicht.';
+  empty.textContent = emptyLabel;
   return empty;
 }
 

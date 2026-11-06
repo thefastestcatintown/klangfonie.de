@@ -6,7 +6,8 @@ import Button from './Button.astro';
 import DecorativeHeading from './DecorativeHeading.astro';
 import RichText from './RichText.astro';
 import type { Service } from '../lib/types';
-import { imageUrl } from '../lib/sanity';
+import { getPageCopy, imageUrl } from '../lib/sanity';
+import { defaultsFor } from '../content/page-copy-defaults';
 import { localizePath, type Language } from '../lib/i18n';
 
 interface Props {
@@ -27,6 +28,7 @@ interface Props {
 const { service, title, contentHeading, intro, bullets, fallbackBody, closingBody = [], fallbackImage, fallbackImageAlt = service.title, note, ctaLabel, ctaUrl, lang = 'de' } = Astro.props;
 const image = imageUrl(service.image, 1200);
 const pageTitle = title || service.headline;
+const globalCopy = await getPageCopy('global', lang, defaultsFor('global', lang));
 ---
 <BaseLayout image={image} lang={lang}>
   <section class="page-hero">
@@ -38,13 +40,13 @@ const pageTitle = title || service.headline;
         {image ? <div class="feature-image"><img src={image} alt={lang === 'en' ? fallbackImageAlt : (service.image?.alt || service.title)} width="1200" /></div> : fallbackImage ? (
           <div class="feature-image"><Image src={fallbackImage} alt={fallbackImageAlt} width={1200} /></div>
         ) : (
-          <div class="image-placeholder"><span>{lang === 'en' ? 'An image can be added in Sanity Studio.' : 'Bild kann im Sanity Studio ergänzt werden.'}</span></div>
+          <div class="image-placeholder"><span>{globalCopy.imagePlaceholder}</span></div>
         )}
-        {(service.duration || service.priceInfo) && <div class="meta-row">{service.duration && <span class="meta-chip">{lang === 'en' ? 'Duration' : 'Dauer'}: {service.duration}</span>}{service.priceInfo && <span class="meta-chip">{service.priceInfo}</span>}</div>}
+        {(service.duration || service.priceInfo) && <div class="meta-row">{service.duration && <span class="meta-chip">{globalCopy.durationLabel}: {service.duration}</span>}{service.priceInfo && <span class="meta-chip">{service.priceInfo}</span>}</div>}
       </aside>
       <div>
         {contentHeading && <DecorativeHeading level="h2" text={contentHeading} />}
-        <RichText value={lang === 'en' ? undefined : service.body} fallback={fallbackBody} />
+        <RichText value={service.body} fallback={fallbackBody} />
         <ul class="service-list">{bullets.map((bullet) => <li>{bullet}</li>)}</ul>
         {closingBody.length > 0 && <div class="prose closing-copy">{closingBody.map((paragraph) => <p>{paragraph}</p>)}</div>}
         {note && <p class="highlight">{note}</p>}

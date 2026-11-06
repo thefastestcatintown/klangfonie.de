@@ -1,20 +1,15 @@
 ---
 import type { Video } from '../lib/types';
+import { getPageCopy } from '../lib/sanity';
+import { defaultsFor } from '../content/page-copy-defaults';
 import { youtubeEmbedUrl } from '../lib/youtube';
 import { languageFromPath, localizePath, type Language } from '../lib/i18n';
 import DecorativeHeading from './DecorativeHeading.astro';
 interface Props { video: Video | null; headline?: string; text: string; lang?: Language; }
 const { video, headline, text, lang = languageFromPath(Astro.url.pathname) } = Astro.props;
 const embedUrl = youtubeEmbedUrl(video?.youtubeUrl);
-const copy = lang === 'en'
-  ? {
-      consent: 'By loading the video, you agree that a connection to YouTube may be established and data may be transferred to Google.',
-      load: 'Load video from YouTube', privacy: 'More about privacy', placeholder: 'Klangfonia will soon be heard here.', studio: 'The video can be added in Sanity Studio.',
-    }
-  : {
-      consent: 'Mit dem Laden des Videos stimmst du zu, dass eine Verbindung zu YouTube hergestellt und Daten an Google übertragen werden können.',
-      load: 'Video von YouTube laden', privacy: 'Mehr zum Datenschutz', placeholder: 'Hier klingt bald Klangfonia.', studio: 'Video lässt sich im Sanity Studio hinterlegen.',
-    };
+const globalCopy = await getPageCopy('global', lang, defaultsFor('global', lang));
+const copy = { consent: globalCopy.videoConsent, load: globalCopy.videoLoad, privacy: globalCopy.videoPrivacy, placeholder: globalCopy.videoPlaceholder, studio: globalCopy.videoStudio };
 ---
 <section class="section video-section" id="musik">
   <div class="container">

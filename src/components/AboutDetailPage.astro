@@ -1,11 +1,13 @@
 ---
 import { Image, getImage } from 'astro:assets';
-import profil2 from '../assets/images/profil2.png';
+import profil2 from '../assets/images/originals/profil2.png';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import DecorativeHeading from './DecorativeHeading.astro';
 import { contentPath, localizePath, type Language } from '../lib/i18n';
 import { navigationFor } from '../lib/navigation';
 import '../styles/coaching.css';
+import { getPageCopy } from '../lib/sanity';
+import { defaultsFor } from '../content/page-copy-defaults';
 
 interface Milestone {
   year?: string;
@@ -24,7 +26,8 @@ const { title, paragraphs, milestones = [], lang = 'de' } = Astro.props;
 const current = contentPath(Astro.url.pathname);
 const { aboutLinks } = navigationFor(lang);
 const portrait = await getImage({ src: profil2, width: 1200, format: 'webp' });
-const portraitAlt = lang === 'en' ? 'Daniela Schneider playing a handpan beneath a tree' : 'Daniela Schneider spielt Handpan unter einem Baum';
+const globalCopy = await getPageCopy('global', lang, defaultsFor('global', lang));
+const portraitAlt = globalCopy.aboutImageAlt;
 ---
 <BaseLayout image={portrait.src} lang={lang}>
   <section class="page-hero about-hero">
@@ -40,7 +43,7 @@ const portraitAlt = lang === 'en' ? 'Daniela Schneider playing a handpan beneath
   <section class="section">
     <div class="container rich-layout">
       <div class="portrait">
-        <Image src={profil2} alt={portraitAlt} widths={[480, 800, 1200, 1662]} sizes="(min-width: 84rem) 505px, (min-width: 48rem) 42vw, calc(100vw - 2rem)" />
+        <Image src={profil2} alt={portraitAlt} width={1200} widths={[480, 800, 1200]} sizes="(min-width: 84rem) 505px, (min-width: 48rem) 42vw, calc(100vw - 2rem)" format="webp" quality={72} />
       </div>
       <div>
         <div class="prose">{paragraphs.map((paragraph) => <p>{paragraph}</p>)}</div>

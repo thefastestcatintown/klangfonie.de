@@ -2,9 +2,10 @@
 import { getImage } from 'astro:assets';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import profil1 from '../assets/images/profil1.png';
-import handpanLogo from '../assets/images/logo-transparent.png';
-import { getSettings } from '../lib/sanity';
+import profil1 from '../assets/images/originals/profil1.png';
+import handpanLogo from '../assets/images/originals/logo-transparent.png';
+import { getPageCopy, getSettings } from '../lib/sanity';
+import { defaultsFor } from '../content/page-copy-defaults';
 import { withBase, canonicalUrl } from '../lib/urls';
 import { contentPath, languageFromPath, languageRoute, type Language } from '../lib/i18n';
 import { brandName, pageMetadata, pageMetadataEn, serializeJsonLd, structuredData } from '../lib/seo';
@@ -13,19 +14,19 @@ import '../styles/global.css';
 
 interface Props { title?: string; description?: string; image?: string; noindex?: boolean; lang?: Language; }
 const settings = await getSettings();
-const defaultSocialImage = await getImage({ src: profil1, width: 1200, height: 630, fit: 'cover', position: 'center', format: 'webp', quality: 85 });
+const defaultSocialImage = await getImage({ src: profil1, width: 1200, height: 630, fit: 'cover', position: 'center', format: 'webp', quality: 78 });
 const favicon = await getImage({ src: handpanLogo, width: 96, height: 96, fit: 'contain', format: 'png' });
 const language = Astro.props.lang ?? languageFromPath(Astro.url.pathname);
 const route = contentPath(Astro.url.pathname);
 const metadata = (language === 'en' ? pageMetadataEn : pageMetadata)[route];
-const defaultTitle = settings.defaultSeoTitle.replaceAll('Klangfonie', brandName);
+const defaultTitle = settings.defaultSeoTitle.replaceAll(/Klangfoni[ea]/g, brandName);
 const {
   title = metadata?.title ?? defaultTitle,
   description = metadata?.description ?? settings.defaultSeoDescription,
   image = defaultSocialImage.src,
   noindex = false,
 } = Astro.props;
-const site = Astro.site ?? new URL('https://klangfonie.de');
+const site = Astro.site ?? new URL('https://klangfonia.de');
 const canonical = canonicalUrl(Astro.url.pathname, site);
 const germanCanonical = canonicalUrl(languageRoute(route, 'de'), site);
 const englishCanonical = canonicalUrl(languageRoute(route, 'en'), site);
@@ -33,7 +34,8 @@ const ogImage = new URL(withBase(image), site).href;
 const schema = structuredData({ canonical, home: canonicalUrl(languageRoute('/', language), site), about: canonicalUrl(languageRoute('/ueber-daniela/intention', language), site), image: ogImage, title, description, route, settings, language });
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION?.trim();
 const socialImageAlt = language === 'en' ? 'Daniela Schneider – handpan, coaching and music' : 'Daniela Schneider – Handpan, Coaching und Musik';
-const skipLabel = language === 'en' ? 'Skip to content' : 'Zum Inhalt springen';
+const globalCopy = await getPageCopy('global', language, defaultsFor('global', language));
+const skipLabel = globalCopy.skipLabel;
 
 ---
 <!doctype html>

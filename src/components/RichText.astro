@@ -1,9 +1,10 @@
 ---
 import { PortableText } from 'astro-portabletext';
 import type { PortableTextBlock } from '@portabletext/types';
-interface Props { value?: PortableTextBlock[]; fallback?: string[]; }
-const { value = [], fallback = [] } = Astro.props;
+interface Props { value?: PortableTextBlock[] | null; fallback?: string[]; }
+const { value, fallback = [] } = Astro.props;
+const blocks = Array.isArray(value) ? value : [];
 ---
 <div class="prose">
-  {value.length > 0 ? <PortableText value={value} /> : fallback.map((paragraph) => <p>{paragraph}</p>)}
+  {blocks.length > 0 ? <PortableText value={blocks} /> : fallback.map((paragraph) => <p>{paragraph}</p>)}
 </div>

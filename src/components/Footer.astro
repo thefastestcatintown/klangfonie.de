@@ -1,28 +1,35 @@
 ---
 import { getImage } from 'astro:assets';
-import footerLogo from '../assets/images/logo-footer-transparent.png';
+import footerLogo from '../assets/images/originals/logo-footer-transparent.png';
 import type { SiteSettings } from '../lib/types';
 import { languageFromPath, localizePath } from '../lib/i18n';
 import { navigationFor } from '../lib/navigation';
+import { getPageCopy } from '../lib/sanity';
+import { defaultsFor } from '../content/page-copy-defaults';
 interface Props { settings: SiteSettings; }
 const { settings } = Astro.props;
 const language = languageFromPath(Astro.url.pathname);
-const { footerLinks } = navigationFor(language);
-const copy = language === 'en'
-  ? { home: 'Klangfonia – Home', logo: 'Klangfonia – Daniela Schneider, handpan music', legal: 'Legal notice', privacy: 'Privacy' }
-  : { home: 'Klangfonia – Startseite', logo: 'Klangfonia – Daniela Schneider, Handpan-Musik', legal: 'Impressum', privacy: 'Datenschutz' };
+const copy = await getPageCopy('global', language, defaultsFor('global', language));
+const labels: Record<string, string> = {
+  '/unterricht': copy.coachingLabel, '/yoga': copy.navRetreats, '/live': copy.navMusic,
+  '/ueber-daniela/intention': copy.navAbout, '/#termine': copy.navEvents, '/kontakt': copy.navContact,
+};
+const footerLinks = navigationFor(language).footerLinks.map((item) => ({ ...item, label: labels[item.href] || item.label }));
 const year = new Date().getFullYear();
 const hasContact = Boolean(settings.phone);
 const footerColumns = 1 + Number(hasContact);
-const socials = ['Instagram', 'YouTube'];
+const socials = [
+  { label: 'Instagram', url: settings.instagram },
+  { label: 'YouTube', url: settings.youtube },
+].filter((social): social is { label: string; url: string } => Boolean(social.url));
 const optimizedFooterLogo = await getImage({ src: footerLogo, width: 480, format: 'webp', quality: 82 });
 ---
 <footer class="footer">
   <div class="container footer-grid" style={`--footer-columns: ${footerColumns}`}>
     <div>
-      <a class="footer-brand" href={localizePath('/', language)} aria-label={copy.home}>
+      <a class="footer-brand" href={localizePath('/', language)} aria-label={copy.homeLabel}>
         <svg class="footer-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1262 1065" role="img" aria-labelledby="footer-logo-title">
-          <title id="footer-logo-title">{copy.logo}</title>
+          <title id="footer-logo-title">{copy.logoAlt}</title>
           <image href={optimizedFooterLogo.src} width="1477" height="1065" />
         </svg>
       </a>
@@ -34,12 +41,12 @@ const optimizedFooterLogo = await getImage({ src: footerLogo, width: 480, format
       {footerLinks.map((item) => <a href={localizePath(item.href, language)}>{item.label}</a>)}
     </div>
   </div>
-  <div class="container footer-bottom">
-    <div class="footer-socials" role="group" aria-label="Social Media">
+  <div class:list={['container', 'footer-bottom', { 'footer-bottom--without-socials': socials.length === 0 }]}>
+    {socials.length > 0 && <div class="footer-socials" role="group" aria-label="Social Media">
       {socials.map((social) => (
-          <span class="social-icon" role="img" aria-label={social} title={social}>
+          <a class="social-icon" href={social.url} target="_blank" rel="noreferrer" aria-label={social.label} title={social.label}>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-              {social === 'Instagram' ? (
+              {social.label === 'Instagram' ? (
                 <>
                   <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.7" />
                   <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7" />
@@ -52,11 +59,11 @@ const optimizedFooterLogo = await getImage({ src: footerLogo, width: 480, format
                 </>
               )}
             </svg>
-          </span>
+          </a>
       ))}
-    </div>
+    </div>}
     <span>© {year} Klangfonia</span>
-    <div class="footer-legal"><a href={localizePath('/impressum', language)}>{copy.legal}</a><a href={localizePath('/datenschutz', language)}>{copy.privacy}</a></div>
+    <div class="footer-legal"><a href={localizePath('/impressum', language)}>{copy.legalLabel}</a><a href={localizePath('/datenschutz', language)}>{copy.privacyLabel}</a></div>
   </div>
 </footer>
 
@@ -72,6 +79,7 @@ const optimizedFooterLogo = await getImage({ src: footerLogo, width: 480, format
   .footer-socials { display: flex; align-items: center; justify-content: flex-start; gap: 0.75rem; padding: 0; border: 0; background: transparent; }
   .social-icon { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; color: var(--color-ink); }
   .footer-bottom { display: grid; grid-template-columns: 1fr auto 1fr; margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid rgb(38 53 47 / 0.2); align-items: center; justify-content: space-between; gap: 1rem; font-size: 0.8rem; }
+  .footer-bottom--without-socials { grid-template-columns: 1fr auto; }
   .footer-legal { display: flex; justify-content: flex-end; gap: 1.25rem; }
   .footer-contact { gap: 0.5rem; }
   @media (min-width: 60rem) {

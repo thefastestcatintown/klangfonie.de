@@ -3,91 +3,58 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
 import DecorativeHeading from '../components/DecorativeHeading.astro';
 import { localizePath, type Language } from '../lib/i18n';
+import { copyList, getPageCopy } from '../lib/sanity';
+import { defaultsFor } from '../content/page-copy-defaults';
 
 interface Props { lang?: Language; }
 const { lang = 'de' } = Astro.props;
-const english = lang === 'en';
 const contactHref = localizePath('/kontakt?interesse=unterricht', lang);
+const copy = await getPageCopy('self-assessment', lang, defaultsFor('self-assessment', lang));
+const questions = [copy.q1, copy.q2, copy.q3, copy.q4, copy.q5].map(copyList);
+const levels = [copy.level1, copy.level2, copy.level3].map(copyList);
 ---
 
 <BaseLayout lang={lang}>
   <section class="page-hero">
     <div class="container page-hero__inner">
-      <p class="eyebrow">{english ? 'A SHORT SELF-ASSESSMENT' : 'KURZE SELBSTEINSCHÄTZUNG'}</p>
-      <DecorativeHeading level="h1" class="page-title" text={english ? 'Where are you with the handpan?' : 'Wo stehst du mit der Handpan?'} />
-      <p class="lead">{english ? 'Answer five questions about your experience and feel for the instrument. This is a first orientation, not a test.' : 'Beantworte fünf Fragen zu deiner Erfahrung und deinem Spielgefühl. Die Auswertung gibt dir eine erste Orientierung – sie ist kein Test.'}</p>
+      <p class="eyebrow">{copy.eyebrow}</p>
+      <DecorativeHeading level="h1" class="page-title" text={copy.title} />
+      <p class="lead">{copy.intro}</p>
     </div>
   </section>
 
   <section class="section">
     <div class="container--small">
-      <form class="level-form" id="level-form">
-        <fieldset>
-          <legend>{english ? '1. How much experience do you have playing the handpan?' : '1. Wie viel Erfahrung hast du mit dem Handpan-Spielen?'}</legend>
-          <label><input type="radio" name="q1" value="0" required /> {english ? 'I am new to it or have not played yet.' : 'Ich fange gerade erst an oder habe noch nicht gespielt.'}</label>
-          <label><input type="radio" name="q1" value="1" /> {english ? 'I have tried it a few times or have been playing for a short while.' : 'Ich habe es ein paar Mal ausprobiert oder spiele noch nicht lange.'}</label>
-          <label><input type="radio" name="q1" value="2" /> {english ? 'I have been playing regularly for some time.' : 'Ich spiele schon länger regelmäßig.'}</label>
-        </fieldset>
-        <fieldset>
-          <legend>{english ? '2. How comfortable are you with producing a clear, relaxed tone?' : '2. Wie sicher fühlst du dich dabei, einen klaren, entspannten Klang zu erzeugen?'}</legend>
-          <label><input type="radio" name="q2" value="0" required /> {english ? 'I am still finding my touch.' : 'Ich suche noch nach meinem Anschlag.'}</label>
-          <label><input type="radio" name="q2" value="1" /> {english ? 'I can do it sometimes, with concentration.' : 'Mit Konzentration gelingt es mir manchmal.'}</label>
-          <label><input type="radio" name="q2" value="2" /> {english ? 'I can usually play with a controlled, clear tone.' : 'Meistens gelingt mir ein kontrollierter, klarer Klang.'}</label>
-        </fieldset>
-        <fieldset>
-          <legend>{english ? '3. How does keeping a steady pulse while playing a simple pattern feel?' : '3. Wie gut gelingt es dir, einen gleichmäßigen Puls zu halten und ein einfaches Pattern zu spielen?'}</legend>
-          <label><input type="radio" name="q3" value="0" required /> {english ? 'I am not there yet.' : 'Das gelingt mir noch nicht.'}</label>
-          <label><input type="radio" name="q3" value="1" /> {english ? 'Slowly and with focus, I can manage it.' : 'Langsam und konzentriert klappt es.'}</label>
-          <label><input type="radio" name="q3" value="2" /> {english ? 'I can keep it steady and feel the groove.' : 'Ich kann den Puls halten und finde in den Groove.'}</label>
-        </fieldset>
-        <fieldset>
-          <legend>{english ? '4. What is your experience with changing or combining patterns?' : '4. Welche Erfahrung hast du mit Variationen und Übergängen zwischen Patterns?'}</legend>
-          <label><input type="radio" name="q4" value="0" required /> {english ? 'I am focused on learning my first patterns.' : 'Ich konzentriere mich gerade auf meine ersten Patterns.'}</label>
-          <label><input type="radio" name="q4" value="1" /> {english ? 'I can make a few changes or transitions.' : 'Einzelne Variationen oder Übergänge gelingen mir.'}</label>
-          <label><input type="radio" name="q4" value="2" /> {english ? 'I combine patterns and shape them in different ways.' : 'Ich kombiniere Patterns und gestalte sie unterschiedlich.'}</label>
-        </fieldset>
-        <fieldset>
-          <legend>{english ? '5. How often do you explore freely or improvise?' : '5. Wie oft spielst du frei oder improvisierst?'}</legend>
-          <label><input type="radio" name="q5" value="0" required /> {english ? 'I have not really tried that yet.' : 'Das habe ich bisher kaum ausprobiert.'}</label>
-          <label><input type="radio" name="q5" value="1" /> {english ? 'Sometimes, with a little support or inspiration.' : 'Manchmal, mit etwas Unterstützung oder Inspiration.'}</label>
-          <label><input type="radio" name="q5" value="2" /> {english ? 'Often; I enjoy developing my own ideas.' : 'Oft; ich entwickle gerne eigene Ideen.'}</label>
-        </fieldset>
+      <form class="level-form" id="level-form" data-levels={JSON.stringify(levels)}>
+        {questions.map((question, index) => <fieldset>
+          <legend>{question[0]}</legend>
+          {question.slice(1).map((answer, answerIndex) => <label><input type="radio" name={`q${index + 1}`} value={answerIndex} required={answerIndex === 0} /> {answer}</label>)}
+        </fieldset>)}
 
-        <button class="button button--primary submit-button" type="submit">{english ? 'Show my orientation' : 'Meine Orientierung anzeigen'} <span aria-hidden="true">↗</span></button>
+        <button class="button button--primary submit-button" type="submit">{copy.submit} <span aria-hidden="true">↗</span></button>
       </form>
 
       <section class="result" id="level-result" aria-live="polite" aria-atomic="true" hidden>
-        <p class="result-eyebrow">{english ? 'YOUR FIRST ORIENTATION' : 'DEINE ERSTE ORIENTIERUNG'}</p>
-        <h2 id="result-title"></h2>
+        <p class="result-eyebrow">{copy.resultEyebrow}</p>
+        <h2 id="result-title">{copy.resultTitle}</h2>
         <p id="result-copy"></p>
-        <p class="result-note">{english ? 'Your level is not a fixed category. The result is only a starting point for a conversation about what you want to learn next.' : 'Dein Level ist keine feste Schublade. Das Ergebnis ist ein Ausgangspunkt, um gemeinsam herauszufinden, was du als Nächstes lernen möchtest.'}</p>
-        <Button href={contactHref} variant="secondary">{english ? 'Talk about your next step' : 'Über deinen nächsten Schritt sprechen'}</Button>
+        <p class="result-note">{copy.resultNote}</p>
+        <Button href={contactHref} variant="secondary">{copy.resultCta}</Button>
       </section>
     </div>
   </section>
-</BaseLayout>
-
 <script>
   const form = document.querySelector<HTMLFormElement>('#level-form');
   const result = document.querySelector<HTMLElement>('#level-result');
   const title = document.querySelector<HTMLElement>('#result-title');
   const copy = document.querySelector<HTMLElement>('#result-copy');
-  const english = document.documentElement.lang === 'en';
 
   form?.addEventListener('submit', (event) => {
     event.preventDefault();
     if (!form.reportValidity() || !result || !title || !copy) return;
     const score = [...new FormData(form).values()].reduce((sum, value) => sum + Number(value), 0);
     const level = score <= 3 ? 0 : score <= 7 ? 1 : 2;
-    const levels = english ? [
-      ['Starting out', 'You are at the beginning of your handpan journey. A calm introduction to touch, sound and simple rhythms could be a good next step.'],
-      ['Building confidence', 'You already have some foundations and are developing your rhythm, patterns and transitions. Focused practice can help your playing feel more settled and expressive.'],
-      ['Developing your own voice', 'You have a solid playing foundation and are exploring variations, improvisation or your own musical ideas. Individual feedback can help you take those ideas further.'],
-    ] : [
-      ['Einsteiger', 'Du stehst am Anfang deiner Handpan-Reise. Ein ruhiger Einstieg in Anschlag, Klang und einfache Rhythmen könnte ein guter nächster Schritt sein.'],
-      ['Im Aufbau', 'Du bringst schon Grundlagen mit und entwickelst Rhythmus, Patterns und Übergänge weiter. Gezielte Impulse können deinem Spiel mehr Sicherheit und Ausdruck geben.'],
-      ['Fortgeschritten', 'Du hast eine solide Spielbasis und erkundest Variationen, Improvisation oder eigene musikalische Ideen. Individuelles Feedback kann dir helfen, diese weiterzuentwickeln.'],
-    ];
+    const levels = JSON.parse(form.dataset.levels || '[]');
     title.textContent = levels[level][0];
     copy.textContent = levels[level][1];
     result.hidden = false;
@@ -114,3 +81,4 @@ const contactHref = localizePath('/kontakt?interesse=unterricht', lang);
     .submit-button { width: 100%; }
   }
 </style>
+</BaseLayout>

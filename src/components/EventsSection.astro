@@ -1,15 +1,18 @@
 ---
-import { getEvents, imageUrl } from '../lib/sanity';
+import { getEvents, getPageCopy, imageSrcSet, imageUrl } from '../lib/sanity';
 import { formatEventDate } from '../lib/dates';
 import DecorativeHeading from './DecorativeHeading.astro';
 import { languageFromPath } from '../lib/i18n';
 import { localizeEvent } from '../lib/event-translations';
+import { defaultsFor } from '../content/page-copy-defaults';
+interface Props { heading?: string; }
+const { heading } = Astro.props;
 const rawEvents = await getEvents();
 const language = languageFromPath(Astro.url.pathname);
 const events = rawEvents.map((event) => localizeEvent(event, language));
-const copy = language === 'en'
-  ? { heading: 'Concerts & events', more: 'Find out more', empty: 'New concert dates will be published here.' }
-  : { heading: 'Konzerte & Termine', more: 'Mehr erfahren', empty: 'Neue Konzerttermine werden hier veröffentlicht.' };
+const globalCopy = await getPageCopy('global', language, defaultsFor('global', language));
+const copy = { heading: language === 'en' ? 'Concerts & events' : 'Konzerte & Termine', more: globalCopy.eventMore, empty: globalCopy.eventEmpty };
+if (heading) copy.heading = heading;
 const sanityProjectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID;
 const sanityDataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
 
@@ -21,17 +24,21 @@ const sanityDataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
     data-project-id={sanityProjectId}
     data-dataset={sanityDataset}
     data-language={language}
+    data-more-label={copy.more}
+    data-empty-label={copy.empty}
   >
     <div class="container">
       <DecorativeHeading level="h2" class="page-title" text={copy.heading} />
       <div class="events" data-events-list aria-live="polite">
         {events.length > 0 ? events.map((event) => {
           const eventImage = imageUrl(event.image, 640, 426);
+          const eventImageSrcSet = imageSrcSet(event.image, [480, 640, 960], 2 / 3);
+          const eventImageAlt = language === 'en' ? (event.image?.altEn || event.image?.alt || event.title) : (event.image?.alt || event.title);
           return (
             <article>
               <time datetime={event.date}>{formatEventDate(event.date, event.endDate, language)}</time>
               <div class:list={['event-details', { 'has-image': eventImage }]}>
-                {eventImage && <img class="event-image" src={eventImage} alt={event.image?.alt || event.title} width="640" height="426" loading="lazy" />}
+                {eventImage && <img class="event-image" src={eventImage} srcset={eventImageSrcSet} sizes="(min-width: 48rem) 240px, 100vw" alt={eventImageAlt} width="640" height="426" loading="lazy" decoding="async" />}
                 <div>
                   <h3>{event.title}</h3>
                   <p class="event-location">{event.location}</p>

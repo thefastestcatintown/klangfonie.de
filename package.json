@@ -1,5 +1,5 @@
 {
-  "name": "klangfonie-de",
+  "name": "klangfonia-de",
   "type": "module",
   "version": "0.1.0",
   "private": true,
@@ -13,32 +13,35 @@
     "check:seo": "node --experimental-strip-types scripts/check-seo.mjs"
   },
   "dependencies": {
-    "@astrojs/react": "^6.0.2",
-    "@astrojs/sitemap": "^3.7.3",
+    "@astrojs/react": "^6.0.6",
+    "@astrojs/sitemap": "^3.7.4",
     "@fontsource/great-vibes": "^5.3.0",
     "@portabletext/types": "^4.0.2",
-    "@sanity/astro": "^3.5.0",
+    "@sanity/astro": "^3.6.0",
+    "@sanity/client": "^8.14.1",
     "@sanity/image-url": "^2.1.1",
     "@sanity/ui": "^4.0.3",
-    "astro": "^7.2.2",
+    "astro": "^7.4.7",
     "astro-portabletext": "^0.13.0",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "sanity": "^6.9.2"
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-is": "^19.3.1",
+    "sanity": "^6.22.0",
+    "styled-components": "^6.6.0"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.10",
+    "@astrojs/check": "^0.9.12",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "typescript": "^6.0.3"
   },
   "overrides": {
     "@module-federation/dts-plugin": {
-      "undici": "7.29.0"
+      "undici": "7.30.1"
     },
     "@vercel/frameworks": {
-      "js-yaml": "5.3.0",
-      "smol-toml": "1.6.1"
+      "js-yaml": "5.5.0",
+      "smol-toml": "1.9.1"
     },
     "typeid-js": {
       "uuid": "11.1.1"

@@ -2,6 +2,7 @@ import { aboutPage } from './aboutPage';
 import { blockContent } from './blockContent';
 import { event } from './event';
 import { homePage } from './homePage';
+import { pageCopy } from './pageCopy';
 import { service } from './service';
 import { siteSettings } from './siteSettings';
 import { testimonial } from './testimonial';
@@ -11,6 +12,7 @@ export const schemaTypes = [
   blockContent,
   siteSettings,
   homePage,
+  pageCopy,
   aboutPage,
   service,
   testimonial,

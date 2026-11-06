@@ -2,8 +2,9 @@ import { defineField, defineType } from 'sanity';
 
 export const siteSettings = defineType({
   name: 'siteSettings',
-  title: 'Website-Einstellungen',
+  title: 'Kontaktdaten & Suchmaschinen',
   type: 'document',
+  description: 'Diese Angaben gelten für die gesamte Website und werden nur selten geändert.',
   fields: [
     defineField({ name: 'siteTitle', title: 'Name der Website', type: 'string', validation: (rule) => rule.required() }),
     defineField({ name: 'defaultSeoTitle', title: 'Standardtitel für Suchmaschinen', type: 'string', validation: (rule) => rule.required() }),

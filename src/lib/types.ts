@@ -1,6 +1,7 @@
 export interface SanityImage {
   asset?: { _ref?: string; _type?: string };
   alt?: string;
+  altEn?: string;
   hotspot?: { x: number; y: number; height: number; width: number };
   crop?: { top: number; bottom: number; left: number; right: number };
 }
@@ -19,29 +20,50 @@ export interface SiteSettings {
 export interface HomePage {
   heroEyebrow: string;
   heroHeadline: string;
+  heroHeadlineEn?: string;
   heroText: string;
+  heroTextEn?: string;
   heroImage?: SanityImage;
   heroVideoUrl?: string;
   primaryCtaLabel: string;
+  primaryCtaLabelEn?: string;
   primaryCtaUrl: string;
   secondaryCtaLabel: string;
+  secondaryCtaLabelEn?: string;
   secondaryCtaUrl: string;
   introHeadline: string;
+  introHeadlineEn?: string;
   introText: string;
+  introTextEn?: string;
+  introText2?: string;
+  introText2En?: string;
+  testimonialsHeadline?: string;
+  testimonialsHeadlineEn?: string;
+  testimonialsText?: string;
+  testimonialsTextEn?: string;
+  eventsHeadline?: string;
+  eventsHeadlineEn?: string;
 }
 
 export interface Service {
   _id?: string;
   title: string;
+  titleEn?: string;
   slug: string;
   category: 'Unterricht' | 'Yoga' | 'Live' | 'Band';
   shortDescription: string;
+  shortDescriptionEn?: string;
   headline: string;
+  headlineEn?: string;
   body?: PortableTextBlock[];
+  bodyEn?: PortableTextBlock[];
   image?: SanityImage;
   priceInfo?: string;
+  priceInfoEn?: string;
   duration?: string;
+  durationEn?: string;
   ctaLabel: string;
+  ctaLabelEn?: string;
   ctaUrl: string;
   sortOrder: number;
 }
@@ -70,7 +92,7 @@ export interface AboutPage {
   intro: string;
   portrait?: SanityImage;
   body?: PortableTextBlock[];
-  milestones?: Array<{ year?: string; text: string; details?: string[] }>;
+  milestones?: Array<{ year?: string; yearEn?: string; text: string; textEn?: string; details?: string[]; detailsEn?: string[] }>;
 }
 
 export interface Event {

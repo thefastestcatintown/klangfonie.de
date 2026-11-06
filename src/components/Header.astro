@@ -4,34 +4,39 @@ import LanguageSwitcher from './LanguageSwitcher.astro';
 import { contentPath, languageFromPath, localizePath } from '../lib/i18n';
 
 import { navigationFor } from '../lib/navigation';
+import { getPageCopy } from '../lib/sanity';
+import { defaultsFor } from '../content/page-copy-defaults';
 const language = languageFromPath(Astro.url.pathname);
 const pathname = contentPath(Astro.url.pathname);
 const items = navigationFor(language);
-const coachingLinks = items.coachingLinks.map((item) => ({ ...item, href: localizePath(item.href, language) }));
-const aboutLinks = items.aboutLinks.map((item) => ({ ...item, href: localizePath(item.href, language) }));
-const navigation = items.navigationLinks.map((item) => ({ ...item, href: localizePath(item.href, language) }));
-const copy = language === 'en'
-  ? { home: 'Klangfonia – Home', openMenu: 'Open menu', mainNav: 'Main navigation', about: 'About me' }
-  : { home: 'Klangfonia – Startseite', openMenu: 'Menü öffnen', mainNav: 'Hauptnavigation', about: 'Über mich' };
+const copy = await getPageCopy('global', language, defaultsFor('global', language));
+const labels: Record<string, string> = {
+  '/unterricht': copy.coachingLessons, '/ensemble': copy.coachingBand, '/workshops': copy.coachingWorkshops,
+  '/yoga': copy.navRetreats, '/live': copy.navMusic, '/ueber-daniela/intention': copy.navAbout, '/#termine': copy.navEvents,
+  '/ueber-daniela/geschichte': copy.aboutStory,
+};
+const coachingLinks = items.coachingLinks.map((item) => ({ ...item, label: labels[item.href] || item.label, href: localizePath(item.href, language) }));
+const aboutLinks = items.aboutLinks.map((item) => ({ ...item, label: labels[item.href] || (item.href.endsWith('intention') ? copy.aboutIntention : item.label), href: localizePath(item.href, language) }));
+const navigation = items.navigationLinks.map((item) => ({ ...item, label: labels[item.href] || item.label, href: localizePath(item.href, language) }));
 ---
 <header class="site-header" data-header>
   <div class="header-inner container">
-    <a class="brand" href={localizePath('/', language)} aria-label={copy.home}>
+    <a class="brand" href={localizePath('/', language)} aria-label={copy.homeLabel}>
       <BrandLogo />
     </a>
     <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-navigation" data-menu-button>
-      <span class="sr-only">{copy.openMenu}</span><i></i><i></i>
+      <span class="sr-only">{copy.menuLabel}</span><i></i><i></i>
     </button>
-    <nav class="navigation" id="main-navigation" aria-label={copy.mainNav} data-navigation>
+    <nav class="navigation" id="main-navigation" aria-label={copy.navigationLabel} data-navigation>
       <details class:list={['dropdown-menu', { 'is-current': coachingLinks.some((item) => pathname === contentPath(item.href)) }]} data-submenu>
-        <summary>Coaching</summary>
+        <summary>{copy.coachingLabel}</summary>
         <ul class="submenu">
           {coachingLinks.map((item) => <li><a href={item.href} aria-current={pathname === contentPath(item.href) ? 'page' : undefined}>{item.label}</a></li>)}
         </ul>
       </details>
       {navigation.map((item) => item.href.includes('/ueber-daniela/') ? (
         <details class:list={['dropdown-menu', 'dropdown-menu--about', { 'is-current': pathname.startsWith('/ueber-daniela') }]} data-submenu>
-          <summary>{copy.about}</summary>
+          <summary>{copy.aboutLabel}</summary>
           <ul class="submenu">
             {aboutLinks.map((aboutItem) => <li><a href={aboutItem.href} aria-current={pathname === contentPath(aboutItem.href) ? 'page' : undefined}>{aboutItem.label}</a></li>)}
           </ul>

@@ -3,49 +3,47 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CoachingHero from '../components/CoachingHero.astro';
 import Button from '../components/Button.astro';
-import DecorativeHeading from '../components/DecorativeHeading.astro';
 import '../styles/coaching.css';
-import learningImage from '../assets/images/sample-learning-guidance.png';
-import { getService, imageUrl } from '../lib/sanity';
+import learningImage from '../assets/images/originals/sample-learning-guidance.png';
+import { copyList, copyParagraphs, getPageCopy, getService, imageUrl, localizeService } from '../lib/sanity';
+import { defaultsFor } from '../content/page-copy-defaults';
 import { localizePath, type Language } from '../lib/i18n';
 interface Props { lang?: Language; }
 const { lang = 'de' } = Astro.props;
-const english = lang === 'en';
-const service = await getService('Unterricht');
+const service = localizeService(await getService('Unterricht'), lang);
+const copy = await getPageCopy('unterricht', lang, defaultsFor('unterricht', lang));
 const image = imageUrl(service.image, 1200);
 ---
 
 <BaseLayout image={image} lang={lang}>
   <div class="coaching-page">
-  <CoachingHero lang={lang} title={english ? 'One-to-one handpan guidance' : 'Lernbegleitung 1:1'} intro={english ? 'Learn the handpan at your own pace, with space for the ideas and wishes that suit you. Personal guidance for beginners and advanced players.' : 'Handpan lernen – in deinem Tempo und mit Raum für Ideen und Wünsche, die dir entsprechen. Persönliche Lernbegleitung für Anfänger und Fortgeschrittene.'} />
+  <CoachingHero lang={lang} title={copy.title} intro={copy.intro} />
 
   <section class="section" id="einzelbegleitung">
     <div class="container rich-layout">
       <aside>
         {image ? (
-          <div class="feature-image"><img src={image} alt={english ? 'Personal handpan guidance with Daniela Schneider' : (service.image?.alt || service.title)} width="1200" /></div>
+          <div class="feature-image"><img src={image} alt={service.image?.alt || copy.imageAlt} width="1200" /></div>
         ) : (
-          <div class="feature-image"><Image src={learningImage} alt={english ? 'Personal guidance on a copper-coloured handpan' : 'Persönliche Lernbegleitung an einer kupferfarbenen Handpan'} width={1200} /></div>
+          <div class="feature-image"><Image src={learningImage} alt={copy.imageAlt} width={1200} /></div>
         )}
         {(service.duration || service.priceInfo) && (
           <div class="meta-row">
-            {service.duration && <span class="meta-chip">{english ? 'Duration' : 'Dauer'}: {service.duration}</span>}
+            {service.duration && <span class="meta-chip">{copy.durationLabel}: {service.duration}</span>}
             {service.priceInfo && <span class="meta-chip">{service.priceInfo}</span>}
           </div>
         )}
       </aside>
 
       <div>
-        <DecorativeHeading level="h2" text={english ? 'What you will learn in handpan lessons' : 'Was du beim Handpan-Unterricht lernst'} />
         <div class="prose">
-          <p>{english ? 'Perhaps you already have musical experience and would like feedback and fresh inspiration. Perhaps you have never played an instrument. Or perhaps your first handpan is already at home and you are wondering: what now?' : 'Vielleicht bringst du bereits musikalische Vorerfahrung mit und wünschst dir Feedback und neue Inspirationen. Vielleicht hast du noch nie ein Instrument gespielt. Vielleicht steht deine erste Handpan bereits zuhause und du fragst dich: Und jetzt?'}</p>
-          <p>{english ? 'In one-to-one guidance, we combine a clear structure with curious exploration. The aim is not to learn as much as possible as quickly as possible, but to build a confident and musical approach.' : 'In der Lernbegleitung 1:1 verbinden wir eine verständliche Struktur mit neugierigem Ausprobieren. Es geht nicht darum, möglichst schnell möglichst viel zu können, sondern einen sicheren, musikalischen Zugang aufzubauen.'}</p>
+          {copyParagraphs(copy.body).map((paragraph) => <p>{paragraph}</p>)}
         </div>
         <ul class="topic-list">
-          {(english ? ['Rhythm and timing', 'Touch and tone', 'Grooves and patterns', 'Melody and dynamics', 'Coordination', 'Transitions and variations', 'Free playing and improvisation', 'Composition and arrangement'] : ['Rhythmus und Timing', 'Anschlagtechnik und Klang', 'Grooves und Patterns', 'Melodie und Dynamik', 'Koordination', 'Übergänge und Variationen', 'Freies Spiel und Improvisation', 'Komposition und Arrangement']).map((topic) => <li>{topic}</li>)}
+          {copyList(copy.topics).map((topic) => <li>{topic}</li>)}
         </ul>
-        <div class="action"><Button href={localizePath('/kontakt?interesse=unterricht', lang)}>{english ? 'Enquire about guidance' : 'Lernbegleitung anfragen'}</Button></div>
-        <p class="level-link">{english ? 'Not sure where you are starting from?' : 'Du bist dir noch nicht sicher, wo du gerade stehst?'} <a href={localizePath('/selbsteinschaetzung', lang)}>{english ? 'Assess your handpan level' : 'Schätze dein Handpan-Level ein'}</a></p>
+        <div class="action"><Button href={localizePath('/kontakt?interesse=unterricht', lang)}>{copy.cta}</Button></div>
+        <p class="level-link">{copy.levelPrompt} <a href={localizePath('/selbsteinschaetzung', lang)}>{copy.levelLink}</a></p>
       </div>
     </div>
   </section>

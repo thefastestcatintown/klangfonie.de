@@ -6,3 +6,6 @@ dist/
 !.env.example
 .DS_Store
 *.log
+
+# Vertrauliche Vertragsunterlagen (lokal aufbewahren, nicht ins öffentliche Repository committen)
+docs/legal/

@@ -21,9 +21,9 @@ test('deployment URLs preserve queries, fragments and files without duplicating 
 });
 
 test('language routes keep the same page, query and fragment across DE and EN', () => {
-  assert.equal(languageFromPath('/klangfonie.de/en/live/', '/klangfonie.de/'), 'en');
-  assert.equal(languageFromPath('/klangfonie.de/live/', '/klangfonie.de/'), 'de');
-  assert.equal(contentPath('/klangfonie.de/en/kontakt/?interesse=live', '/klangfonie.de/'), '/kontakt');
+  assert.equal(languageFromPath('/klangfonia.de/en/live/', '/klangfonia.de/'), 'en');
+  assert.equal(languageFromPath('/klangfonia.de/live/', '/klangfonia.de/'), 'de');
+  assert.equal(contentPath('/klangfonia.de/en/kontakt/?interesse=live', '/klangfonia.de/'), '/kontakt');
   assert.equal(languageRoute('/kontakt?interesse=live#formular', 'en'), '/en/kontakt?interesse=live#formular');
   assert.equal(languageRoute('/en/workshops', 'de'), '/workshops');
   assert.equal(languageRoute('/', 'en'), '/en');
