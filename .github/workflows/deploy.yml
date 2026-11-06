@@ -39,7 +39,10 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm ci --include=dev --legacy-peer-deps
+        run: |
+          npm ci --include=dev --legacy-peer-deps
+          npm install --no-save --legacy-peer-deps @astrojs/check@0.9.12 typescript@6.0.3
+          npm ls @astrojs/check typescript
 
       - name: Test and build
         run: |
