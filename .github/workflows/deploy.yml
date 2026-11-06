@@ -62,10 +62,13 @@ jobs:
           lftp -u "$NETCUP_FTP_USER,$NETCUP_FTP_PASSWORD" "$NETCUP_FTP_HOST" <<'LFTP'
           set cmd:fail-exit true
           set ftp:ssl-force true
-          set ftp:ssl-protect-data true
+          # Netcup/Plesk protects authentication and commands with TLS, but this
+          # FTP account does not complete protected passive data connections.
+          # The transferred build artifacts are public website files.
+          set ftp:ssl-protect-data false
           set ssl:verify-certificate true
           set net:max-retries 3
-          mirror --reverse --delete --verbose --exclude-glob .well-known/** dist/ /
+          mirror --reverse --delete --parallel=2 --verbose --exclude-glob .well-known/** dist/ /
           bye
           LFTP
 
