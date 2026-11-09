@@ -9,8 +9,11 @@ interface Props {
 
 const { level: Tag, text, id, class: className, gap } = Astro.props;
 const heading = text.trim();
-const initial = heading.charAt(0);
-const remainder = heading.slice(1);
+const firstWhitespace = heading.search(/\s/);
+const firstWord = firstWhitespace === -1 ? heading : heading.slice(0, firstWhitespace);
+const remainder = firstWhitespace === -1 ? '' : heading.slice(firstWhitespace);
+const initial = firstWord.charAt(0);
+const firstWordRemainder = firstWord.slice(1);
 const gaps: Record<string, string> = {
   Kl: '0.16em',
   Ko: '0.08em',
@@ -27,9 +30,13 @@ const gaps: Record<string, string> = {
 };
 const initialGap = gap ?? gaps[heading.slice(0, 2)] ?? '0.025em';
 ---
-<Tag id={id} class={className}><span class="decorative-initial" style={`--initial-gap: ${initialGap}`}>{initial}</span>{remainder}</Tag>
+<Tag id={id} class={className}><span class="decorative-first-word"><span class="decorative-initial" style={`--initial-gap: ${initialGap}`}>{initial}</span>{firstWordRemainder}</span>{remainder}</Tag>
 
 <style>
+  .decorative-first-word {
+    white-space: nowrap;
+  }
+
   .decorative-initial {
     display: inline-block;
     margin-right: var(--initial-gap);
