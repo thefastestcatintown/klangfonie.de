@@ -1,50 +1,26 @@
 ---
-import { getImage, Image } from 'astro:assets';
-import symbol from '../assets/images/originals/logo-transparent.png';
-import wordmark from '../assets/images/originals/logo-footer-transparent.png';
-const optimizedWordmark = await getImage({ src: wordmark, width: 400, format: 'webp', quality: 82 });
+import { Image } from 'astro:assets';
+import visitCardLockup from '../assets/images/originals/klangfonia-visitenkarte-lockup.png';
 ---
 <span class="brand-lockup" aria-hidden="true" style="display: inline-flex; flex-direction: row; align-items: center;">
-  <span class="brand-instrument">
-    <Image class="brand-symbol" src={symbol} alt="" width={192} widths={[96, 144, 192]} sizes="(max-width: 59.99rem) 73px, 90px" format="webp" quality={78} loading="eager" />
-  </span>
-  <svg class="brand-wordmark" xmlns="http://www.w3.org/2000/svg" width="108" height="44" viewBox="40 140 1220 500" focusable="false">
-    <defs>
-      <clipPath id="header-wordmark-clip" clipPathUnits="userSpaceOnUse">
-        <polygon points="40,140 1260,140 1260,570 613,570 613,600 552,640 40,640" />
-      </clipPath>
-    </defs>
-    <image href={optimizedWordmark.src} width="1477" height="1065" clip-path="url(#header-wordmark-clip)" />
-  </svg>
+  <Image
+    class="brand-lockup-image"
+    src={visitCardLockup}
+    alt=""
+    width={508}
+    widths={[300, 380, 508]}
+    sizes="(max-width: 24rem) 150px, (max-width: 59.99rem) 170px, 190px"
+    format="png"
+    loading="eager"
+  />
 </span>
 <style>
-  .brand-lockup { display: inline-flex; align-items: center; gap: 0.65rem; color: var(--color-ink); }
-  .brand-instrument { position: relative; display: block; }
-  .brand-instrument::after { content: ''; position: absolute; inset: 13% 17% 16%; border: 1px solid var(--color-clay); border-radius: 50%; opacity: 0; pointer-events: none; }
-  .brand-symbol { display: block; width: calc(8rem * var(--brand-scale, 1)); height: auto; }
-  /* SVG owns the crop and intrinsic size, even before the stylesheet loads. */
-  .brand-wordmark { display: block; flex-shrink: 0; width: 7.5rem; height: auto; }
+  .brand-lockup { display: inline-flex; align-items: center; color: var(--color-ink); }
+  .brand-lockup-image { display: block; width: 11.875rem; height: auto; }
   @media (max-width: 59.99rem) {
-    .brand-symbol { width: calc(6.5rem * var(--brand-scale, 1)); }
-    .brand-lockup { gap: 0.4rem; }
-    .brand-wordmark { width: 6.25rem; }
+    .brand-lockup-image { width: 10.625rem; }
   }
-  @media (max-width: 24rem) { .brand-wordmark { width: 5.25rem; } }
-  @media (prefers-reduced-motion: no-preference) {
-    .brand-instrument::after { animation: handpan-resonance 1.8s ease-out 500ms 2; }
-    :global(a:focus-visible) .brand-instrument::after { animation: handpan-resonance-focus 1.8s ease-out; }
-    @media (hover: hover) {
-      .brand-lockup:hover .brand-instrument::after { animation: handpan-resonance-focus 1.8s ease-out; }
-    }
-  }
-  @keyframes handpan-resonance {
-    0% { opacity: 0; transform: scale(0.9); }
-    20% { opacity: 0.35; }
-    100% { opacity: 0; transform: scale(1.35); }
-  }
-  @keyframes handpan-resonance-focus {
-    0% { opacity: 0; transform: scale(0.9); }
-    20% { opacity: 0.35; }
-    100% { opacity: 0; transform: scale(1.35); }
+  @media (max-width: 24rem) {
+    .brand-lockup-image { width: 9.375rem; }
   }
 </style>

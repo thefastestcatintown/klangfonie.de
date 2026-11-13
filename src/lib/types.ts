@@ -98,11 +98,16 @@ export interface AboutPage {
 export interface Event {
   _id?: string;
   title: string;
-  date: string;
+  date?: string;
   endDate?: string;
+  planningLabel?: string;
+  planningLabelEn?: string;
+  recurrence?: 'none' | 'weekly' | 'monthly' | 'yearly';
+  repeatUntil?: string;
   location: string;
   image?: SanityImage;
   description: string;
+  ctaType?: 'more' | 'book';
   externalUrl?: string;
   titleEn?: string;
   locationEn?: string;

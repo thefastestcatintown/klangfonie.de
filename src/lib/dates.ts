@@ -15,3 +15,8 @@ export function formatEventDate(startValue: string, endValue?: string, language:
   }
   return `${dateTimeFormatter.format(start)} – ${dateTimeFormatter.format(end)}`;
 }
+
+export function formatEventSchedule(startValue: string | undefined, endValue?: string, planningLabel?: string, language: 'de' | 'en' = 'de'): string {
+  if (startValue) return formatEventDate(startValue, endValue, language);
+  return planningLabel?.trim() || (language === 'en' ? 'Date to be announced' : 'Termin in Planung');
+}

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import DecorativeHeading from '../components/DecorativeHeading.astro';
+import MailingListForm from '../components/MailingListForm.astro';
 import { getPageCopy, getSettings } from '../lib/sanity';
 import { defaultsFor } from '../content/page-copy-defaults';
 import { localizePath, type Language } from '../lib/i18n';
@@ -22,6 +23,7 @@ const formCopy = copy;
       {settings.phone && <a class="contact-line" href={`tel:${settings.phone.replace(/\s/g, '')}`}>{settings.phone}</a>}
       {settings.email && <p class="note">{copy.emailNote}</p>}
     </aside>
+    <div class="form-stack">
     <form class="contact-form" data-contact-form data-endpoint={formEndpoint || undefined} data-recipient={settings.email || undefined} data-copy={JSON.stringify(formCopy)} novalidate>
       <div class="field-row">
         <label><span>{copy.nameLabel}</span><input type="text" name="name" autocomplete="name" required /></label>
@@ -29,7 +31,7 @@ const formCopy = copy;
       </div>
       <label><span>{copy.interestLabel}</span>
         <select name="interest" required data-interest>
-          <option value="">{copy.selectLabel}</option><option value="unterricht">{copy.lessonsOption}</option><option value="ensemble">{copy.bandOption}</option><option value="workshops">{copy.workshopsOption}</option><option value="yoga">{copy.yogaOption}</option><option value="live">{copy.liveOption}</option><option value="band">{copy.concertOption}</option><option value="sonstiges">{copy.otherOption}</option>
+          <option value="">{copy.selectLabel}</option><option value="unterricht">{copy.lessonsOption}</option><option value="ensemble">{copy.bandOption}</option><option value="workshops">{copy.workshopsOption}</option><option value="yoga">{copy.yogaOption}</option><option value="retreat">{copy.retreatOption}</option><option value="live">{copy.liveOption}</option><option value="band">{copy.concertOption}</option><option value="sonstiges">{copy.otherOption}</option>
         </select>
       </label>
       <label><span>{copy.messageLabel}</span><textarea name="message" rows="7" required placeholder={copy.messagePlaceholder}></textarea></label>
@@ -41,6 +43,8 @@ const formCopy = copy;
       <button type="submit"><span data-submit-label>{formEndpoint ? copy.submit : settings.email ? copy.prepare : copy.copy}</span> <span aria-hidden="true">↗</span></button>
       <p class="form-status" role="status" aria-live="polite" tabindex="-1" data-form-status hidden></p>
     </form>
+    <MailingListForm endpoint={formEndpoint} recipient={settings.email} lang={lang} copy={formCopy} />
+    </div>
   </div></section>
 <script>
   const select = document.querySelector<HTMLSelectElement>('[data-interest]');
@@ -114,6 +118,7 @@ const formCopy = copy;
   .intro { max-width: 28rem; margin-top: 1.5rem; color: var(--color-steel); }
   .note { max-width: 30rem; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--color-sand); color: var(--color-steel); font-size: 0.9rem; }
   .contact-form { display: grid; gap: 1.5rem; padding: clamp(1.5rem, 3vw, 2.5rem); border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-linen); box-shadow: var(--shadow-soft); }
+  .form-stack { display: grid; gap: clamp(1.5rem, 3vw, 2.5rem); min-width: 0; }
   .field-row { display: grid; gap: 1rem; }
   label { display: grid; gap: 0.45rem; color: var(--color-ink); font-size: 0.83rem; font-weight: 700; }
   input, select, textarea { width: 100%; border: 1px solid rgb(36 55 70 / 0.22); border-radius: var(--radius-sm); background: var(--color-white); color: var(--color-charcoal); }

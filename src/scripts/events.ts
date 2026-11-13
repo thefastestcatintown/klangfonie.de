@@ -1,15 +1,23 @@
-import { formatEventDate } from '../lib/dates';
+import { formatEventSchedule } from '../lib/dates';
 import { localizeEvent } from '../lib/event-translations';
+import { expandRecurringEvents } from '../lib/event-recurrence';
+import { imageUrl } from '../lib/sanity';
+import type { SanityImage } from '../lib/types';
 
 type PublicEvent = {
   _id: string;
   title: string;
-  date: string;
+  date?: string;
   endDate?: string;
+  planningLabel?: string;
+  planningLabelEn?: string;
+  recurrence?: 'none' | 'weekly' | 'monthly' | 'yearly';
+  repeatUntil?: string;
   location: string;
-  imageUrl?: string;
+  image?: SanityImage;
   imageAlt?: string;
   description: string;
+  ctaType?: 'more' | 'book';
   externalUrl?: string;
   titleEn?: string;
   locationEn?: string;
@@ -22,10 +30,13 @@ const projectId = section?.dataset.projectId || '';
 const dataset = section?.dataset.dataset || '';
 const language = section?.dataset.language === 'en' ? 'en' : 'de';
 const moreLabel = section?.dataset.moreLabel || (language === 'en' ? 'Find out more' : 'Mehr erfahren');
+const bookLabel = section?.dataset.bookLabel || (language === 'en' ? 'Book event' : 'Termin buchen');
 const emptyLabel = section?.dataset.emptyLabel || (language === 'en' ? 'New concert dates will be published here.' : 'Neue Konzerttermine werden hier veröffentlicht.');
+const limit = section?.dataset.limit ? Number(section.dataset.limit) : undefined;
+const layout = section?.dataset.layout === 'list' ? 'list' : 'cards';
 
 if (section && list && /^[a-z0-9-]+$/.test(projectId) && /^[a-z0-9_-]+$/.test(dataset)) {
-  const query = '*[_type == "event" && date >= now()] | order(date asc){_id,title,titleEn,date,endDate,location,locationEn,description,descriptionEn,externalUrl,"imageUrl":image.asset->url,"imageAlt":select($language == "en" => coalesce(image.altEn,image.alt,titleEn,title), coalesce(image.alt,title))}';
+  const query = '*[_type == "event" && (!defined(date) || date >= now() || (defined(recurrence) && recurrence != "none"))] | order(defined(date) desc, date asc, _createdAt desc){_id,title,titleEn,date,endDate,planningLabel,planningLabelEn,recurrence,repeatUntil,location,locationEn,description,descriptionEn,ctaType,externalUrl,image,"imageAlt":select($language == "en" => coalesce(image.altEn,image.alt,titleEn,title), coalesce(image.alt,title))}';
   const endpoint = `https://${projectId}.apicdn.sanity.io/v2026-03-01/data/query/${dataset}?query=${encodeURIComponent(query)}&$language=${encodeURIComponent(JSON.stringify(language))}`;
 
   fetch(endpoint)
@@ -35,7 +46,9 @@ if (section && list && /^[a-z0-9-]+$/.test(projectId) && /^[a-z0-9_-]+$/.test(da
     })
     .then(({ result }) => {
       if (!Array.isArray(result)) return;
-      const events = result.map((event) => localizeEvent(event, language));
+      const allEvents = expandRecurringEvents(result).map((event) => localizeEvent(event, language));
+      const events = typeof limit === 'number' && Number.isFinite(limit) ? allEvents.slice(0, limit) : allEvents;
+      list.classList.toggle('events--single', layout === 'cards' && events.length === 1);
       list.replaceChildren(...(events.length > 0 ? events.map(createEvent) : [createEmptyState()]));
     })
     .catch(() => {
@@ -45,37 +58,39 @@ if (section && list && /^[a-z0-9-]+$/.test(projectId) && /^[a-z0-9_-]+$/.test(da
 
 function createEvent(event: PublicEvent): HTMLElement {
   const article = document.createElement('article');
-  const time = document.createElement('time');
-  const details = document.createElement('div');
+  const meta = document.createElement('header');
+  const schedule = event.date ? document.createElement('time') : document.createElement('p');
   const content = document.createElement('div');
   const title = document.createElement('h3');
   const location = document.createElement('p');
 
-  time.dateTime = event.date;
-  time.textContent = formatEventDate(event.date, event.endDate, language);
+  meta.className = 'event-meta';
+  schedule.className = 'event-date';
+  if (schedule instanceof HTMLTimeElement && event.date) schedule.dateTime = event.date;
+  schedule.textContent = formatEventSchedule(event.date, event.endDate, event.planningLabel, language);
+  meta.append(schedule);
+  content.className = 'event-content';
   title.textContent = event.title;
   location.className = 'event-location';
   location.textContent = event.location;
   content.append(title, location);
 
-  if (event.imageUrl) {
+  if (event.image) {
     try {
-      const imageUrl = new URL(event.imageUrl);
-      if (imageUrl.protocol === 'https:' && imageUrl.hostname === 'cdn.sanity.io') {
+      const source = imageUrl(event.image, 960, 540);
+      if (source) {
+        const safeImageUrl = new URL(source);
+        if (safeImageUrl.protocol !== 'https:' || safeImageUrl.hostname !== 'cdn.sanity.io') throw new Error('Unsupported image URL');
         const image = document.createElement('img');
-        imageUrl.searchParams.set('w', '640');
-        imageUrl.searchParams.set('h', '426');
-        imageUrl.searchParams.set('fit', 'crop');
-        imageUrl.searchParams.set('auto', 'format');
         image.className = 'event-image';
-        image.src = imageUrl.href;
+        image.src = safeImageUrl.href;
         image.alt = event.imageAlt || event.title;
-        image.width = 640;
-        image.height = 426;
+        image.width = 960;
+        image.height = 540;
         image.loading = 'lazy';
         image.decoding = 'async';
-        details.classList.add('has-image');
-        details.append(image);
+        article.classList.add('has-image');
+        article.append(image);
       }
     } catch {
       // Ungültige Bild-URLs werden nicht ausgegeben.
@@ -88,10 +103,6 @@ function createEvent(event: PublicEvent): HTMLElement {
     content.append(description);
   }
 
-  details.classList.add('event-details');
-  details.append(content);
-  article.append(time, details);
-
   if (event.externalUrl) {
     try {
       const externalUrl = new URL(event.externalUrl);
@@ -100,13 +111,16 @@ function createEvent(event: PublicEvent): HTMLElement {
         link.href = externalUrl.href;
         link.target = '_blank';
         link.rel = 'noreferrer';
-        link.textContent = `${moreLabel} ↗`;
-        article.append(link);
+        link.textContent = `${event.ctaType === 'book' ? bookLabel : moreLabel} ↗`;
+        content.append(link);
       }
     } catch {
       // Ungültige optionale Links werden nicht ausgegeben.
     }
   }
+
+  article.prepend(meta);
+  article.append(content);
 
   return article;
 }

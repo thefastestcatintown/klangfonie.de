@@ -6,7 +6,7 @@ import DecorativeHeading from './DecorativeHeading.astro';
 import { contentPath, localizePath, type Language } from '../lib/i18n';
 import { navigationFor } from '../lib/navigation';
 import '../styles/coaching.css';
-import { getPageCopy } from '../lib/sanity';
+import { getAbout, getPageCopy, imageSrcSet, imageUrl } from '../lib/sanity';
 import { defaultsFor } from '../content/page-copy-defaults';
 
 interface Milestone {
@@ -25,11 +25,16 @@ interface Props {
 const { title, paragraphs, milestones = [], lang = 'de' } = Astro.props;
 const current = contentPath(Astro.url.pathname);
 const { aboutLinks } = navigationFor(lang);
-const portrait = await getImage({ src: profil2, width: 1200, format: 'webp' });
-const globalCopy = await getPageCopy('global', lang, defaultsFor('global', lang));
-const portraitAlt = globalCopy.aboutImageAlt;
+const [fallbackPortrait, globalCopy, about] = await Promise.all([
+  getImage({ src: profil2, width: 1200, format: 'webp' }),
+  getPageCopy('global', lang, defaultsFor('global', lang)),
+  getAbout(),
+]);
+const cmsPortrait = imageUrl(about.portrait, 1200, 1600);
+const cmsPortraitSrcSet = imageSrcSet(about.portrait, [480, 800, 1200], 4 / 3);
+const portraitAlt = about.portrait?.alt || globalCopy.aboutImageAlt;
 ---
-<BaseLayout image={portrait.src} lang={lang}>
+<BaseLayout image={cmsPortrait || fallbackPortrait.src} lang={lang}>
   <section class="page-hero about-hero">
     <div class="container page-hero__inner">
       <DecorativeHeading level="h1" class="page-title" text={title} />
@@ -43,7 +48,9 @@ const portraitAlt = globalCopy.aboutImageAlt;
   <section class="section">
     <div class="container rich-layout">
       <div class="portrait">
-        <Image src={profil2} alt={portraitAlt} width={1200} widths={[480, 800, 1200]} sizes="(min-width: 84rem) 505px, (min-width: 48rem) 42vw, calc(100vw - 2rem)" format="webp" quality={72} />
+        {cmsPortrait
+          ? <img src={cmsPortrait} srcset={cmsPortraitSrcSet} alt={portraitAlt} width="1200" height="1600" sizes="(min-width: 84rem) 505px, (min-width: 48rem) 42vw, calc(100vw - 2rem)" loading="eager" fetchpriority="high" />
+          : <Image src={profil2} alt={portraitAlt} width={1200} widths={[480, 800, 1200]} sizes="(min-width: 84rem) 505px, (min-width: 48rem) 42vw, calc(100vw - 2rem)" format="webp" quality={72} />}
       </div>
       <div>
         <div class="prose">{paragraphs.map((paragraph) => <p>{paragraph}</p>)}</div>

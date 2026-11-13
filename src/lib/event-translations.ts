@@ -16,5 +16,6 @@ export function localizeEvent<T extends Event>(event: T, language: 'de' | 'en'):
     title: event.titleEn || fallback?.titleEn || event.title,
     location: event.locationEn || fallback?.locationEn || event.location,
     description: event.descriptionEn || fallback?.descriptionEn || event.description,
+    planningLabel: event.planningLabelEn || event.planningLabel,
   };
 }

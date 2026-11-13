@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EventsSection from '../components/EventsSection.astro';
+import type { Language } from '../lib/i18n';
+
+interface Props { lang?: Language; }
+const { lang = 'de' } = Astro.props;
+const english = lang === 'en';
+---
+
+<BaseLayout lang={lang}>
+  <EventsSection
+    heading={english ? 'Concerts & events' : 'Konzerte & Termine'}
+    headingLevel="h1"
+    layout="list"
+    intro={english
+      ? 'All upcoming Klangfonia concerts, sound evenings and public events at a glance.'
+      : 'Alle kommenden Konzerte, Klangabende und öffentlichen Termine von Klangfonia auf einen Blick.'}
+  />
+</BaseLayout>

@@ -1,0 +1,118 @@
+---
+import { localizePath, type Language } from '../lib/i18n';
+
+interface Props {
+  endpoint?: string;
+  recipient?: string;
+  lang: Language;
+  copy: Record<string, string>;
+}
+
+const { endpoint, recipient, lang, copy } = Astro.props;
+---
+<section class="mailing-card" id={lang === 'en' ? 'mailing-list' : 'verteiler'} aria-labelledby="mailing-title">
+  <div>
+    <p class="eyebrow">{lang === 'en' ? 'STAY IN TOUCH' : 'IN VERBINDUNG BLEIBEN'}</p>
+    <h2 id="mailing-title">{copy.mailingTitle}</h2>
+    <p class="intro">{copy.mailingIntro}</p>
+  </div>
+  <form
+    data-mailing-list-form
+    data-endpoint={endpoint || undefined}
+    data-recipient={recipient || undefined}
+    data-lang={lang}
+    data-sending={copy.mailingSending}
+    data-submit={copy.mailingSubmit}
+    data-success={copy.mailingSuccess}
+    data-error={copy.error}
+    data-prepared={copy.mailingPrepared}
+    novalidate
+  >
+    <div class="field-row">
+      <label><span>{copy.nameLabel}</span><input type="text" name="name" autocomplete="name" required /></label>
+      <label><span>{copy.emailLabel}</span><input type="email" name="email" autocomplete="email" required /></label>
+    </div>
+    <input type="hidden" name="interest" value={lang === 'en' ? 'Mailing list' : 'Verteiler'} />
+    <label class="consent">
+      <input type="checkbox" name="consent" value={lang === 'en' ? 'Consent given' : 'Einwilligung erteilt'} required />
+      <span>{copy.mailingConsent} <a href={localizePath('/datenschutz', lang)}>{lang === 'en' ? 'Privacy information' : 'Datenschutzhinweise'}</a></span>
+    </label>
+    <label class="honeypot" aria-hidden="true">{copy.honeypotLabel}<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label>
+    <button type="submit"><span data-mailing-submit-label>{copy.mailingSubmit}</span> <span aria-hidden="true">↗</span></button>
+    <p class="form-status" role="status" aria-live="polite" tabindex="-1" data-mailing-status hidden></p>
+  </form>
+</section>
+
+<script>
+  document.querySelector<HTMLFormElement>('[data-mailing-list-form]')?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget as HTMLFormElement;
+    if (!form.reportValidity()) return;
+
+    const endpoint = form.dataset.endpoint;
+    const recipient = form.dataset.recipient;
+    const lang = form.dataset.lang === 'en' ? 'en' : 'de';
+    const data = new FormData(form);
+    const name = String(data.get('name') || '').trim();
+    const email = String(data.get('email') || '').trim();
+    const status = form.querySelector<HTMLElement>('[data-mailing-status]');
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const submitLabel = form.querySelector<HTMLElement>('[data-mailing-submit-label]');
+    const subject = lang === 'en' ? 'Klangfonia – Mailing list interest' : 'Klangfonia – Interesse am Verteiler';
+
+    if (endpoint && button && submitLabel) {
+      button.disabled = true;
+      submitLabel.textContent = form.dataset.sending || (lang === 'en' ? 'Sending…' : 'Wird gesendet…');
+      if (status) status.hidden = true;
+      data.set('_subject', subject);
+      try {
+        const response = await fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+        if (!response.ok) throw new Error(`Mailing-list submission failed (${response.status})`);
+        form.reset();
+        if (status) { status.textContent = form.dataset.success || ''; status.dataset.state = 'success'; }
+      } catch {
+        if (status) { status.textContent = form.dataset.error || ''; status.dataset.state = 'error'; }
+      } finally {
+        button.disabled = false;
+        submitLabel.textContent = form.dataset.submit || '';
+        if (status) { status.hidden = false; status.focus(); }
+      }
+      return;
+    }
+
+    if (recipient) {
+      const body = lang === 'en'
+        ? `Hello Daniela,\n\nI would like to join the Klangfonia mailing list.\n\nName: ${name}\nEmail: ${email}\n\nI consent to receiving Klangfonia news by email.`
+        : `Hallo Daniela,\n\nich möchte in den Klangfonia-Verteiler aufgenommen werden.\n\nName: ${name}\nE-Mail: ${email}\n\nIch stimme dem Erhalt von Neuigkeiten per E-Mail zu.`;
+      window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      if (status) {
+        status.textContent = form.dataset.prepared || '';
+        status.hidden = false;
+        status.focus();
+      }
+    }
+  });
+</script>
+
+<style>
+  .mailing-card { display: grid; gap: 1.5rem; padding: clamp(1.5rem, 3vw, 2.5rem); scroll-margin-top: 8rem; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-white); box-shadow: var(--shadow-soft); }
+  .eyebrow { margin-bottom: 0.45rem; color: var(--color-clay-dark); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.13em; }
+  h2 { padding: 0; font-size: clamp(1.7rem, 3vw, 2.35rem); line-height: 1.2; }
+  .intro { max-width: 40rem; margin-top: 0.65rem; color: var(--color-steel); }
+  form { display: grid; gap: 1.15rem; }
+  .field-row { display: grid; gap: 1rem; }
+  label { display: grid; gap: 0.45rem; color: var(--color-ink); font-size: 0.83rem; font-weight: 700; }
+  input[type='text'], input[type='email'] { width: 100%; min-height: 3.25rem; padding: 0 0.9rem; border: 1px solid rgb(36 55 70 / 0.22); border-radius: var(--radius-sm); background: var(--color-white); color: var(--color-charcoal); }
+  input:focus-visible { border-color: var(--color-clay); outline: 2px solid rgb(184 121 85 / 0.18); }
+  .consent { display: grid; grid-template-columns: auto 1fr; gap: 0.7rem; align-items: start; color: var(--color-steel); font-size: 0.78rem; font-weight: 400; line-height: 1.55; }
+  .consent input { width: 1rem; height: 1rem; margin-top: 0.2rem; accent-color: var(--color-clay-dark); }
+  .consent a { color: var(--color-ink); text-decoration: underline; text-underline-offset: 0.2em; }
+  button { display: inline-flex; width: fit-content; min-height: 3.25rem; align-items: center; gap: 0.75rem; padding: 0.75rem 1.25rem; border: 0; border-radius: 99rem; background: var(--color-ink); color: white; font-size: 0.86rem; font-weight: 720; cursor: pointer; transition: background 180ms ease, transform 180ms ease; }
+  button:hover { background: var(--color-clay-dark); transform: translateY(-2px); }
+  button:disabled { cursor: wait; opacity: 0.7; transform: none; }
+  .honeypot { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+  .form-status { padding: 1rem; border-left: 3px solid var(--color-clay); background: var(--color-linen); color: var(--color-steel); }
+  .form-status[data-state='success'] { border-left-color: var(--color-ink); }
+  .form-status[data-state='error'] { border-left-color: #a23b2a; color: #7d2e21; }
+  @media (min-width: 42rem) { .field-row { grid-template-columns: 1fr 1fr; } }
+</style>

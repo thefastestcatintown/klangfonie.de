@@ -1,10 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { withBase, routePath, canonicalUrl } from '../src/lib/urls.ts';
-import { formatEventDate } from '../src/lib/dates.ts';
+import { formatEventDate, formatEventSchedule } from '../src/lib/dates.ts';
 import { youtubeEmbedUrl } from '../src/lib/youtube.ts';
 import { serializeJsonLd, structuredData } from '../src/lib/seo.ts';
 import { contentPath, languageFromPath, languageRoute } from '../src/lib/i18n.ts';
+import { expandRecurringEvents } from '../src/lib/event-recurrence.ts';
 
 test('deployment URLs preserve queries, fragments and files without duplicating base paths', () => {
   assert.equal(withBase('/unterricht', '/'), '/unterricht/');
@@ -26,6 +27,7 @@ test('language routes keep the same page, query and fragment across DE and EN', 
   assert.equal(contentPath('/klangfonia.de/en/kontakt/?interesse=live', '/klangfonia.de/'), '/kontakt');
   assert.equal(languageRoute('/kontakt?interesse=live#formular', 'en'), '/en/kontakt?interesse=live#formular');
   assert.equal(languageRoute('/en/workshops', 'de'), '/workshops');
+  assert.equal(languageRoute('/termine', 'en'), '/en/termine');
   assert.equal(languageRoute('/', 'en'), '/en');
 });
 
@@ -38,6 +40,35 @@ test('event dates use Berlin time, including DST and a range crossing midnight',
   assert.match(midnight, /23:30/);
   assert.match(midnight, /00:30/);
   assert.equal(formatEventDate('2026-11-14T18:00:00Z', undefined, 'en'), '14 November 2026 · 19:00');
+  assert.equal(formatEventSchedule(undefined, undefined, '2027 in Planung'), '2027 in Planung');
+  assert.equal(formatEventSchedule(undefined, undefined, undefined, 'en'), 'Date to be announced');
+});
+
+test('recurring events keep Berlin wall-clock time and calendar day across DST', () => {
+  const event = {
+    title: 'Monatlicher Klangabend',
+    date: '2027-01-31T18:00:00.000Z',
+    endDate: '2027-01-31T19:30:00.000Z',
+    recurrence: 'monthly',
+    location: 'Berlin',
+    description: 'Test',
+  };
+  const occurrences = expandRecurringEvents([event], new Date('2027-01-01T00:00:00.000Z'), 3);
+  assert.deepEqual(occurrences.map((item) => item.date), [
+    '2027-01-31T18:00:00.000Z',
+    '2027-02-28T18:00:00.000Z',
+    '2027-03-31T17:00:00.000Z',
+  ]);
+  assert.equal(formatEventDate(occurrences[2].date), '31. März 2027 · 19:00 Uhr');
+  assert.equal(new Date(occurrences[2].endDate).getTime() - new Date(occurrences[2].date).getTime(), 90 * 60 * 1000);
+});
+
+test('recurring events respect their optional final date', () => {
+  const occurrences = expandRecurringEvents([{
+    title: 'Wöchentlicher Termin', date: '2027-01-04T18:00:00.000Z', recurrence: 'weekly', repeatUntil: '2027-01-18', location: 'Berlin', description: 'Test',
+  }], new Date('2027-01-01T00:00:00.000Z'));
+  assert.equal(occurrences.length, 3);
+  assert.equal(occurrences[2].date, '2027-01-18T18:00:00.000Z');
 });
 
 test('YouTube accepts supported video URLs, rejects lookalike hosts and malformed IDs', () => {

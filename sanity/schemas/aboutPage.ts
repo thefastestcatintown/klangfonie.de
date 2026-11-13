@@ -7,7 +7,14 @@ export const aboutPage = defineType({
   fields: [
     defineField({ name: 'headline', title: 'Überschrift', type: 'string', hidden: true }),
     defineField({ name: 'intro', title: 'Einleitung', type: 'text', rows: 4, hidden: true }),
-    defineField({ name: 'portrait', title: 'Porträt', type: 'image', options: { hotspot: true }, hidden: true, fields: [{ name: 'alt', title: 'Alternativtext', type: 'string' }] }),
+    defineField({
+      name: 'portrait',
+      title: 'Bild auf den „Über mich“-Seiten',
+      description: 'Dieses Bild erscheint bei „Meine Intention“ und „Meine Geschichte“. Der Bildausschnitt kann über den Fokuspunkt angepasst werden.',
+      type: 'image',
+      options: { hotspot: true },
+      fields: [{ name: 'alt', title: 'Bildbeschreibung für Screenreader', type: 'string', validation: (rule) => rule.required() }],
+    }),
     defineField({ name: 'body', title: 'Haupttext', type: 'blockContent', hidden: true }),
     defineField({
       name: 'milestones',

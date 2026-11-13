@@ -1,18 +1,17 @@
 ---
-import { getImage } from 'astro:assets';
-import footerLogo from '../assets/images/originals/logo-footer-transparent.png';
 import type { SiteSettings } from '../lib/types';
 import { languageFromPath, localizePath } from '../lib/i18n';
 import { navigationFor } from '../lib/navigation';
 import { getPageCopy } from '../lib/sanity';
 import { defaultsFor } from '../content/page-copy-defaults';
+import BrandWordmark from './BrandWordmark.astro';
 interface Props { settings: SiteSettings; }
 const { settings } = Astro.props;
 const language = languageFromPath(Astro.url.pathname);
 const copy = await getPageCopy('global', language, defaultsFor('global', language));
 const labels: Record<string, string> = {
   '/unterricht': copy.coachingLabel, '/yoga': copy.navRetreats, '/live': copy.navMusic,
-  '/ueber-daniela/intention': copy.navAbout, '/#termine': copy.navEvents, '/kontakt': copy.navContact,
+  '/ueber-daniela/intention': copy.navAbout, '/termine': copy.navEvents, '/kontakt': copy.navContact,
 };
 const footerLinks = navigationFor(language).footerLinks.map((item) => ({ ...item, label: labels[item.href] || item.label }));
 const year = new Date().getFullYear();
@@ -22,16 +21,19 @@ const socials = [
   { label: 'Instagram', url: settings.instagram },
   { label: 'YouTube', url: settings.youtube },
 ].filter((social): social is { label: string; url: string } => Boolean(social.url));
-const optimizedFooterLogo = await getImage({ src: footerLogo, width: 480, format: 'webp', quality: 82 });
 ---
 <footer class="footer">
   <div class="container footer-grid" style={`--footer-columns: ${footerColumns}`}>
     <div>
       <a class="footer-brand" href={localizePath('/', language)} aria-label={copy.homeLabel}>
-        <svg class="footer-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1262 1065" role="img" aria-labelledby="footer-logo-title">
-          <title id="footer-logo-title">{copy.logoAlt}</title>
-          <image href={optimizedFooterLogo.src} width="1477" height="1065" />
-        </svg>
+        <BrandWordmark variant="footer" showDomain />
+        <span class="footer-brand-copy">
+          <span class="footer-tagline">{copy.footerTagline}</span>
+          <span class="footer-name">Daniela Schneider</span>
+        </span>
+      </a>
+      <a class="footer-newsletter" href={localizePath(`/kontakt#${language === 'en' ? 'mailing-list' : 'verteiler'}`, language)}>
+        <span>{copy.footerNewsletter}</span><span aria-hidden="true">↗</span>
       </a>
     </div>
     {hasContact && <div class="footer-contact">
@@ -73,8 +75,13 @@ const optimizedFooterLogo = await getImage({ src: footerLogo, width: 480, format
   .footer-grid > div { display: flex; align-items: flex-start; flex-direction: column; min-width: 0; }
   .footer a { padding-block: 0.2rem; overflow-wrap: anywhere; color: inherit; text-decoration: none; }
   .footer a:hover { color: var(--color-clay-dark); text-decoration: underline; text-underline-offset: 0.25em; }
-  .footer-brand { max-width: 100%; display: inline-flex; align-items: center; gap: 0.65rem; margin-bottom: 0.5rem; color: var(--color-ink) !important; font-family: var(--font-display); font-size: 2rem; letter-spacing: -0.035em; }
-  .footer-logo { display: block; width: 12.8rem; max-width: 100%; height: auto; }
+  .footer-brand { max-width: 100%; display: inline-flex; align-items: flex-start; flex-direction: column; gap: 0.25rem; margin-bottom: 0.5rem; color: var(--color-ink) !important; text-decoration: none !important; }
+  .footer-brand-copy { display: flex; align-items: flex-start; flex-direction: column; padding-left: 5rem; line-height: 1.2; }
+  .footer-tagline { color: var(--color-ink); font-family: var(--font-display); font-size: 0.88rem; font-weight: 400; letter-spacing: -0.015em; }
+  .footer-name { margin-top: 0.2rem; color: var(--color-clay-dark); font-size: 0.68rem; font-weight: 700; }
+  .footer-newsletter { display: inline-flex; min-height: 2.75rem; align-items: center; gap: 0.65rem; margin-top: 1.1rem; padding: 0.65rem 1rem !important; border: 1px solid rgb(38 53 47 / 0.28); border-radius: 99rem; color: var(--color-ink); font-size: 0.8rem; font-weight: 700; text-decoration: none !important; transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease; }
+  .footer-newsletter:hover { border-color: var(--color-clay-dark); background: rgb(252 250 245 / 0.5); color: var(--color-clay-dark) !important; text-decoration: none !important; transform: translateY(-2px); }
+  .footer-newsletter:focus-visible { outline: 2px solid var(--color-clay-dark); outline-offset: 3px; }
 
   .footer-socials { display: flex; align-items: center; justify-content: flex-start; gap: 0.75rem; padding: 0; border: 0; background: transparent; }
   .social-icon { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; color: var(--color-ink); }
@@ -87,8 +94,7 @@ const optimizedFooterLogo = await getImage({ src: footerLogo, width: 480, format
   }
   @media (min-width: 60rem) and (max-height: 56rem) {
     .footer { padding-block: 2.5rem 1.25rem; }
-    .footer-logo { width: 10.5rem; }
     .footer-bottom { margin-top: 1.75rem; }
   }
-  @media (max-width: 32rem) { .footer-brand { font-size: 1.65rem; }  .footer-bottom { grid-template-columns: auto 1fr; } .footer-legal { grid-column: 1 / -1; justify-content: flex-start; } }
+  @media (max-width: 32rem) { .footer-bottom { grid-template-columns: auto 1fr; } .footer-legal { grid-column: 1 / -1; justify-content: flex-start; } }
 </style>

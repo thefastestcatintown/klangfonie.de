@@ -1,0 +1,42 @@
+---
+import originalLogo from '../assets/images/originals/logo-footer-transparent.png';
+
+interface Props {
+  variant?: 'header' | 'footer';
+  showDomain?: boolean;
+}
+
+const { variant = 'header', showDomain = false } = Astro.props;
+const artworkClipId = `original-logo-artwork-${variant}`;
+---
+
+<span class:list={['original-wordmark', `original-wordmark--${variant}`]} aria-hidden="true">
+  <svg class="wordmark-artwork" viewBox="35 115 1265 570" role="presentation" focusable="false">
+    <defs>
+      <clipPath id={artworkClipId} clipPathUnits="userSpaceOnUse">
+        <!-- Original-K: links vollständig, rechts nur obere und untere Schwünge. -->
+        <path d="M35 115H625V315H420V520H625V685H35Z" />
+        <!-- Originale Linie–Punkt–Linie unter der Wortmarke. -->
+        <rect x="560" y="575" width="740" height="110" />
+      </clipPath>
+    </defs>
+    <image href={originalLogo.src} x="0" y="0" width="1477" height="1065" clip-path={`url(#${artworkClipId})`} />
+    <text class="wordmark-word" x="445" y="515" textLength={showDomain ? '720' : '770'} lengthAdjust="spacingAndGlyphs">langfonia</text>
+    {showDomain && <text class="wordmark-domain" x="1180" y="515">.de</text>}
+  </svg>
+</span>
+
+<style>
+  .original-wordmark { display: inline-flex; flex: 0 0 auto; color: var(--color-ink); }
+  .wordmark-artwork { display: block; width: auto; height: var(--wordmark-height); overflow: visible; }
+  .wordmark-word { fill: currentColor; font-family: var(--font-display); font-size: 188px; font-weight: 400; letter-spacing: -7px; }
+  .wordmark-domain { fill: var(--color-clay-dark); font-family: var(--font-display); font-size: 72px; font-weight: 700; }
+  .original-wordmark--header { --wordmark-height: 3.65rem; }
+  .original-wordmark--footer { --wordmark-height: 5.15rem; }
+  @media (max-width: 59.99rem) {
+    .original-wordmark--header { --wordmark-height: 3.15rem; }
+  }
+  @media (max-width: 24rem) {
+    .original-wordmark--header { --wordmark-height: 2.75rem; }
+  }
+</style>

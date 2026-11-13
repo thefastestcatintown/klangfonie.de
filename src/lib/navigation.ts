@@ -15,7 +15,7 @@ export const navigationLinks = [
   { href: '/yoga', label: 'Retreats' },
   { href: '/live', label: 'Musik' },
   { href: '/ueber-daniela/intention', label: 'Über mich' },
-  { href: '/#termine', label: 'Termine' },
+  { href: '/termine', label: 'Termine' },
 ];
 
 export const footerLinks = [{ href: '/unterricht', label: 'Coaching' }, ...navigationLinks, { href: '/kontakt', label: 'Kontakt' }];
@@ -35,7 +35,7 @@ const englishNavigationLinks = [
   { href: '/yoga', label: 'Retreats' },
   { href: '/live', label: 'Music' },
   { href: '/ueber-daniela/intention', label: 'About me' },
-  { href: '/#termine', label: 'Events' },
+  { href: '/termine', label: 'Events' },
 ];
 
 export function navigationFor(language: Language) {

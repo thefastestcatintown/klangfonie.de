@@ -15,7 +15,9 @@ const remainder = firstWhitespace === -1 ? '' : heading.slice(firstWhitespace);
 const initial = firstWord.charAt(0);
 const firstWordRemainder = firstWord.slice(1);
 const gaps: Record<string, string> = {
-  Kl: '0.16em',
+  // The Great Vibes K extends well beyond its advance width. Keep the following
+  // letter clear of the swash, especially in narrow mobile WebViews.
+  Kl: '0.32em',
   Ko: '0.08em',
   Le: '0.08em',
   Lu: '0.06em',

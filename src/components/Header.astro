@@ -12,7 +12,7 @@ const items = navigationFor(language);
 const copy = await getPageCopy('global', language, defaultsFor('global', language));
 const labels: Record<string, string> = {
   '/unterricht': copy.coachingLessons, '/ensemble': copy.coachingBand, '/workshops': copy.coachingWorkshops,
-  '/yoga': copy.navRetreats, '/live': copy.navMusic, '/ueber-daniela/intention': copy.navAbout, '/#termine': copy.navEvents,
+  '/yoga': copy.navRetreats, '/live': copy.navMusic, '/ueber-daniela/intention': copy.navAbout, '/termine': copy.navEvents,
   '/ueber-daniela/geschichte': copy.aboutStory,
 };
 const coachingLinks = items.coachingLinks.map((item) => ({ ...item, label: labels[item.href] || item.label, href: localizePath(item.href, language) }));
