@@ -104,6 +104,7 @@ export interface Event {
   planningLabelEn?: string;
   recurrence?: 'none' | 'weekly' | 'monthly' | 'yearly';
   repeatUntil?: string;
+  occurrenceCount?: number;
   location: string;
   image?: SanityImage;
   description: string;

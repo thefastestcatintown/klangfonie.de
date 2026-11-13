@@ -84,6 +84,15 @@ export const event = defineType({
           return repeatUntil >= startDate.slice(0, 10) || 'Das Ende der Wiederholung darf nicht vor dem Beginn liegen.';
         }),
     }),
+    defineField({
+      name: 'occurrenceCount',
+      title: 'Anzahl kommender Termine auf der Website',
+      description: 'Wie viele zukünftige Termine dieser Serie angezeigt werden. Wenn das Feld leer bleibt, werden zwölf Termine erzeugt.',
+      type: 'number',
+      initialValue: 12,
+      hidden: ({ document }) => !document?.recurrence || document.recurrence === 'none',
+      validation: (rule) => rule.integer().min(1).max(36),
+    }),
     defineField({ name: 'location', title: 'Ort', type: 'string', validation: (rule) => rule.required() }),
     defineField({ name: 'locationEn', title: 'Ort', type: 'string', fieldset: 'english' }),
     defineField({

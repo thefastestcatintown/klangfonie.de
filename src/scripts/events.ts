@@ -13,6 +13,7 @@ type PublicEvent = {
   planningLabelEn?: string;
   recurrence?: 'none' | 'weekly' | 'monthly' | 'yearly';
   repeatUntil?: string;
+  occurrenceCount?: number;
   location: string;
   image?: SanityImage;
   imageAlt?: string;
@@ -37,7 +38,7 @@ const layout = section?.dataset.layout === 'list' ? 'list' : 'cards';
 const eventHeadingLevel = section?.dataset.eventHeadingLevel === 'h2' ? 'h2' : 'h3';
 
 if (section && list && /^[a-z0-9-]+$/.test(projectId) && /^[a-z0-9_-]+$/.test(dataset)) {
-  const query = '*[_type == "event" && (!defined(date) || date >= now() || (defined(recurrence) && recurrence != "none"))] | order(defined(date) desc, date asc, _createdAt desc){_id,title,titleEn,date,endDate,planningLabel,planningLabelEn,recurrence,repeatUntil,location,locationEn,description,descriptionEn,ctaType,externalUrl,image,"imageAlt":select($language == "en" => coalesce(image.altEn,image.alt,titleEn,title), coalesce(image.alt,title))}';
+  const query = '*[_type == "event" && (!defined(date) || date >= now() || (defined(recurrence) && recurrence != "none"))] | order(defined(date) desc, date asc, _createdAt desc){_id,title,titleEn,date,endDate,planningLabel,planningLabelEn,recurrence,repeatUntil,occurrenceCount,location,locationEn,description,descriptionEn,ctaType,externalUrl,image,"imageAlt":select($language == "en" => coalesce(image.altEn,image.alt,titleEn,title), coalesce(image.alt,title))}';
   const endpoint = `https://${projectId}.apicdn.sanity.io/v2026-03-01/data/query/${dataset}?query=${encodeURIComponent(query)}&$language=${encodeURIComponent(JSON.stringify(language))}`;
 
   fetch(endpoint)

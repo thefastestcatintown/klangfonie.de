@@ -114,5 +114,5 @@ export async function getFeaturedVideo(): Promise<Video | null> {
 }
 
 export async function getEvents(): Promise<Event[]> {
-  return safeFetch(`*[_type == "event" && (!defined(date) || date >= now() || (defined(recurrence) && recurrence != "none"))] | order(defined(date) desc, date asc, _createdAt desc){_id, title, titleEn, date, endDate, planningLabel, planningLabelEn, recurrence, repeatUntil, location, locationEn, image, description, descriptionEn, ctaType, externalUrl}`, {}, []);
+  return safeFetch(`*[_type == "event" && (!defined(date) || date >= now() || (defined(recurrence) && recurrence != "none"))] | order(defined(date) desc, date asc, _createdAt desc){_id, title, titleEn, date, endDate, planningLabel, planningLabelEn, recurrence, repeatUntil, occurrenceCount, location, locationEn, image, description, descriptionEn, ctaType, externalUrl}`, {}, []);
 }

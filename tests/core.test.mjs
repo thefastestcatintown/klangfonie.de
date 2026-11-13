@@ -71,6 +71,21 @@ test('recurring events respect their optional final date', () => {
   assert.equal(occurrences[2].date, '2027-01-18T18:00:00.000Z');
 });
 
+test('recurring events use the occurrence count configured in Sanity', () => {
+  const occurrences = expandRecurringEvents([{
+    title: 'Monatlicher Termin',
+    date: '2026-12-05T13:30:00.000Z',
+    recurrence: 'monthly',
+    occurrenceCount: 2,
+    location: 'Berlin',
+    description: 'Test',
+  }], new Date('2026-12-01T00:00:00.000Z'));
+
+  assert.equal(occurrences.length, 2);
+  assert.equal(formatEventDate(occurrences[0].date), '5. Dezember 2026 · 14:30 Uhr');
+  assert.equal(formatEventDate(occurrences[1].date), '5. Januar 2027 · 14:30 Uhr');
+});
+
 test('YouTube accepts supported video URLs, rejects lookalike hosts and malformed IDs', () => {
   const id = 'dQw4w9WgXcQ';
   for (const url of [`https://youtu.be/${id}`, `https://www.youtube.com/watch?v=${id}&t=2`, `https://youtube.com/shorts/${id}`, `https://www.youtube-nocookie.com/embed/${id}`]) {

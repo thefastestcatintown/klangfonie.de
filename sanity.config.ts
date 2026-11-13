@@ -68,12 +68,12 @@ export default defineConfig({
                   .items([
                     pageCopyDocument(S, 'Texte', 'live'),
                     serviceDocument(S, 'Bild', 'live'),
-                    S.documentTypeListItem('event').title('Konzerte & Termine'),
                     S.listItem()
                       .title('Musikvideo')
                       .child(S.document().schemaType('video').documentId('video-featured').title('Musikvideo')),
                   ]),
               ),
+            S.documentTypeListItem('event').title('Konzerte & Termine'),
             S.listItem()
               .title('Über Daniela')
               .child(

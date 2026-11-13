@@ -63,8 +63,10 @@ export function expandRecurringEvents<T extends Event>(events: T[], now = new Da
     if (Number.isNaN(start.getTime())) return [];
     const duration = event.endDate ? Math.max(0, new Date(event.endDate).getTime() - start.getTime()) : undefined;
     const occurrences: T[] = [];
+    const configuredLimit = Number.isInteger(event.occurrenceCount) ? event.occurrenceCount! : limitPerSeries;
+    const seriesLimit = Math.max(1, Math.min(configuredLimit, 36));
 
-    for (let index = 0; index < 2400 && occurrences.length < limitPerSeries; index += 1) {
+    for (let index = 0; index < 2400 && occurrences.length < seriesLimit; index += 1) {
       const occurrenceStart = occurrenceAt(start, event.recurrence, index);
       if (event.repeatUntil && berlinDate(occurrenceStart) > event.repeatUntil) break;
       if (occurrenceStart < now) continue;
