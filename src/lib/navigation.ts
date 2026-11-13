@@ -12,7 +12,7 @@ export const aboutLinks = [
 ];
 
 export const navigationLinks = [
-  { href: '/yoga', label: 'Retreats' },
+  { href: '/retreats', label: 'Retreats' },
   { href: '/live', label: 'Musik' },
   { href: '/ueber-daniela/intention', label: 'Über mich' },
   { href: '/termine', label: 'Termine' },
@@ -32,7 +32,7 @@ const englishAboutLinks = [
 ];
 
 const englishNavigationLinks = [
-  { href: '/yoga', label: 'Retreats' },
+  { href: '/retreats', label: 'Retreats' },
   { href: '/live', label: 'Music' },
   { href: '/ueber-daniela/intention', label: 'About me' },
   { href: '/termine', label: 'Events' },

@@ -30,7 +30,7 @@ export const fallbackServices: Service[] = [
   {
     title: 'Yoga & Handpan', slug: 'yoga', category: 'Yoga',
     shortDescription: 'Musik, die Bewegung, Atem und Stille begleitet, ohne sich in den Vordergrund zu drängen.',
-    headline: 'Live-Klang für deine Yogaklasse.', ctaLabel: 'Gemeinsame Klasse anfragen', ctaUrl: '/kontakt?interesse=yoga', sortOrder: 20,
+    headline: 'Live-Klang für dein Retreat.', ctaLabel: 'Retreat anfragen', ctaUrl: '/kontakt?interesse=retreat', sortOrder: 20,
   },
   {
     title: 'Live & Band', slug: 'live', category: 'Live',

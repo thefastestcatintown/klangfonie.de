@@ -1,0 +1,23 @@
+---
+import ServicePage from '../components/ServicePage.astro';
+import yogaImage from '../assets/images/originals/sample-yoga-handpan.png';
+import { copyList, copyParagraphs, getPageCopy, getService, localizeService } from '../lib/sanity';
+import { defaultsFor } from '../content/page-copy-defaults';
+import type { Language } from '../lib/i18n';
+interface Props { lang?: Language; }
+const { lang = 'de' } = Astro.props;
+const service = localizeService(await getService('Yoga'), lang);
+const copy = await getPageCopy('yoga', lang, defaultsFor('yoga', lang));
+---
+<ServicePage
+  service={{ ...service, body: undefined }}
+  lang={lang}
+  title={copy.title}
+  fallbackImage={yogaImage}
+  fallbackImageAlt={copy.imageAlt}
+  ctaLabel={copy.cta}
+  ctaUrl="/kontakt?interesse=retreat"
+  fallbackBody={copyParagraphs(copy.body)}
+  bullets={copyList(copy.bullets)}
+  closingBody={copyParagraphs(copy.closing)}
+ />

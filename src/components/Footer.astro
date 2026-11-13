@@ -10,7 +10,7 @@ const { settings } = Astro.props;
 const language = languageFromPath(Astro.url.pathname);
 const copy = await getPageCopy('global', language, defaultsFor('global', language));
 const labels: Record<string, string> = {
-  '/unterricht': copy.coachingLabel, '/yoga': copy.navRetreats, '/live': copy.navMusic,
+  '/unterricht': copy.coachingLabel, '/retreats': copy.navRetreats, '/live': copy.navMusic,
   '/ueber-daniela/intention': copy.navAbout, '/termine': copy.navEvents, '/kontakt': copy.navContact,
 };
 const footerLinks = navigationFor(language).footerLinks.map((item) => ({ ...item, label: labels[item.href] || item.label }));
