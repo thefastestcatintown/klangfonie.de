@@ -32,6 +32,18 @@ export const pageCopy = defineType({
       },
     }),
     defineField({
+      name: 'image',
+      title: 'Bild auf dieser Seite',
+      description: 'Dieses Bild erscheint nur auf dieser „Über mich“-Seite. Über „Bearbeiten“ kannst du den Fokuspunkt und damit den sichtbaren Bildausschnitt festlegen.',
+      type: 'image',
+      options: { hotspot: true },
+      hidden: ({ document }) => !['about-intention', 'about-story'].includes(String(document?.pageId || '')),
+      fields: [
+        defineField({ name: 'alt', title: 'Bildbeschreibung für Screenreader', type: 'string', validation: (rule) => rule.required() }),
+        defineField({ name: 'altEn', title: 'Englische Bildbeschreibung (optional)', type: 'string' }),
+      ],
+    }),
+    defineField({
       name: 'entries',
       title: 'Texte auf der Seite',
       description: 'Öffne einen Eintrag, um den deutschen Text oder bei Bedarf die englische Übersetzung zu ändern.',

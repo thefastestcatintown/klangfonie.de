@@ -1,12 +1,16 @@
 ---
 import AboutDetailPage from '../../components/AboutDetailPage.astro';
 import { fallbackAbout } from '../../lib/fallbacks';
-import { copyParagraphs, getAbout, getPageCopy } from '../../lib/sanity';
+import { copyParagraphs, getAbout, getPageCopy, getPageImage } from '../../lib/sanity';
 import { defaultsFor } from '../../content/page-copy-defaults';
 import type { Language } from '../../lib/i18n';
 interface Props { lang?: Language; }
 const { lang = 'de' } = Astro.props;
-const [about, copy] = await Promise.all([getAbout(), getPageCopy('about-story', lang, defaultsFor('about-story', lang))]);
+const [about, copy, portrait] = await Promise.all([
+  getAbout(),
+  getPageCopy('about-story', lang, defaultsFor('about-story', lang)),
+  getPageImage('about-story'),
+]);
 const milestones = about.milestones?.length ? about.milestones : fallbackAbout.milestones;
 const milestonesEn = milestones?.map((item) => ({
   ...item,
@@ -28,4 +32,4 @@ const milestonesEn = milestones?.map((item) => ({
     .replace('Dozent der Elementaren Musikpädagogik', 'lecturer in elementary music education')),
 }));
 ---
-<AboutDetailPage lang={lang} title={copy.title} paragraphs={copyParagraphs(copy.body)} milestones={lang === 'en' ? milestonesEn : milestones} />
+<AboutDetailPage lang={lang} title={copy.title} paragraphs={copyParagraphs(copy.body)} milestones={lang === 'en' ? milestonesEn : milestones} portrait={portrait} />

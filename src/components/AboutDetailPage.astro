@@ -8,6 +8,7 @@ import { navigationFor } from '../lib/navigation';
 import '../styles/coaching.css';
 import { getAbout, getPageCopy, imageSrcSet, imageUrl } from '../lib/sanity';
 import { defaultsFor } from '../content/page-copy-defaults';
+import type { SanityImage } from '../lib/types';
 
 interface Milestone {
   year?: string;
@@ -20,9 +21,10 @@ interface Props {
   paragraphs: string[];
   milestones?: Milestone[];
   lang?: Language;
+  portrait?: SanityImage;
 }
 
-const { title, paragraphs, milestones = [], lang = 'de' } = Astro.props;
+const { title, paragraphs, milestones = [], lang = 'de', portrait } = Astro.props;
 const current = contentPath(Astro.url.pathname);
 const { aboutLinks } = navigationFor(lang);
 const [fallbackPortrait, globalCopy, about] = await Promise.all([
@@ -30,9 +32,10 @@ const [fallbackPortrait, globalCopy, about] = await Promise.all([
   getPageCopy('global', lang, defaultsFor('global', lang)),
   getAbout(),
 ]);
-const cmsPortrait = imageUrl(about.portrait, 1200, 1600);
-const cmsPortraitSrcSet = imageSrcSet(about.portrait, [480, 800, 1200], 4 / 3);
-const portraitAlt = about.portrait?.alt || globalCopy.aboutImageAlt;
+const selectedPortrait = portrait || about.portrait;
+const cmsPortrait = imageUrl(selectedPortrait, 1200, 1600);
+const cmsPortraitSrcSet = imageSrcSet(selectedPortrait, [480, 800, 1200], 4 / 3);
+const portraitAlt = (lang === 'en' ? selectedPortrait?.altEn || selectedPortrait?.alt : selectedPortrait?.alt) || globalCopy.aboutImageAlt;
 ---
 <BaseLayout image={cmsPortrait || fallbackPortrait.src} lang={lang}>
   <section class="page-hero about-hero">

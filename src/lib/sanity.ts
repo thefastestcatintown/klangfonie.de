@@ -35,6 +35,14 @@ export async function getPageCopy(
   }, { ...fallback });
 }
 
+export async function getPageImage(pageId: string): Promise<SanityImage | undefined> {
+  return safeFetch<SanityImage | undefined>(
+    `*[_type == "pageCopy" && pageId == $pageId][0].image`,
+    { pageId },
+    undefined,
+  );
+}
+
 export function copyParagraphs(value: string): string[] {
   return value.split(/\n\s*\n/).map((paragraph) => paragraph.trim()).filter(Boolean);
 }

@@ -1,10 +1,13 @@
 ---
 import AboutDetailPage from '../../components/AboutDetailPage.astro';
-import { copyParagraphs, getPageCopy } from '../../lib/sanity';
+import { copyParagraphs, getPageCopy, getPageImage } from '../../lib/sanity';
 import { defaultsFor } from '../../content/page-copy-defaults';
 import type { Language } from '../../lib/i18n';
 interface Props { lang?: Language; }
 const { lang = 'de' } = Astro.props;
-const copy = await getPageCopy('about-intention', lang, defaultsFor('about-intention', lang));
+const [copy, portrait] = await Promise.all([
+  getPageCopy('about-intention', lang, defaultsFor('about-intention', lang)),
+  getPageImage('about-intention'),
+]);
 ---
-<AboutDetailPage lang={lang} title={copy.title} paragraphs={copyParagraphs(copy.body)} />
+<AboutDetailPage lang={lang} title={copy.title} paragraphs={copyParagraphs(copy.body)} portrait={portrait} />

@@ -13,6 +13,7 @@ export const aboutPage = defineType({
       description: 'Dieses Bild erscheint bei „Meine Intention“ und „Meine Geschichte“. Der Bildausschnitt kann über den Fokuspunkt angepasst werden.',
       type: 'image',
       options: { hotspot: true },
+      hidden: true,
       fields: [{ name: 'alt', title: 'Bildbeschreibung für Screenreader', type: 'string', validation: (rule) => rule.required() }],
     }),
     defineField({ name: 'body', title: 'Haupttext', type: 'blockContent', hidden: true }),
