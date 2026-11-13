@@ -5,14 +5,15 @@ import CoachingHero from '../components/CoachingHero.astro';
 import Button from '../components/Button.astro';
 import '../styles/coaching.css';
 import learningImage from '../assets/images/originals/sample-learning-guidance.png';
-import { copyList, copyParagraphs, getPageCopy, getService, imageUrl, localizeService } from '../lib/sanity';
+import { copyList, copyParagraphs, getPageCopy, getService, imageSrcSet, imageUrl, localizeService } from '../lib/sanity';
 import { defaultsFor } from '../content/page-copy-defaults';
 import { localizePath, type Language } from '../lib/i18n';
 interface Props { lang?: Language; }
 const { lang = 'de' } = Astro.props;
 const service = localizeService(await getService('Unterricht'), lang);
 const copy = await getPageCopy('unterricht', lang, defaultsFor('unterricht', lang));
-const image = imageUrl(service.image, 1200);
+const image = imageUrl(service.image, 1200, 900);
+const imageSources = imageSrcSet(service.image, [480, 800, 1200], 3 / 4);
 ---
 
 <BaseLayout image={image} lang={lang}>
@@ -23,7 +24,7 @@ const image = imageUrl(service.image, 1200);
     <div class="container rich-layout">
       <aside>
         {image ? (
-          <div class="feature-image"><img src={image} alt={service.image?.alt || copy.imageAlt} width="1200" /></div>
+          <div class="feature-image"><img src={image} srcset={imageSources} sizes="(min-width: 64rem) 42vw, calc(100vw - 2rem)" alt={service.image?.alt || copy.imageAlt} width="1200" height="900" loading="eager" fetchpriority="high" /></div>
         ) : (
           <div class="feature-image"><Image src={learningImage} alt={copy.imageAlt} width={1200} /></div>
         )}

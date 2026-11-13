@@ -23,7 +23,7 @@ export const service = defineType({
     defineField({ name: 'headlineEn', title: 'Seitenüberschrift (Englisch)', type: 'string', hidden: true }),
     defineField({ name: 'body', title: 'Ausführlicher Text', type: 'blockContent', hidden: true }),
     defineField({ name: 'bodyEn', title: 'Ausführlicher Text (Englisch)', type: 'blockContent', hidden: true }),
-    defineField({ name: 'image', title: 'Bild', type: 'image', options: { hotspot: true }, fields: [
+    defineField({ name: 'image', title: 'Bild', description: 'Nach dem Hochladen „Bearbeiten“ öffnen und den Fokuspunkt auf das wichtigste Motiv setzen. Die Website erzeugt daraus automatisch passende Größen und Bildformate.', type: 'image', options: { hotspot: true }, fields: [
       { name: 'alt', title: 'Alternativtext (Deutsch)', type: 'string', validation: (rule) => rule.required() },
       { name: 'altEn', title: 'Alternativtext (Englisch, optional)', type: 'string' },
     ] }),

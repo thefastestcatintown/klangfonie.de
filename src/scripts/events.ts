@@ -1,7 +1,7 @@
 import { formatEventSchedule } from '../lib/dates';
 import { localizeEvent } from '../lib/event-translations';
 import { expandRecurringEvents } from '../lib/event-recurrence';
-import { imageUrl } from '../lib/sanity';
+import { imageSrcSet, imageUrl } from '../lib/sanity';
 import type { SanityImage } from '../lib/types';
 
 type PublicEvent = {
@@ -85,6 +85,8 @@ function createEvent(event: PublicEvent): HTMLElement {
         const image = document.createElement('img');
         image.className = 'event-image';
         image.src = safeImageUrl.href;
+        image.srcset = imageSrcSet(event.image, [480, 720, 960], 9 / 16) || '';
+        image.sizes = layout === 'list' ? '(min-width: 52rem) 36vw, calc(100vw - 2rem)' : '(min-width: 64rem) 33vw, calc(100vw - 2rem)';
         image.alt = event.imageAlt || event.title;
         image.width = 960;
         image.height = 540;

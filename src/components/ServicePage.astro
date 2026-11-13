@@ -6,7 +6,7 @@ import Button from './Button.astro';
 import DecorativeHeading from './DecorativeHeading.astro';
 import RichText from './RichText.astro';
 import type { Service } from '../lib/types';
-import { getPageCopy, imageUrl } from '../lib/sanity';
+import { getPageCopy, imageSrcSet, imageUrl } from '../lib/sanity';
 import { defaultsFor } from '../content/page-copy-defaults';
 import { localizePath, type Language } from '../lib/i18n';
 
@@ -26,7 +26,8 @@ interface Props {
   lang?: Language;
 }
 const { service, title, contentHeading, intro, bullets, fallbackBody, closingBody = [], fallbackImage, fallbackImageAlt = service.title, note, ctaLabel, ctaUrl, lang = 'de' } = Astro.props;
-const image = imageUrl(service.image, 1200);
+const image = imageUrl(service.image, 1200, 900);
+const imageSources = imageSrcSet(service.image, [480, 800, 1200], 3 / 4);
 const pageTitle = title || service.headline;
 const globalCopy = await getPageCopy('global', lang, defaultsFor('global', lang));
 ---
@@ -37,7 +38,7 @@ const globalCopy = await getPageCopy('global', lang, defaultsFor('global', lang)
   <section class="section">
     <div class="container rich-layout">
       <aside>
-        {image ? <div class="feature-image"><img src={image} alt={lang === 'en' ? fallbackImageAlt : (service.image?.alt || service.title)} width="1200" /></div> : fallbackImage ? (
+        {image ? <div class="feature-image"><img src={image} srcset={imageSources} sizes="(min-width: 64rem) 42vw, calc(100vw - 2rem)" alt={service.image?.alt || fallbackImageAlt} width="1200" height="900" loading="eager" fetchpriority="high" /></div> : fallbackImage ? (
           <div class="feature-image"><Image src={fallbackImage} alt={fallbackImageAlt} width={1200} /></div>
         ) : (
           <div class="image-placeholder"><span>{globalCopy.imagePlaceholder}</span></div>
