@@ -1,26 +1,40 @@
 ---
 import { Image } from 'astro:assets';
-import visitCardLockup from '../assets/images/originals/klangfonia-visitenkarte-lockup.png';
+import visitCardHandpan from '../assets/images/originals/klangfonia-visitenkarte-handpan.png';
+import visitCardWordmark from '../assets/images/originals/klangfonia-visitenkarte-wordmark.png';
 ---
 <span class="brand-lockup" aria-hidden="true" style="display: inline-flex; flex-direction: row; align-items: center;">
   <Image
-    class="brand-lockup-image"
-    src={visitCardLockup}
+    class="brand-handpan"
+    src={visitCardHandpan}
     alt=""
-    width={508}
-    widths={[300, 380, 508]}
-    sizes="(max-width: 24rem) 150px, (max-width: 59.99rem) 170px, 190px"
+    width={188}
+    widths={[152, 168, 188]}
+    sizes="(max-width: 24rem) 76px, (max-width: 59.99rem) 84px, 94px"
+    format="png"
+    loading="eager"
+  />
+  <Image
+    class="brand-wordmark"
+    src={visitCardWordmark}
+    alt=""
+    width={272}
+    widths={[216, 240, 272]}
+    sizes="(max-width: 24rem) 108px, (max-width: 59.99rem) 120px, 136px"
     format="png"
     loading="eager"
   />
 </span>
 <style>
-  .brand-lockup { display: inline-flex; align-items: center; color: var(--color-ink); }
-  .brand-lockup-image { display: block; width: 11.875rem; height: auto; }
+  .brand-lockup { display: inline-flex; align-items: center; gap: 0; color: var(--color-ink); }
+  .brand-handpan { display: block; width: 5.875rem; height: auto; }
+  .brand-wordmark { display: block; width: 8.5rem; height: auto; margin-left: 0.125rem; }
   @media (max-width: 59.99rem) {
-    .brand-lockup-image { width: 10.625rem; }
+    .brand-handpan { width: 5.25rem; }
+    .brand-wordmark { width: 7.5rem; margin-left: 0.1rem; }
   }
   @media (max-width: 24rem) {
-    .brand-lockup-image { width: 9.375rem; }
+    .brand-handpan { width: 4.75rem; }
+    .brand-wordmark { width: 6.75rem; margin-left: 0.1rem; }
   }
 </style>
