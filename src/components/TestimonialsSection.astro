@@ -42,10 +42,60 @@ if (text) copy.text = text;
       />
     </div>
 
-    <div class="testimonials__grid">
-      {cards.map((testimonial) => (
-        <TestimonialCard testimonial={testimonial} isExample={false} lang={language} />
-      ))}
+    <div
+      class="testimonials__slider"
+      data-testimonials-slider
+      role="region"
+      aria-roledescription={language === 'en' ? 'carousel' : 'Karussell'}
+      aria-label={copy.title}
+    >
+      {cards.length > 1 && (
+        <div class="testimonials__controls">
+          <p class="testimonials__position" aria-live="polite" aria-atomic="true">
+            <span data-testimonials-current>1</span>
+            <span aria-hidden="true"> / </span>
+            <span class="sr-only">{language === 'en' ? 'of' : 'von'} </span>
+            <span>{cards.length}</span>
+          </p>
+          <div class="testimonials__buttons">
+            <button
+              class="testimonials__button"
+              type="button"
+              data-testimonials-previous
+              aria-label={language === 'en' ? 'Show previous testimonial' : 'Vorherige Stimme anzeigen'}
+            >
+              <span aria-hidden="true">&#8592;</span>
+            </button>
+            <button
+              class="testimonials__button"
+              type="button"
+              data-testimonials-next
+              aria-label={language === 'en' ? 'Show next testimonial' : 'Nächste Stimme anzeigen'}
+            >
+              <span aria-hidden="true">&#8594;</span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div
+        class="testimonials__track"
+        data-testimonials-track
+        tabindex={cards.length > 1 ? '0' : undefined}
+        aria-label={language === 'en' ? 'Participant testimonials' : 'Stimmen der Teilnehmenden'}
+      >
+        {cards.map((testimonial, index) => (
+          <div
+            class="testimonials__slide"
+            data-testimonials-slide
+            role="group"
+            aria-roledescription={language === 'en' ? 'slide' : 'Eintrag'}
+            aria-label={`${index + 1} ${language === 'en' ? 'of' : 'von'} ${cards.length}`}
+          >
+            <TestimonialCard testimonial={testimonial} isExample={false} lang={language} />
+          </div>
+        ))}
+      </div>
     </div>
   </div>
 </section>}
@@ -57,15 +107,166 @@ if (text) copy.text = text;
       radial-gradient(circle at 12% 18%, rgb(142 155 127 / 0.16), transparent 22rem),
       var(--color-linen);
   }
-  .testimonials__grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 28rem), 1fr));
-    gap: clamp(1rem, 2vw, 1.5rem);
+  .testimonials__slider {
     max-width: 72rem;
     margin-top: clamp(2.25rem, 5vw, 4rem);
     margin-inline: auto;
   }
+  .testimonials__controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+    min-height: 3rem;
+    margin-bottom: 1rem;
+  }
+  .testimonials__position {
+    min-width: 3.5rem;
+    margin: 0;
+    color: var(--color-steel);
+    font-size: 0.82rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.06em;
+    text-align: center;
+  }
+  .testimonials__buttons { display: flex; gap: 0.55rem; }
+  .testimonials__button {
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    border: 1px solid rgb(38 53 47 / 0.2);
+    border-radius: 999px;
+    background: rgb(255 253 247 / 0.76);
+    color: var(--color-ink);
+    cursor: pointer;
+    font: inherit;
+    font-size: 1.2rem;
+    line-height: 1;
+    place-items: center;
+    transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease, transform 180ms ease;
+  }
+  .testimonials__button:hover:not(:disabled) {
+    border-color: var(--color-clay);
+    background: var(--color-clay);
+    color: var(--color-cream);
+    transform: translateY(-1px);
+  }
+  .testimonials__button:focus-visible {
+    outline: 3px solid rgb(155 96 62 / 0.32);
+    outline-offset: 3px;
+  }
+  .testimonials__button:disabled { cursor: default; opacity: 0.35; }
+  .testimonials__track {
+    display: flex;
+    gap: clamp(1rem, 2vw, 1.5rem);
+    padding: 0.25rem 0.15rem 1.25rem;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-behavior: smooth;
+    scroll-padding-inline: 0.15rem;
+    scroll-snap-type: inline mandatory;
+    scrollbar-width: none;
+    touch-action: pan-x pan-y;
+  }
+  .testimonials__track::-webkit-scrollbar { display: none; }
+  .testimonials__track:focus-visible {
+    border-radius: var(--radius-lg);
+    outline: 3px solid rgb(155 96 62 / 0.25);
+    outline-offset: 4px;
+  }
+  .testimonials__slide {
+    flex: 0 0 calc((100% - clamp(1rem, 2vw, 1.5rem)) / 2);
+    min-width: 0;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+  .testimonials__slide > :global(*) { height: 100%; }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  @media (max-width: 47.99rem) {
+    .testimonials__controls { margin-bottom: 0.75rem; }
+    .testimonials__slide { flex-basis: min(88%, 32rem); }
+  }
+  @media (max-width: 29.99rem) {
+    .testimonials__slider {
+      width: calc(100% + var(--container-gutter));
+      margin-right: calc(var(--container-gutter) * -1);
+    }
+    .testimonials__controls { padding-right: var(--container-gutter); }
+    .testimonials__track { padding-right: var(--container-gutter); }
+    .testimonials__slide { flex-basis: min(86%, 25rem); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .testimonials__track { scroll-behavior: auto; }
+    .testimonials__button { transition: none; }
+  }
   @media (min-width: 60rem) and (max-height: 56rem) {
-    .testimonials__grid { gap: 1rem; margin-top: 2rem; }
+    .testimonials__slider { margin-top: 2rem; }
   }
 </style>
+
+<script>
+  function initTestimonialSlider(slider: HTMLElement) {
+    if (slider.dataset.ready === 'true') return;
+
+    const track = slider.querySelector<HTMLElement>('[data-testimonials-track]');
+    const slides = [...slider.querySelectorAll<HTMLElement>('[data-testimonials-slide]')];
+    const previous = slider.querySelector<HTMLButtonElement>('[data-testimonials-previous]');
+    const next = slider.querySelector<HTMLButtonElement>('[data-testimonials-next]');
+    const current = slider.querySelector<HTMLElement>('[data-testimonials-current]');
+    if (!track || slides.length < 2 || !previous || !next || !current) return;
+
+    slider.dataset.ready = 'true';
+    let activeIndex = 0;
+    let frame = 0;
+
+    const closestSlideIndex = () => {
+      const trackLeft = track.getBoundingClientRect().left;
+      return slides.reduce((closest, slide, index) => {
+        const distance = Math.abs(slide.getBoundingClientRect().left - trackLeft);
+        return distance < closest.distance ? { index, distance } : closest;
+      }, { index: 0, distance: Number.POSITIVE_INFINITY }).index;
+    };
+
+    const update = () => {
+      activeIndex = closestSlideIndex();
+      current.textContent = String(activeIndex + 1);
+      previous.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 2;
+    };
+
+    const showSlide = (index: number) => {
+      slides[Math.max(0, Math.min(slides.length - 1, index))]?.scrollIntoView({
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+        block: 'nearest',
+        inline: 'start',
+      });
+    };
+
+    previous.addEventListener('click', () => showSlide(activeIndex - 1));
+    next.addEventListener('click', () => showSlide(activeIndex + 1));
+    track.addEventListener('keydown', (event) => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+      event.preventDefault();
+      showSlide(activeIndex + (event.key === 'ArrowRight' ? 1 : -1));
+    });
+    track.addEventListener('scroll', () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(update);
+    }, { passive: true });
+    new ResizeObserver(update).observe(track);
+    update();
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-testimonials-slider]').forEach(initTestimonialSlider);
+</script>

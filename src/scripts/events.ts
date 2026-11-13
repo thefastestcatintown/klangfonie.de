@@ -34,6 +34,7 @@ const bookLabel = section?.dataset.bookLabel || (language === 'en' ? 'Book event
 const emptyLabel = section?.dataset.emptyLabel || (language === 'en' ? 'New concert dates will be published here.' : 'Neue Konzerttermine werden hier veröffentlicht.');
 const limit = section?.dataset.limit ? Number(section.dataset.limit) : undefined;
 const layout = section?.dataset.layout === 'list' ? 'list' : 'cards';
+const eventHeadingLevel = section?.dataset.eventHeadingLevel === 'h2' ? 'h2' : 'h3';
 
 if (section && list && /^[a-z0-9-]+$/.test(projectId) && /^[a-z0-9_-]+$/.test(dataset)) {
   const query = '*[_type == "event" && (!defined(date) || date >= now() || (defined(recurrence) && recurrence != "none"))] | order(defined(date) desc, date asc, _createdAt desc){_id,title,titleEn,date,endDate,planningLabel,planningLabelEn,recurrence,repeatUntil,location,locationEn,description,descriptionEn,ctaType,externalUrl,image,"imageAlt":select($language == "en" => coalesce(image.altEn,image.alt,titleEn,title), coalesce(image.alt,title))}';
@@ -61,7 +62,7 @@ function createEvent(event: PublicEvent): HTMLElement {
   const meta = document.createElement('header');
   const schedule = event.date ? document.createElement('time') : document.createElement('p');
   const content = document.createElement('div');
-  const title = document.createElement('h3');
+  const title = document.createElement(eventHeadingLevel);
   const location = document.createElement('p');
 
   meta.className = 'event-meta';

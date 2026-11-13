@@ -15,6 +15,8 @@ const events = typeof limit === 'number' ? allEvents.slice(0, limit) : allEvents
 const globalCopy = await getPageCopy('global', language, defaultsFor('global', language));
 const copy = { heading: language === 'en' ? 'Concerts & events' : 'Konzerte & Termine', more: globalCopy.eventMore, book: globalCopy.eventBook, empty: globalCopy.eventEmpty };
 if (heading) copy.heading = heading;
+const eventHeadingLevel = headingLevel === 'h1' ? 'h2' : 'h3';
+const EventHeading = eventHeadingLevel;
 const sanityProjectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID;
 const sanityDataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
 
@@ -31,6 +33,7 @@ const sanityDataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
     data-empty-label={copy.empty}
     data-limit={limit}
     data-layout={layout}
+    data-event-heading-level={eventHeadingLevel}
   >
     <div class="container">
       <DecorativeHeading level={headingLevel} class="page-title" text={copy.heading} />
@@ -49,7 +52,7 @@ const sanityDataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
               </header>
               {eventImage && <img class="event-image" src={eventImage} srcset={eventImageSrcSet} sizes={layout === 'list' ? '(min-width: 52rem) 28vw, calc(100vw - 2rem)' : '(min-width: 64rem) 33vw, calc(100vw - 2rem)'} alt={eventImageAlt} width="960" height="540" loading="lazy" decoding="async" />}
               <div class="event-content">
-                <h3>{event.title}</h3>
+                <EventHeading>{event.title}</EventHeading>
                 <p class="event-location">{event.location}</p>
                 <p>{event.description}</p>
                 {event.externalUrl && <a href={event.externalUrl} target="_blank" rel="noreferrer">{event.ctaType === 'book' ? copy.book : copy.more} ↗</a>}
@@ -76,7 +79,7 @@ const sanityDataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
   .events :global(.event-date)::before { content: ''; width: 0.5rem; height: 0.5rem; flex: 0 0 auto; border-radius: 50%; background: var(--color-clay); box-shadow: 0 0 0 0.3rem rgb(155 96 62 / 0.12); }
   .events :global(.event-image) { width: 100%; height: auto; aspect-ratio: 16 / 9; border-bottom: 1px solid var(--color-border); object-fit: cover; object-position: center 32%; }
   .events :global(.event-content) { display: flex; flex: 1; align-items: flex-start; flex-direction: column; padding: clamp(1.35rem, 3vw, 2.25rem); }
-  .events :global(h3) { max-width: 32ch; font-size: clamp(1.4rem, 2.4vw, 1.9rem); line-height: 1.18; }
+  .events :global(h2), .events :global(h3) { max-width: 32ch; font-size: clamp(1.4rem, 2.4vw, 1.9rem); line-height: 1.18; }
   .events :global(p) { color: var(--color-steel); line-height: 1.7; }
   .events :global(.event-location) { position: relative; margin: 0.75rem 0 1rem; padding-left: 1.15rem; color: var(--color-ink); font-size: 0.88rem; font-weight: 700; line-height: 1.55; }
   .events :global(.event-location)::before { content: ''; position: absolute; top: 0.55em; left: 0; width: 0.45rem; height: 0.45rem; border: 1px solid var(--color-clay); border-radius: 50%; }
