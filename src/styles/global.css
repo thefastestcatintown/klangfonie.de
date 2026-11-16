@@ -56,7 +56,7 @@ body {
   overflow-x: hidden;
   text-rendering: optimizeLegibility;
 }
-body.menu-open { overflow: hidden; }
+html.menu-open, body.menu-open { overflow: hidden; overscroll-behavior: none; }
 img, svg, video { display: block; max-width: 100%; }
 button, input, select, textarea { font: inherit; }
 a { color: inherit; text-decoration-thickness: 0.08em; text-underline-offset: 0.2em; }
