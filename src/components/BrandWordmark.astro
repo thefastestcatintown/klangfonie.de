@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import visitCardWordmark from '../assets/images/originals/klangfonia-visitenkarte-wordmark-clean.png';
+import visitCardWordmark from '../assets/images/originals/klangfonia-logo-footer.png';
 
 interface Props {
   variant?: 'header' | 'footer';
@@ -15,12 +15,11 @@ const { variant = 'header' } = Astro.props;
       class="wordmark-artwork"
       src={visitCardWordmark}
       alt=""
-      width={598}
-      widths={[420, 520, 598]}
-      sizes="(max-width: 24rem) 70vw, 17rem"
+      width={1264}
+      widths={[420, 632, 900, 1264]}
+      sizes="(max-width: 24rem) 78vw, 18rem"
       format="png"
     />
-    {variant === 'footer' && <span class="wordmark-domain">.de</span>}
   </span>
 </span>
 
@@ -28,20 +27,8 @@ const { variant = 'header' } = Astro.props;
   .original-wordmark { display: inline-flex; flex: 0 0 auto; color: var(--color-ink); }
   .wordmark-lockup { position: relative; display: block; width: var(--wordmark-width); }
   .wordmark-artwork { display: block; width: 100%; height: auto; }
-  .wordmark-domain {
-    position: absolute;
-    top: 58%;
-    right: -1.7rem;
-    color: var(--color-clay-dark);
-    font-family: var(--font-display);
-    font-size: clamp(0.78rem, 2.7vw, 1rem);
-    font-weight: 700;
-    letter-spacing: -0.04em;
-    line-height: 1;
-    transform: translateY(-50%);
-  }
   .original-wordmark--header { --wordmark-width: 13rem; }
-  .original-wordmark--footer { --wordmark-width: min(16.3rem, calc(78vw - 1.7rem)); margin-right: 1.7rem; }
+  .original-wordmark--footer { --wordmark-width: min(18rem, 78vw); }
   @media (max-width: 59.99rem) {
     .original-wordmark--header { --wordmark-width: 11rem; }
   }

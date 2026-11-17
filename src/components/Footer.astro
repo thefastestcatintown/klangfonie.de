@@ -27,10 +27,6 @@ const socials = [
     <div>
       <a class="footer-brand" href={localizePath('/', language)} aria-label={copy.homeLabel}>
         <BrandWordmark variant="footer" />
-        <span class="footer-brand-copy">
-          <span class="footer-tagline">{copy.footerTagline}</span>
-          <span class="footer-name">Daniela Schneider</span>
-        </span>
       </a>
       <a class="footer-newsletter" href={localizePath(`/kontakt#${language === 'en' ? 'mailing-list' : 'verteiler'}`, language)}>
         <span>{copy.footerNewsletter}</span><span aria-hidden="true">↗</span>
@@ -76,9 +72,6 @@ const socials = [
   .footer a { padding-block: 0.2rem; overflow-wrap: anywhere; color: inherit; text-decoration: none; }
   .footer a:hover { color: var(--color-clay-dark); text-decoration: underline; text-underline-offset: 0.25em; }
   .footer-brand { width: min(18rem, 78vw); max-width: 100%; display: inline-flex; align-items: flex-start; flex-direction: column; gap: 0.2rem; margin-bottom: 0.5rem; color: var(--color-ink) !important; text-decoration: none !important; }
-  .footer-brand-copy { display: flex; align-items: center; flex-direction: column; width: 71%; margin-left: 29%; line-height: 1.15; text-align: center; white-space: nowrap; }
-  .footer-tagline { color: var(--color-ink); font-family: var(--font-display); font-size: clamp(0.88rem, 2.8vw, 1.05rem); font-weight: 400; letter-spacing: -0.015em; }
-  .footer-name { margin-top: 0.3rem; color: var(--color-clay-dark); font-family: var(--font-display); font-size: clamp(0.88rem, 2.8vw, 1.05rem); font-weight: 700; letter-spacing: -0.02em; }
   .footer-newsletter { display: inline-flex; min-height: 2.75rem; align-items: center; gap: 0.65rem; margin-top: 1.1rem; padding: 0.65rem 1rem !important; border: 1px solid rgb(38 53 47 / 0.28); border-radius: 99rem; color: var(--color-ink); font-size: 0.8rem; font-weight: 700; text-decoration: none !important; transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease; }
   .footer-newsletter:hover { border-color: var(--color-clay-dark); background: rgb(252 250 245 / 0.5); color: var(--color-clay-dark) !important; text-decoration: none !important; transform: translateY(-2px); }
   .footer-newsletter:focus-visible { outline: 2px solid var(--color-clay-dark); outline-offset: 3px; }
