@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { withBase, routePath, canonicalUrl } from '../src/lib/urls.ts';
 import { formatEventDate, formatEventSchedule } from '../src/lib/dates.ts';
-import { youtubeEmbedUrl } from '../src/lib/youtube.ts';
+import { youtubeEmbedUrl, youtubeVideoId } from '../src/lib/youtube.ts';
 import { serializeJsonLd, structuredData } from '../src/lib/seo.ts';
 import { contentPath, languageFromPath, languageRoute } from '../src/lib/i18n.ts';
 import { expandRecurringEvents } from '../src/lib/event-recurrence.ts';
@@ -98,6 +98,7 @@ test('an ongoing monthly event keeps producing future dates after its original d
 test('YouTube accepts supported video URLs, rejects lookalike hosts and malformed IDs', () => {
   const id = 'dQw4w9WgXcQ';
   for (const url of [`https://youtu.be/${id}`, `https://www.youtube.com/watch?v=${id}&t=2`, `https://youtube.com/shorts/${id}`, `https://www.youtube-nocookie.com/embed/${id}`]) {
+    assert.equal(youtubeVideoId(url), id);
     assert.equal(youtubeEmbedUrl(url), `https://www.youtube-nocookie.com/embed/${id}?rel=0`);
   }
   for (const url of ['https://not-youtu.be/dQw4w9WgXcQ', 'https://youtube.com.evil.test/watch?v=dQw4w9WgXcQ', 'https://youtube.com/@channel', 'https://youtu.be/abc', 'not a url', undefined]) {

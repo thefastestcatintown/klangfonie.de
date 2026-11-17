@@ -2,14 +2,20 @@
 import type { Video } from '../lib/types';
 import { getPageCopy } from '../lib/sanity';
 import { defaultsFor } from '../content/page-copy-defaults';
-import { youtubeEmbedUrl } from '../lib/youtube';
+import { youtubeEmbedUrl, youtubeThumbnailDataUrl } from '../lib/youtube';
 import { languageFromPath, localizePath, type Language } from '../lib/i18n';
 import DecorativeHeading from './DecorativeHeading.astro';
-interface Props { video: Video | null; headline?: string; text: string; lang?: Language; }
-const { video, headline, text, lang = languageFromPath(Astro.url.pathname) } = Astro.props;
-const embedUrl = youtubeEmbedUrl(video?.youtubeUrl);
+interface Props { videos: Video[]; headline?: string; text: string; lang?: Language; }
+const { videos, headline, text, lang = languageFromPath(Astro.url.pathname) } = Astro.props;
+const preparedVideos = (await Promise.all(videos.map(async (video) => ({
+  video,
+  embedUrl: youtubeEmbedUrl(video.youtubeUrl),
+  poster: await youtubeThumbnailDataUrl(video.youtubeUrl),
+})))).filter((item) => item.embedUrl);
 const globalCopy = await getPageCopy('global', lang, defaultsFor('global', lang));
-const copy = { consent: globalCopy.videoConsent, load: globalCopy.videoLoad, privacy: globalCopy.videoPrivacy, placeholder: globalCopy.videoPlaceholder, studio: globalCopy.videoStudio };
+const copy = { privacy: globalCopy.videoPrivacy, placeholder: globalCopy.videoPlaceholder, studio: globalCopy.videoStudio };
+const playLabel = lang === 'en' ? 'Play video' : 'Video abspielen';
+const consentNote = lang === 'en' ? 'Playing connects to YouTube.' : 'Beim Abspielen wird eine Verbindung zu YouTube hergestellt.';
 ---
 <section class="section video-section" id="musik">
   <div class="container">
@@ -17,24 +23,40 @@ const copy = { consent: globalCopy.videoConsent, load: globalCopy.videoLoad, pri
       {headline && <DecorativeHeading level="h2" text={headline} />}
       <p class="lead">{text}</p>
     </div>
-    <div class="video-frame">
-      {embedUrl ? (
-        <div class="video-consent" data-video-consent data-video-src={embedUrl} data-video-title={video?.title || 'Klangfonia Video'}>
-          <span class="play" aria-hidden="true">▶</span>
-          <div class="video-consent__copy">
-            <strong>{video?.title || 'Klangfonia Video'}</strong>
-            <p>{copy.consent}</p>
-            <button type="button" data-video-load>{copy.load}</button>
-            <a href={localizePath('/datenschutz', lang)}>{copy.privacy}</a>
-          </div>
-        </div>
-      ) : (
+    {preparedVideos.length > 0 ? (
+      <div class="video-gallery">
+        {preparedVideos.map(({ video, embedUrl, poster }, index) => (
+          <article class="video-card">
+            <div class="video-frame">
+              <div class:list={['video-consent', { 'has-poster': poster }]} data-video-consent data-video-src={embedUrl} data-video-title={video.title || 'Klangfonia Video'}>
+                {poster && <img class="video-poster" src={poster} alt="" width="1280" height="720" loading="lazy" />}
+                <button class="play" type="button" data-video-load aria-label={`${playLabel}: ${video.title || 'Klangfonia Video'}`}>
+                  <span aria-hidden="true">▶</span>
+                </button>
+                <div class="video-consent__note">
+                  <span>{consentNote}</span>
+                  <a href={localizePath('/datenschutz', lang)}>{copy.privacy}</a>
+                </div>
+              </div>
+            </div>
+            <div class="video-meta">
+              <span class="video-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>{video.title || 'Klangfonia Video'}</h3>
+                {video.description && <p>{video.description}</p>}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <div class="video-frame video-frame--placeholder">
         <div class="video-placeholder">
           <span class="play" aria-hidden="true">▶</span>
           <div><strong>{copy.placeholder}</strong><small>{copy.studio}</small></div>
         </div>
-      )}
-    </div>
+      </div>
+    )}
   </div>
 </section>
 
@@ -61,31 +83,39 @@ const copy = { consent: globalCopy.videoConsent, load: globalCopy.videoLoad, pri
 </script>
 
 <style>
-  .video-section { border-block: 1px solid var(--color-border); background: radial-gradient(ellipse at 100% 0%, rgb(185 157 117 / 0.12), transparent 60%), linear-gradient(135deg, var(--color-white), var(--color-linen)); color: var(--color-ink); }
+  .video-section { overflow: hidden; border-block: 1px solid var(--color-border); background: radial-gradient(ellipse at 100% 0%, rgb(185 157 117 / 0.14), transparent 55%), linear-gradient(135deg, var(--color-white), var(--color-linen)); color: var(--color-ink); }
   .video-intro { max-width: 47rem; }
   .video-intro::before { content: ''; display: block; width: 3rem; height: 1px; margin-bottom: 1.25rem; background: var(--color-clay); }
   .video-intro :global(h2) { color: var(--color-ink); }
   .lead { margin-top: 0.75rem; color: var(--color-steel); }
-  .video-frame { position: relative; overflow: hidden; width: 100%; max-width: 48rem; aspect-ratio: 16 / 9; margin: 1.5rem auto 0; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-linen); box-shadow: var(--shadow-soft); }
+  .video-gallery { display: grid; gap: clamp(2.25rem, 5vw, 4.5rem) clamp(1.5rem, 3vw, 2.5rem); margin-top: clamp(2rem, 5vw, 4rem); }
+  .video-card { min-width: 0; }
+  .video-frame { position: relative; overflow: hidden; width: 100%; aspect-ratio: 16 / 9; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-linen); box-shadow: var(--shadow-soft); }
+  .video-frame--placeholder { max-width: 48rem; margin: 2rem auto 0; }
   :global(.video-player) { position: absolute; inset: 0; display: block; width: 100%; height: 100%; border: 0; }
-  .video-placeholder, .video-consent { display: flex; height: 100%; align-items: center; justify-content: center; gap: 1.25rem; padding: 1.5rem; background: radial-gradient(circle at 62% 38%, rgb(252 250 245 / 0.7), transparent 60%), linear-gradient(135deg, var(--color-linen), var(--color-sage-soft)); text-align: left; }
+  .video-placeholder, .video-consent { display: flex; height: 100%; align-items: center; justify-content: center; gap: 1.25rem; padding: clamp(1rem, 3vw, 1.75rem); background: radial-gradient(circle at 62% 38%, rgb(252 250 245 / 0.7), transparent 60%), linear-gradient(135deg, var(--color-linen), var(--color-sage-soft)); text-align: left; }
   .video-placeholder::before, .video-consent::before { content: ''; position: absolute; width: 21rem; height: 21rem; border: 1px solid var(--color-border); border-radius: 50%; pointer-events: none; }
-  .play { display: grid; z-index: 1; width: 4.5rem; height: 4.5rem; flex: 0 0 auto; place-items: center; border-radius: 50%; background: var(--color-clay); color: white; box-shadow: 0 1rem 2rem rgb(0 0 0 / 0.16); }
+  .video-consent.has-poster::before { display: none; }
+  .video-consent.has-poster::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgb(20 27 24 / 0.6), transparent 48%), rgb(20 27 24 / 0.08); pointer-events: none; }
+  .video-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .play { display: grid; z-index: 1; width: 4.75rem; height: 4.75rem; flex: 0 0 auto; place-items: center; padding: 0 0 0 0.2rem; border: 0; border-radius: 50%; background: var(--color-clay); color: white; box-shadow: 0 1rem 2rem rgb(0 0 0 / 0.16); cursor: pointer; transition: background 180ms ease, transform 180ms ease, box-shadow 180ms ease; }
+  button.play:hover { background: var(--color-clay-dark); transform: scale(1.05); box-shadow: 0 1.2rem 2.4rem rgb(0 0 0 / 0.2); }
+  button.play:focus-visible { outline: 3px solid var(--color-clay-dark); outline-offset: 4px; }
   .video-placeholder div { z-index: 1; display: flex; flex-direction: column; }.video-placeholder strong { font-family: var(--font-display); font-size: clamp(1.25rem, 3vw, 2rem); font-weight: 400; }.video-placeholder small { opacity: 0.7; }
-  .video-consent__copy { z-index: 1; display: flex; max-width: 30rem; flex-direction: column; align-items: flex-start; gap: 0.55rem; }
-  .video-consent strong { font-family: var(--font-display); font-size: clamp(1.1rem, 2.4vw, 1.55rem); font-weight: 400; line-height: 1.2; }
-  .video-consent p { color: var(--color-steel); font-size: 0.82rem; line-height: 1.5; }
-  .video-consent button { padding: 0.65rem 1rem; border: 0; border-radius: 99rem; background: var(--color-ink); color: var(--color-white); cursor: pointer; font-weight: 700; }
-  .video-consent button:hover { background: var(--color-clay-dark); }
-  .video-consent button:focus-visible { outline: 3px solid var(--color-clay); outline-offset: 3px; }
-  .video-consent a { color: var(--color-ink); font-size: 0.78rem; }
-  @media (min-width: 60rem) {
-    .video-section > .container { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); align-items: center; gap: 2.5rem; }
-    .video-frame { margin: 0; }
+  .video-consent__note { position: absolute; z-index: 1; right: 0.8rem; bottom: 0.7rem; left: 0.8rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.25rem 0.55rem; color: var(--color-steel); font-size: 0.68rem; line-height: 1.35; text-align: center; }
+  .video-consent__note a { color: var(--color-ink); }
+  .has-poster .video-consent__note, .has-poster .video-consent__note a { color: var(--color-white); text-shadow: 0 1px 5px rgb(0 0 0 / 0.55); }
+  .video-meta { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1rem; align-items: start; padding: 1.2rem 0 0 0.25rem; }
+  .video-number { padding-top: 0.15rem; color: var(--color-clay-dark); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; }
+  .video-meta h3 { font-size: clamp(1.25rem, 2.2vw, 1.65rem); line-height: 1.15; }
+  .video-meta p { max-width: 44rem; margin-top: 0.55rem; color: var(--color-steel); font-size: 0.9rem; line-height: 1.65; }
+  @media (min-width: 52rem) {
+    .video-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); padding-bottom: 2.5rem; }
+    .video-card:nth-child(even) { transform: translateY(2.5rem); }
   }
   @media (max-width: 32rem) {
-    .video-consent { gap: 0.85rem; padding: 1rem; }
-    .video-consent .play { width: 3rem; height: 3rem; }
-    .video-consent p { font-size: 0.74rem; }
+    .video-consent { padding: 1rem; }
+    .video-consent .play { width: 3.5rem; height: 3.5rem; }
+    .video-consent__note { font-size: 0.62rem; }
   }
 </style>

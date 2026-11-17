@@ -85,6 +85,7 @@ export interface Video {
   youtubeUrl: string;
   description?: string;
   featured?: boolean;
+  sortOrder?: number;
 }
 
 export interface AboutPage {

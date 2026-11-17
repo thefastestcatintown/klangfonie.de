@@ -5,12 +5,12 @@ import Button from '../components/Button.astro';
 import VideoSection from '../components/VideoSection.astro';
 import DecorativeHeading from '../components/DecorativeHeading.astro';
 import liveImage from '../assets/images/originals/sample-live-handpan.png';
-import { copyParagraphs, getFeaturedVideo, getPageCopy, getService, imageSrcSet, imageUrl, localizeService } from '../lib/sanity';
+import { copyParagraphs, getPageCopy, getService, getVideos, imageSrcSet, imageUrl, localizeService } from '../lib/sanity';
 import { defaultsFor } from '../content/page-copy-defaults';
 import { localizePath, type Language } from '../lib/i18n';
 interface Props { lang?: Language; }
 const { lang = 'de' } = Astro.props;
-const [rawService, video] = await Promise.all([getService('Live'), getFeaturedVideo()]);
+const [rawService, videos] = await Promise.all([getService('Live'), getVideos()]);
 const service = localizeService(rawService, lang);
 const copy = await getPageCopy('live', lang, defaultsFor('live', lang));
 const image = imageUrl(service.image, 1200, 900);
@@ -41,5 +41,5 @@ const imageSources = imageSrcSet(service.image, [480, 800, 1200], 3 / 4);
     </div>
   </section>
 
-  <VideoSection video={video} lang={lang} text={copy.videoIntro} />
+  <VideoSection videos={videos} headline={lang === 'en' ? 'Listen to Klangfonia' : 'Klangfonia hören'} lang={lang} text={copy.videoIntro} />
 </BaseLayout>
