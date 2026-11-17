@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import DecorativeHeading from '../components/DecorativeHeading.astro';
 import MailingListForm from '../components/MailingListForm.astro';
+import ProtectedEmail from '../components/ProtectedEmail.astro';
 import { getPageCopy, getSettings } from '../lib/sanity';
 import { defaultsFor } from '../content/page-copy-defaults';
 import { localizePath, type Language } from '../lib/i18n';
@@ -9,6 +10,7 @@ interface Props { lang?: Language; }
 const { lang = 'de' } = Astro.props;
 const settings = await getSettings();
 const formEndpoint = import.meta.env.PUBLIC_CONTACT_FORM_ENDPOINT?.trim();
+const protectedRecipient = settings.email ? [...settings.email].reverse().join('') : undefined;
 const copy = await getPageCopy('contact', lang, defaultsFor('contact', lang));
 const formCopy = copy;
 ---
@@ -18,13 +20,13 @@ const formCopy = copy;
     <aside>
       <DecorativeHeading level="h2" text={settings.email ? copy.emailHeading : copy.enquiryHeading} />
       {settings.email
-        ? <a class="email" href={`mailto:${settings.email}`}>{settings.email}</a>
+        ? <ProtectedEmail class="email" email={settings.email} label={lang === 'en' ? 'Email Daniela' : 'E-Mail an Daniela'} />
         : <p class="intro">{copy.noEmailIntro}</p>}
       {settings.phone && <a class="contact-line" href={`tel:${settings.phone.replace(/\s/g, '')}`}>{settings.phone}</a>}
       {settings.email && <p class="note">{copy.emailNote}</p>}
     </aside>
     <div class="form-stack">
-    <form class="contact-form" data-contact-form data-endpoint={formEndpoint || undefined} data-recipient={settings.email || undefined} data-copy={JSON.stringify(formCopy)} novalidate>
+    <form class="contact-form" data-contact-form data-endpoint={formEndpoint || undefined} data-recipient={protectedRecipient} data-copy={JSON.stringify(formCopy)} novalidate>
       <div class="field-row">
         <label><span>{copy.nameLabel}</span><input type="text" name="name" autocomplete="name" required /></label>
         <label><span>{copy.emailLabel}</span><input type="email" name="email" autocomplete="email" required /></label>
@@ -55,7 +57,7 @@ const formCopy = copy;
     const form = event.currentTarget as HTMLFormElement;
     if (!form.reportValidity()) return;
     const endpoint = form.dataset.endpoint;
-    const recipient = form.dataset.recipient;
+    const recipient = form.dataset.recipient ? [...form.dataset.recipient].reverse().join('') : undefined;
     const copy = JSON.parse(form.dataset.copy || '{}');
     const data = new FormData(form);
     const name = String(data.get('name') || '').trim();

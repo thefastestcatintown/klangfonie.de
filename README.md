@@ -61,7 +61,7 @@ Felder sind ausgeblendet; englische Übersetzungen sind standardmäßig eingekla
 Regelmäßig gepflegte Inhalte sind insbesondere:
 
 - Startseite und die einzelnen Angebotsseiten
-- Live-Musik, Musikvideo sowie Konzerte und Termine
+- Live-Musik, mehrere Musikvideos sowie Konzerte und Termine
 - Danielas Geschichte und Stationen
 - Bewertungen und Stimmen
 - Kontakt und Selbsteinschätzung

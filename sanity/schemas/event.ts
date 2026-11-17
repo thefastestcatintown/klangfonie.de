@@ -52,8 +52,8 @@ export const event = defineType({
     }),
     defineField({
       name: 'recurrence',
-      title: 'Wiederholung',
-      description: 'Aus einem Eintrag werden automatisch die kommenden Termine erzeugt.',
+      title: 'Termin-Wiederholung',
+      description: 'Das oben gewählte Datum ist der erste Termin. „Monatlich fortlaufend“ erscheint auf der Website einmal mit dem jeweils nächsten Termin.',
       type: 'string',
       initialValue: 'none',
       options: {
@@ -61,7 +61,7 @@ export const event = defineType({
         list: [
           { title: 'Keine Wiederholung', value: 'none' },
           { title: 'Wöchentlich', value: 'weekly' },
-          { title: 'Monatlich', value: 'monthly' },
+          { title: 'Monatlich fortlaufend', value: 'monthly' },
           { title: 'Jährlich', value: 'yearly' },
         ],
       },
@@ -73,8 +73,8 @@ export const event = defineType({
     }),
     defineField({
       name: 'repeatUntil',
-      title: 'Wiederholen bis (optional)',
-      description: 'Wenn das Feld leer bleibt, zeigt die Website jeweils die nächsten zwölf Termine der Serie.',
+      title: 'Fortlaufend bis (optional)',
+      description: 'Für eine unbegrenzt fortlaufende Serie leer lassen. Nur ein Datum eintragen, wenn die Wiederholung an diesem Tag enden soll.',
       type: 'date',
       hidden: ({ document }) => !document?.recurrence || document.recurrence === 'none',
       validation: (rule) =>
@@ -87,10 +87,10 @@ export const event = defineType({
     defineField({
       name: 'occurrenceCount',
       title: 'Anzahl kommender Termine auf der Website',
-      description: 'Wie viele zukünftige Termine dieser Serie angezeigt werden. Wenn das Feld leer bleibt, werden zwölf Termine erzeugt.',
+      description: 'Wie viele der jeweils nächsten Termine angezeigt werden. Die Serie bleibt trotzdem fortlaufend. Standard: zwölf Termine.',
       type: 'number',
       initialValue: 12,
-      hidden: ({ document }) => !document?.recurrence || document.recurrence === 'none',
+      hidden: ({ document }) => !document?.recurrence || document.recurrence === 'none' || document.recurrence === 'monthly',
       validation: (rule) => rule.integer().min(1).max(36),
     }),
     defineField({ name: 'location', title: 'Ort', type: 'string', validation: (rule) => rule.required() }),
@@ -141,10 +141,14 @@ export const event = defineType({
   ],
   orderings: [{ title: 'Datum / Planung', name: 'dateAsc', by: [{ field: 'date', direction: 'asc' }, { field: '_createdAt', direction: 'desc' }] }],
   preview: {
-    select: { title: 'title', date: 'date', planningLabel: 'planningLabel', location: 'location', media: 'image' },
-    prepare: ({ title, date, planningLabel, location, media }) => ({
+    select: { title: 'title', date: 'date', planningLabel: 'planningLabel', recurrence: 'recurrence', location: 'location', media: 'image' },
+    prepare: ({ title, date, planningLabel, recurrence, location, media }) => ({
       title,
-      subtitle: [planningLabel || (date ? new Date(date).toLocaleDateString('de-DE') : 'In Planung'), location].filter(Boolean).join(' · '),
+      subtitle: [
+        planningLabel || (date ? new Date(date).toLocaleDateString('de-DE') : 'In Planung'),
+        recurrence === 'monthly' ? 'monatlich fortlaufend' : undefined,
+        location,
+      ].filter(Boolean).join(' · '),
       media,
     }),
   },

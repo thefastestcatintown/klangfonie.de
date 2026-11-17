@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import DecorativeHeading from '../../components/DecorativeHeading.astro';
+import ProtectedEmail from '../../components/ProtectedEmail.astro';
 import { getSettings } from '../../lib/sanity';
 
 const settings = await getSettings();
@@ -17,7 +18,7 @@ const settings = await getSettings();
     </address>
 
     <h2>Contact</h2>
-    {settings.email && <p>Email: <a href={`mailto:${settings.email}`}>{settings.email}</a></p>}
+    {settings.email && <p>Email: <ProtectedEmail email={settings.email} label="Email Daniela Schneider" /></p>}
 
     <h2>Activity</h2>
     <p>Handpan music, handpan lessons, workshops and musical accompaniment for events.</p>

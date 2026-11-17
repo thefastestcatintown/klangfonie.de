@@ -9,6 +9,7 @@ interface Props {
 }
 
 const { endpoint, recipient, lang, copy } = Astro.props;
+const protectedRecipient = recipient ? [...recipient].reverse().join('') : undefined;
 ---
 <section class="mailing-card" id={lang === 'en' ? 'mailing-list' : 'verteiler'} aria-labelledby="mailing-title">
   <div>
@@ -19,7 +20,7 @@ const { endpoint, recipient, lang, copy } = Astro.props;
   <form
     data-mailing-list-form
     data-endpoint={endpoint || undefined}
-    data-recipient={recipient || undefined}
+    data-recipient={protectedRecipient}
     data-lang={lang}
     data-sending={copy.mailingSending}
     data-submit={copy.mailingSubmit}
@@ -50,7 +51,7 @@ const { endpoint, recipient, lang, copy } = Astro.props;
     if (!form.reportValidity()) return;
 
     const endpoint = form.dataset.endpoint;
-    const recipient = form.dataset.recipient;
+    const recipient = form.dataset.recipient ? [...form.dataset.recipient].reverse().join('') : undefined;
     const lang = form.dataset.lang === 'en' ? 'en' : 'de';
     const data = new FormData(form);
     const name = String(data.get('name') || '').trim();

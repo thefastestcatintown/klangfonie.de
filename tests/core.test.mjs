@@ -44,7 +44,7 @@ test('event dates use Berlin time, including DST and a range crossing midnight',
   assert.equal(formatEventSchedule(undefined, undefined, undefined, 'en'), 'Date to be announced');
 });
 
-test('recurring events keep Berlin wall-clock time and calendar day across DST', () => {
+test('a monthly event keeps Berlin wall-clock time and calendar day across DST', () => {
   const event = {
     title: 'Monatlicher Klangabend',
     date: '2027-01-31T18:00:00.000Z',
@@ -53,14 +53,11 @@ test('recurring events keep Berlin wall-clock time and calendar day across DST',
     location: 'Berlin',
     description: 'Test',
   };
-  const occurrences = expandRecurringEvents([event], new Date('2027-01-01T00:00:00.000Z'), 3);
-  assert.deepEqual(occurrences.map((item) => item.date), [
-    '2027-01-31T18:00:00.000Z',
-    '2027-02-28T18:00:00.000Z',
-    '2027-03-31T17:00:00.000Z',
-  ]);
-  assert.equal(formatEventDate(occurrences[2].date), '31. März 2027 · 19:00 Uhr');
-  assert.equal(new Date(occurrences[2].endDate).getTime() - new Date(occurrences[2].date).getTime(), 90 * 60 * 1000);
+  const occurrences = expandRecurringEvents([event], new Date('2027-03-01T00:00:00.000Z'));
+  assert.equal(occurrences.length, 1);
+  assert.equal(occurrences[0].date, '2027-03-31T17:00:00.000Z');
+  assert.equal(formatEventDate(occurrences[0].date), '31. März 2027 · 19:00 Uhr');
+  assert.equal(new Date(occurrences[0].endDate).getTime() - new Date(occurrences[0].date).getTime(), 90 * 60 * 1000);
 });
 
 test('recurring events respect their optional final date', () => {
@@ -71,7 +68,7 @@ test('recurring events respect their optional final date', () => {
   assert.equal(occurrences[2].date, '2027-01-18T18:00:00.000Z');
 });
 
-test('recurring events use the occurrence count configured in Sanity', () => {
+test('monthly ongoing events ignore occurrence counts and appear only once', () => {
   const occurrences = expandRecurringEvents([{
     title: 'Monatlicher Termin',
     date: '2026-12-05T13:30:00.000Z',
@@ -81,9 +78,21 @@ test('recurring events use the occurrence count configured in Sanity', () => {
     description: 'Test',
   }], new Date('2026-12-01T00:00:00.000Z'));
 
-  assert.equal(occurrences.length, 2);
+  assert.equal(occurrences.length, 1);
   assert.equal(formatEventDate(occurrences[0].date), '5. Dezember 2026 · 14:30 Uhr');
-  assert.equal(formatEventDate(occurrences[1].date), '5. Januar 2027 · 14:30 Uhr');
+});
+
+test('an ongoing monthly event keeps producing future dates after its original date', () => {
+  const occurrences = expandRecurringEvents([{
+    title: 'Fortlaufender Klangabend',
+    date: '2025-01-15T18:00:00.000Z',
+    recurrence: 'monthly',
+    occurrenceCount: 3,
+    location: 'Berlin',
+    description: 'Test',
+  }], new Date('2026-11-16T00:00:00.000Z'));
+
+  assert.deepEqual(occurrences.map((item) => item.date), ['2026-12-15T18:00:00.000Z']);
 });
 
 test('YouTube accepts supported video URLs, rejects lookalike hosts and malformed IDs', () => {

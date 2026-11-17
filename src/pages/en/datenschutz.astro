@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import DecorativeHeading from '../../components/DecorativeHeading.astro';
+import ProtectedEmail from '../../components/ProtectedEmail.astro';
 import { getSettings } from '../../lib/sanity';
 
 const settings = await getSettings();
@@ -17,7 +18,7 @@ const settings = await getSettings();
       12051 Berlin<br />
       Germany
     </address>
-    {settings.email && <p>Email: <a href={`mailto:${settings.email}`}>{settings.email}</a></p>}
+    {settings.email && <p>Email: <ProtectedEmail email={settings.email} label="Email Daniela Schneider" /></p>}
 
     <h2>2. Hosting with Netcup</h2>
     <p>This website is hosted by netcup GmbH, Emmy-Noether-Straße 10, 76131 Karlsruhe, Germany. The server location of the contracted web hosting service is Nuremberg, Germany. When the website is accessed, Netcup processes technically necessary connection and log data. This may include the IP address, date and time of access, requested file, amount of data transferred, referrer URL, browser type and operating system.</p>

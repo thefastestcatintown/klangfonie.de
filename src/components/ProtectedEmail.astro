@@ -1,0 +1,39 @@
+---
+interface Props {
+  email: string;
+  class?: string;
+  label?: string;
+}
+
+const { email, class: className, label = 'E-Mail' } = Astro.props;
+const encodedEmail = [...email].reverse().join('');
+---
+
+<a
+  class:list={['protected-email', className]}
+  href="#email"
+  data-protected-email={encodedEmail}
+  data-email-label={label}
+  aria-label={label}
+>
+  <span class="protected-email__value" aria-hidden="true">{encodedEmail}</span>
+  <span class="sr-only" data-protected-email-accessible>{label}</span>
+</a>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('[data-protected-email]').forEach((link) => {
+    const encodedEmail = link.dataset.protectedEmail;
+    if (!encodedEmail) return;
+    const email = [...encodedEmail].reverse().join('');
+    const label = link.dataset.emailLabel || 'E-Mail';
+    link.href = `mailto:${email}`;
+    link.setAttribute('aria-label', `${label}: ${email}`);
+    const accessibleLabel = link.querySelector<HTMLElement>('[data-protected-email-accessible]');
+    if (accessibleLabel) accessibleLabel.textContent = `${label}: ${email}`;
+  });
+</script>
+
+<style>
+  .protected-email__value { direction: rtl; unicode-bidi: bidi-override; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+</style>

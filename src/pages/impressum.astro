@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import DecorativeHeading from '../components/DecorativeHeading.astro';
+import ProtectedEmail from '../components/ProtectedEmail.astro';
 import { getSettings } from '../lib/sanity';
 
 const settings = await getSettings();
@@ -18,7 +19,7 @@ const settings = await getSettings();
 
     <h2>Kontakt</h2>
     {settings.email ? (
-      <p>E-Mail: <a href={`mailto:${settings.email}`}>{settings.email}</a></p>
+      <p>E-Mail: <ProtectedEmail email={settings.email} label="E-Mail an Daniela Schneider" /></p>
     ) : (
       <div class="legal-note"><strong>Noch zu ergänzen</strong><span>Vor der Veröffentlichung muss hier eine öffentlich erreichbare E-Mail-Adresse von Daniela Schneider eingetragen werden.</span></div>
     )}

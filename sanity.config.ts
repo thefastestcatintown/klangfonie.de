@@ -68,9 +68,7 @@ export default defineConfig({
                   .items([
                     pageCopyDocument(S, 'Texte', 'live'),
                     serviceDocument(S, 'Bild', 'live'),
-                    S.listItem()
-                      .title('Musikvideo')
-                      .child(S.document().schemaType('video').documentId('video-featured').title('Musikvideo')),
+                    S.documentTypeListItem('video').title('Musikvideos'),
                   ]),
               ),
             S.documentTypeListItem('event').title('Konzerte & Termine'),
@@ -109,6 +107,6 @@ export default defineConfig({
   schema: { types: schemaTypes },
   document: {
     newDocumentOptions: (previous) =>
-      previous.filter((item) => ['event', 'testimonial'].includes(item.templateId)),
+      previous.filter((item) => ['event', 'testimonial', 'video'].includes(item.templateId)),
   },
 });
