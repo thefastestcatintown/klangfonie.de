@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import visitCardWordmark from '../assets/images/originals/klangfonia-visitenkarte-wordmark.png';
+import visitCardWordmark from '../assets/images/originals/klangfonia-visitenkarte-wordmark-clean.png';
 
 interface Props {
   variant?: 'header' | 'footer';
@@ -31,7 +31,7 @@ const { variant = 'header' } = Astro.props;
   .wordmark-domain {
     position: absolute;
     top: 58%;
-    right: -1.35rem;
+    right: -1.7rem;
     color: var(--color-clay-dark);
     font-family: var(--font-display);
     font-size: clamp(0.78rem, 2.7vw, 1rem);
@@ -41,7 +41,7 @@ const { variant = 'header' } = Astro.props;
     transform: translateY(-50%);
   }
   .original-wordmark--header { --wordmark-width: 13rem; }
-  .original-wordmark--footer { --wordmark-width: min(16.65rem, calc(78vw - 1.35rem)); margin-right: 1.35rem; }
+  .original-wordmark--footer { --wordmark-width: min(16.3rem, calc(78vw - 1.7rem)); margin-right: 1.7rem; }
   @media (max-width: 59.99rem) {
     .original-wordmark--header { --wordmark-width: 11rem; }
   }
