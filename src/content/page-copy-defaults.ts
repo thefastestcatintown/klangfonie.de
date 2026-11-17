@@ -7,7 +7,7 @@ export const pageCopyDefaults: Record<string, LocalizedPageCopy> = {
     de: {
       homeLabel: 'Klangfonia – Startseite', menuLabel: 'Menü öffnen', navigationLabel: 'Hauptnavigation',
       coachingLabel: 'Coaching', aboutLabel: 'Über mich', privacyLabel: 'Datenschutz', legalLabel: 'Impressum',
-      coachingLessons: 'Lernbegleitung 1:1', coachingBand: 'Big Band', coachingWorkshops: 'Workshops',
+      coachingLessons: 'Lernbegleitung 1:1', coachingBand: 'Band-Coaching', coachingWorkshops: 'Workshops',
       navRetreats: 'Retreats', navMusic: 'Musik', navAbout: 'Über mich', navEvents: 'Termine', navContact: 'Kontakt',
       aboutIntention: 'Meine Intention', aboutStory: 'Meine Geschichte',
       logoAlt: 'Klangfonia – Daniela Schneider, Handpan-Musik', skipLabel: 'Zum Inhalt springen',
@@ -22,7 +22,7 @@ export const pageCopyDefaults: Record<string, LocalizedPageCopy> = {
     en: {
       homeLabel: 'Klangfonia – Home', menuLabel: 'Open menu', navigationLabel: 'Main navigation',
       coachingLabel: 'Coaching', aboutLabel: 'About me', privacyLabel: 'Privacy', legalLabel: 'Legal notice',
-      coachingLessons: 'One-to-one guidance', coachingBand: 'Big Band', coachingWorkshops: 'Workshops',
+      coachingLessons: 'One-to-one guidance', coachingBand: 'Band Coaching', coachingWorkshops: 'Workshops',
       navRetreats: 'Retreats', navMusic: 'Music', navAbout: 'About me', navEvents: 'Events', navContact: 'Contact',
       aboutIntention: 'My intention', aboutStory: 'My story',
       logoAlt: 'Klangfonia – Daniela Schneider, handpan music', skipLabel: 'Skip to content',

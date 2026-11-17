@@ -11,7 +11,7 @@ const pathname = contentPath(Astro.url.pathname);
 const items = navigationFor(language);
 const copy = await getPageCopy('global', language, defaultsFor('global', language));
 const labels: Record<string, string> = {
-  '/unterricht': copy.coachingLessons, '/ensemble': copy.coachingBand, '/workshops': copy.coachingWorkshops,
+  '/unterricht': copy.coachingLessons, '/ensemble': language === 'en' ? 'Band Coaching' : 'Band-Coaching', '/workshops': copy.coachingWorkshops,
   '/retreats': copy.navRetreats, '/live': copy.navMusic, '/ueber-daniela/intention': copy.navAbout, '/termine': copy.navEvents,
   '/ueber-daniela/geschichte': copy.aboutStory,
 };
