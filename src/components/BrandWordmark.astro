@@ -1,5 +1,6 @@
 ---
-import originalLogo from '../assets/images/originals/logo-footer-transparent.png';
+import { Image } from 'astro:assets';
+import visitCardWordmark from '../assets/images/originals/klangfonia-visitenkarte-wordmark.png';
 
 interface Props {
   variant?: 'header' | 'footer';
@@ -9,17 +10,38 @@ const { variant = 'header' } = Astro.props;
 ---
 
 <span class:list={['original-wordmark', `original-wordmark--${variant}`]} aria-hidden="true">
-  <svg class="wordmark-artwork" viewBox="35 115 1395 570" role="presentation" focusable="false">
-    <!-- Original artwork: K, lettering, domain, emblem and divider line. -->
-    <image href={originalLogo.src} x="0" y="0" width="1477" height="1065" />
-  </svg>
+  <span class="wordmark-lockup">
+    <Image
+      class="wordmark-artwork"
+      src={visitCardWordmark}
+      alt=""
+      width={598}
+      widths={[420, 520, 598]}
+      sizes="(max-width: 24rem) 70vw, 17rem"
+      format="png"
+    />
+    {variant === 'footer' && <span class="wordmark-domain">.de</span>}
+  </span>
 </span>
 
 <style>
   .original-wordmark { display: inline-flex; flex: 0 0 auto; color: var(--color-ink); }
-  .wordmark-artwork { display: block; width: var(--wordmark-width); height: auto; overflow: hidden; }
+  .wordmark-lockup { position: relative; display: block; width: var(--wordmark-width); }
+  .wordmark-artwork { display: block; width: 100%; height: auto; }
+  .wordmark-domain {
+    position: absolute;
+    top: 58%;
+    right: -1.35rem;
+    color: var(--color-clay-dark);
+    font-family: var(--font-display);
+    font-size: clamp(0.78rem, 2.7vw, 1rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    transform: translateY(-50%);
+  }
   .original-wordmark--header { --wordmark-width: 13rem; }
-  .original-wordmark--footer { --wordmark-width: min(18rem, 78vw); }
+  .original-wordmark--footer { --wordmark-width: min(16.65rem, calc(78vw - 1.35rem)); margin-right: 1.35rem; }
   @media (max-width: 59.99rem) {
     .original-wordmark--header { --wordmark-width: 11rem; }
   }
