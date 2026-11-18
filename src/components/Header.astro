@@ -15,8 +15,12 @@ const labels: Record<string, string> = {
   '/retreats': copy.navRetreats, '/live': copy.navMusic, '/ueber-daniela/intention': copy.navAbout, '/termine': copy.navEvents,
   '/ueber-daniela/geschichte': copy.aboutStory,
 };
+const aboutLabels: Record<string, string> = {
+  '/ueber-daniela/intention': copy.aboutIntention,
+  '/ueber-daniela/geschichte': copy.aboutStory,
+};
 const coachingLinks = items.coachingLinks.map((item) => ({ ...item, label: labels[item.href] || item.label, href: localizePath(item.href, language) }));
-const aboutLinks = items.aboutLinks.map((item) => ({ ...item, label: labels[item.href] || (item.href.endsWith('intention') ? copy.aboutIntention : item.label), href: localizePath(item.href, language) }));
+const aboutLinks = items.aboutLinks.map((item) => ({ ...item, label: aboutLabels[item.href] || item.label, href: localizePath(item.href, language) }));
 const navigation = items.navigationLinks.map((item) => ({ ...item, label: labels[item.href] || item.label, href: localizePath(item.href, language) }));
 ---
 <header class="site-header" data-header>
