@@ -18,7 +18,7 @@ export const fallbackHome: HomePage = {
   secondaryCtaUrl: '#musik',
   introHeadline: 'Handpan lernen und gemeinsam Musik erleben',
   introText: 'Bei Klangfonia findest du einen persönlichen Zugang zur Handpan – unabhängig davon, ob du zum ersten Mal spielst oder deine musikalischen Ideen weiterentwickeln möchtest.',
-  introText2: 'Daniela Schneider begleitet dich im Einzelunterricht, in Workshops und beim gemeinsamen Spiel in der Handpan Big Band. Für Yoga, Retreats, Konzerte und besondere Anlässe kannst du sie außerdem als Live-Musikerin anfragen.',
+  introText2: 'Daniela Schneider begleitet dich im Einzelunterricht, in Workshops und beim gemeinsamen Spiel im Band-Coaching. Für Yoga, Retreats, Konzerte und besondere Anlässe kannst du sie außerdem als Live-Musikerin anfragen.',
 };
 
 export const fallbackServices: Service[] = [

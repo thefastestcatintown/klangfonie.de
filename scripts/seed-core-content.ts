@@ -13,7 +13,7 @@ const home = {
   secondaryCtaLabelEn: 'Listen to music',
   introHeadlineEn: 'Learn handpan and experience music together',
   introTextEn: 'At Klangfonia, you can find your own personal way into the handpan – whether you are playing for the first time or want to develop your musical ideas further.',
-  introText2En: 'Daniela Schneider supports you through one-to-one lessons, workshops and playing together in the Handpan Big Band. You can also book her as a live musician for retreats, concerts and special occasions.',
+  introText2En: 'Daniela Schneider supports you through one-to-one lessons, workshops and playing together in band coaching. You can also book her as a live musician for retreats, concerts and special occasions.',
   testimonialsHeadline: 'Was Teilnehmende sagen',
   testimonialsHeadlineEn: 'What participants say',
   testimonialsText: 'Persönliche Erfahrungen aus Unterricht, Workshops und Retreats.',

@@ -49,7 +49,7 @@ export default defineConfig({
                   ]),
               ),
             pageCopyDocument(S, 'Workshops', 'workshops'),
-            pageCopyDocument(S, 'Handpan Big Band', 'ensemble'),
+            pageCopyDocument(S, 'Band-Coaching', 'ensemble'),
             S.listItem()
               .title('Retreats & Handpan')
               .child(

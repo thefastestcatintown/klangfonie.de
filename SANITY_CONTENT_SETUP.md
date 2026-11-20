@@ -6,7 +6,7 @@ Nach der Konfiguration aus der `README.md` öffnest du `http://localhost:4321/st
 
 - **Name der Website:** Klangfonia
 - **Standardtitel:** Handpan lernen in Berlin | Klangfonia
-- **Standardbeschreibung:** Klangfonia mit Daniela Schneider: Lernbegleitung, Workshops, Big Band und Live-Musik für Yoga und besondere Momente.
+- **Standardbeschreibung:** Klangfonia mit Daniela Schneider: Lernbegleitung, Workshops, Band-Coaching und Live-Musik für Yoga und besondere Momente.
 - **E-Mail:** echte Kontaktadresse ergänzen
 - **Ort / Region:** Berlin
 - Telefon, Instagram und YouTube nur eintragen, wenn die Angaben veröffentlicht werden sollen.

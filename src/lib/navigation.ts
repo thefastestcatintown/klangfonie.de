@@ -2,7 +2,7 @@ import type { Language } from './i18n';
 
 export const coachingLinks = [
   { href: '/unterricht', label: 'Lernbegleitung 1:1' },
-  { href: '/ensemble', label: 'Big Band' },
+  { href: '/ensemble', label: 'Band-Coaching' },
   { href: '/workshops', label: 'Workshops' },
 ];
 
@@ -22,7 +22,7 @@ export const footerLinks = [{ href: '/unterricht', label: 'Coaching' }, ...navig
 
 const englishCoachingLinks = [
   { href: '/unterricht', label: 'One-to-one guidance' },
-  { href: '/ensemble', label: 'Big Band' },
+  { href: '/ensemble', label: 'Band Coaching' },
   { href: '/workshops', label: 'Workshops' },
 ];
 

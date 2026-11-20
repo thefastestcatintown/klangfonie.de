@@ -18,7 +18,7 @@ export const pageCopy = defineType({
           ['Globale Texte & Navigation', 'global'],
           ['Startseite', 'home'],
           ['Lernbegleitung', 'unterricht'],
-          ['Big Band', 'ensemble'],
+          ['Band-Coaching', 'ensemble'],
           ['Workshops', 'workshops'],
           ['Retreats', 'yoga'],
           ['Live-Musik', 'live'],
